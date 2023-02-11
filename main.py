@@ -1,8 +1,11 @@
 import pygame
+from board import Board
 
 pygame.init()
 
 screen = pygame.display.set_mode([500, 500])
+
+b = Board(50, 45)
 
 running = True
 while running:
@@ -12,7 +15,9 @@ while running:
             running = False
 
     screen.fill((255, 255, 255))
-    pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
+
+    b.draw(screen)
+
     pygame.display.flip()
 
 pygame.quit()
