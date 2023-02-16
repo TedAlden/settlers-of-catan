@@ -1,6 +1,7 @@
 import pygame
 from math import pi, sin, cos, sqrt
 from collections import defaultdict
+from pieces import Terrain, Settlement
 
 
 def draw_hexagon(surface, colour, radius, position, width=0):
@@ -9,40 +10,15 @@ def draw_hexagon(surface, colour, radius, position, width=0):
     pygame.draw.polygon(surface, colour, sides, width)
 
 
-class Node:
-
-    def __init__(self, value):
-        self.value = value
-        self.coord = (0, 0)
-
-    def __repr__(self):
-        return self.__class__.__name__ + str(self.value)
-
-
-class Terrain(Node):
- 
-    def __init__(self, tilecoord):
-        super().__init__(None)
-        self.tile_coord = tilecoord
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}({self.tile_coord[0]},{self.tile_coord[1]})"
-
-
-class Settlement(Node):
-
-    def __init__(self, value):
-        super().__init__(value)
-
-
 class Board:
 
     def __init__(self, hex_radius, tile_radius):
         """
-        Constructor for hexagonal board. Note that `hex_radius` designates the
-        size of the spaces for the tiles, and `tile_radius` designates the size
-        of the tiles themselves, so `tile_radius` must be less than or equal to
-        `hex_radius` in order for tiles to fit in their spaces.
+        Constructor for hexagonal board. Note that `hex_radius`
+        designates the size of the spaces for the tiles, and
+        `tile_radius` designates the size of the tiles themselves, so
+        `tile_radius` must be less than or equal to `hex_radius` in
+        order for tiles to fit in their spaces.
 
         Args:
             hex_radius: The hexagonal radius of the spaces for the tiles.
@@ -54,6 +30,9 @@ class Board:
 
         self._graph = defaultdict(list)
 
+        # Used for working out the position of a settlement relative to
+        # a terrain tile. Index 0 is the top right settlement, follows
+        # in a clockwise direction to index 5 being the top left.
         self.xy = [
             (self.hex_radius / 2, self.hex_height / 2),
             (self.hex_radius, 0),
@@ -106,7 +85,7 @@ class Board:
             "-1,-1": [3, 8, 14, 13, 7, 2],
             "-1,0": [14, 20, 26, 25, 19, 13],
             "-1,1": [26, 32, 38, 37, 31, 25],
-            "1,-2": [5, 10, 16, 15, 9, 4],
+            "-1,2": [38, 44, 49, 48, 43, 37],
             "0,-2": [1, 4, 9, 8, 3, 0],
             "0,-1": [9, 15, 21, 20, 14, 8],
             "0,0": [21, 27, 33, 32, 26, 20],
@@ -198,19 +177,7 @@ class Board:
         
         for node1, node2 in self.roads:
             pygame.draw.line(screen, "green", node1.coord, node2.coord, width=5)
-            
 
-           
-
-
-# TODO: create hashmap of hexcoordinate: hextile. draw each hextile at
-# the correct position, then draw the surrounding settlements. BFS may
-# not be required for this?
-
-# FIXME: Some connections are missing. Settlements are only connected to
-# the surrounded hextiles - making a star shape. Settlements must also
-# be connected around the sides of the hexagon - making a ring shape -
-# where roads can be placed.
 
 # TODO: change the coords of nodes to be NamedTuples instead of lists.
 
