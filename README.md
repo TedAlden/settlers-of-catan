@@ -1,6 +1,6 @@
 # The Settlers of Catan
 
-A game inspired by The Settlers of Catan, written in Python (PyGame). Created as a group project for our University Software Engineering assignment.
+> A game inspired by The Settlers of Catan, written in Python (PyGame). Created as a group project for our University Software Engineering assignment.
 
 ![Game screenshot](screenshot.png)
 
