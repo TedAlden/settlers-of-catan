@@ -2,6 +2,8 @@
 
 A game inspired by The Settlers of Catan, written in Python (PyGame). Created as a group project for our University Software Engineering assignment.
 
+![Game screenshot](screenshot.png)
+
 ## Table of Contents
 
 - [Requirements](#requirements)
