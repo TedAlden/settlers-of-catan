@@ -5,11 +5,13 @@ from board import Board
 SCREEN_FPS = 30
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 800
+SCREEN_TITLE = "The Settlers of Catan"
 
 
 class Catan:
 
     def __init__(self):
+        pygame.display.set_caption(SCREEN_TITLE)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.board = Board(50, 45)
