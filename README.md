@@ -6,13 +6,8 @@
 
 ## Table of Contents
 
-- [Key Features](#key-features)
 - [Requirements](#requirements)
 - [Setup](#setup)
-
-## Key features
-
-- 
 
 ## Requirements
 
