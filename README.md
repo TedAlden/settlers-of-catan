@@ -6,8 +6,13 @@
 
 ## Table of Contents
 
+- [Key Features](#key-features)
 - [Requirements](#requirements)
 - [Setup](#setup)
+
+## Key features
+
+- 
 
 ## Requirements
 
@@ -23,7 +28,7 @@ Setup also assumes you have the git CLI installed.
 
 Setup instructions should apply to all platforms (Windows, Linux, and macOS). However, Debian-based distributions of Linux may not have `pip` pre-installed. In this case, install it using `sudo apt install python3-pip`.
 
-1. Start by making sure you have the [requirements](#requirements) installed.
+1. Make sure you have the [requirements](#requirements) installed.
 
 2. Clone the repository.
 
@@ -37,13 +42,13 @@ Setup instructions should apply to all platforms (Windows, Linux, and macOS). Ho
     cd settlers-of-catan
     ```
 
-4. Install the required packages using pip.
+4. Install the required Python packages using pip.
 
     ```
     python3 -m pip install -r requirements.txt
     ```
 
-5. Run the game using `python3`. Make sure Python is added to your `PATH`.
+5. Run the game using `python3`.
 
     ```
     python3 main.py
