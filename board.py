@@ -109,8 +109,18 @@ class Board:
                     settlement.screen_coord = (x, y)
                     visited_settlements.append(settlement)
 
-        # testing:
+        # example roads:
         self.roads.append([self.settlements[0], self.settlements[3]])
+        self.roads.append([self.settlements[8], self.settlements[3]])
+        self.roads.append([self.settlements[2], self.settlements[3]])
+        self.roads.append([self.settlements[8], self.settlements[14]])
+
+        self.roads.append([self.settlements[35], self.settlements[41]])
+        self.roads.append([self.settlements[41], self.settlements[47]])
+
+        self.roads.append([self.settlements[30], self.settlements[36]])
+        self.roads.append([self.settlements[36], self.settlements[42]])
+        self.roads.append([self.settlements[42], self.settlements[43]])
 
 
     def get_terrain_tile(self, tile_x, tile_y):
