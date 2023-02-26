@@ -15,7 +15,7 @@ class Catan:
         pygame.display.set_caption(SCREEN_TITLE)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
-        self.board = Board(50, 45)
+        self.board = Board(50)
         self._running = True
 
     def on_event(self, event):

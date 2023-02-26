@@ -6,8 +6,7 @@ from pieces import Terrain, Settlement
 
 class Board:
 
-    def __init__(self, hex_radius, tile_radius):
-        self.tile_radius = tile_radius
+    def __init__(self, hex_radius):
         self.hex_radius = hex_radius
         self.hex_height = hex_radius * sqrt(3)
     
@@ -152,4 +151,4 @@ class Board:
             settlement.draw(screen)
 
         for node1, node2 in self.roads:
-            pygame.draw.line(screen, "green", node1.screen_coord, node2.screen_coord, width=5)
+            pygame.draw.line(screen, "green", node1.screen_coord, node2.screen_coord, width=12)

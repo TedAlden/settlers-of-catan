@@ -23,7 +23,7 @@ class Terrain(Node):
     def __init__(self, axial_coord):
         super().__init__(None)
         self.axial_coord = axial_coord
-        self.tile_radius = 25
+        self.tile_radius = 40
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self.axial_coord[0]},{self.axial_coord[1]})"
@@ -36,6 +36,7 @@ class Settlement(Node):
 
     def __init__(self, value):
         super().__init__(value)
+        self.radius = 10
 
     def draw(self, screen):
-        pygame.draw.circle(screen, "blue", self.screen_coord, 5)
+        pygame.draw.circle(screen, "blue", self.screen_coord, self.radius)
