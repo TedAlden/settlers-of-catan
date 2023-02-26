@@ -1,29 +1,12 @@
 import pygame
-from math import pi, sin, cos, sqrt
+from math import sqrt
 from collections import defaultdict
 from pieces import Terrain, Settlement
-
-
-def draw_hexagon(surface, colour, radius, position, width=0):
-    x, y = position
-    sides = [(x + radius*cos(pi*i/3), y + radius*sin(pi*i/3)) for i in range(6)]
-    pygame.draw.polygon(surface, colour, sides, width)
 
 
 class Board:
 
     def __init__(self, hex_radius, tile_radius):
-        """
-        Constructor for hexagonal board. Note that `hex_radius`
-        designates the size of the spaces for the tiles, and
-        `tile_radius` designates the size of the tiles themselves, so
-        `tile_radius` must be less than or equal to `hex_radius` in
-        order for tiles to fit in their spaces.
-
-        Args:
-            hex_radius: The hexagonal radius of the spaces for the tiles.
-            tile_radius. The hexagonal radious of the tiles themselves.
-        """
         self.tile_radius = tile_radius
         self.hex_radius = hex_radius
         self.hex_height = hex_radius * sqrt(3)
@@ -31,12 +14,11 @@ class Board:
         self._graph = defaultdict(list)
         self.make_board()
 
+
     def make_board(self):
         self.settlements = [Settlement(i) for i in range(54)]
         self.roads = []
-        # 2D list would've been syntactically better, e.g. using
-        # self.terrain_tiles[-2][0], howwever, a hashmap requires less
-        # wrapper code here, i.e. using negative indices with a 2D list.
+
         self.terrain_tiles = {
             "0,-2": Terrain((0, -2)),
             "-1,-1": Terrain((-1, -1)),
@@ -136,6 +118,13 @@ class Board:
         return self.terrain_tiles[f"{str(int(tile_x))},{str(int(tile_y))}"]
 
 
+    def remove_edge(self, node1, node2):
+        if node2 in self._graph[node1]:
+            self._graph[node1].remove(node2)
+        if node1 in self._graph[node2]:
+            self._graph[node2].remove(node1)
+
+
     def add_edge(self, node1, node2):
         if node2 not in self._graph[node1]:
             self._graph[node1].append(node2)
@@ -157,19 +146,10 @@ class Board:
 
     def draw(self, screen):
         for terrain_tile in self.terrain_tiles.values():
-            draw_hexagon(screen, "red", 25, terrain_tile.screen_coord)
+            terrain_tile.draw(screen)
 
-        drawn_settlements = []
         for settlement in self.settlements:
-            if settlement not in drawn_settlements:
-                pygame.draw.circle(screen, "blue", settlement.screen_coord, 5)
-                drawn_settlements.append(settlement)
+            settlement.draw(screen)
 
         for node1, node2 in self.roads:
             pygame.draw.line(screen, "green", node1.screen_coord, node2.screen_coord, width=5)
-
-
-# TODO: change the coords of nodes to be NamedTuples instead of lists.
-
-# TODO: merge self.terrain_tiles and the connections hashmap into one
-# data structure. May allow for importing and exporting maps?
