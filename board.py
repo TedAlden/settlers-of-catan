@@ -95,7 +95,7 @@ class Board:
             tx, ty = terrain_tile.axial_coord
             x = tx * 3/2 * self.hex_radius
             y = tx * 0.5 * self.hex_height + ty * self.hex_height
-            terrain_tile.screen_coord = (x + 300, y + 300)  # Offset grid
+            terrain_tile.screen_coord = (x + 640, y + 400)  # Offset grid
 
             # calculate screen coordinates for each settlement based on
             # which terrain tile it neighbours.
@@ -123,8 +123,8 @@ class Board:
         self.roads.append([self.settlements[42], self.settlements[43]])
 
 
-    def get_terrain_tile(self, tile_x, tile_y):
-        return self.terrain_tiles[f"{str(int(tile_x))},{str(int(tile_y))}"]
+    def get_terrain_tile(self, axial_x, axial_y):
+        return self.terrain_tiles[f"{str(int(axial_x))},{str(int(axial_y))}"]
 
 
     def remove_edge(self, node1, node2):
