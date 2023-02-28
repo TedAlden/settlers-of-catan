@@ -6,7 +6,7 @@
 
 ## Introduction
 
-The Settlers of Catan is an attempt at a clone of the game [Catan](https://www.catan.com/) (also known as "The Settlers"), with some small changes in places. It was created as a [group](#the-team) project for a Software Engineering assignment in our second year of University. From start to finish it took around three months to build.
+The Settlers of Catan is an attempt at a clone of the game [Catan](https://www.catan.com/) (also known as "The Settlers"), with some small changes in places. It was created as a [group](#the-team) project for a Software Engineering assignment in our second year of University.
 
 ## Table of Contents
 
@@ -57,9 +57,9 @@ Setup instructions should apply to all platforms (Windows, Linux, and macOS). Ho
     python3 main.py
     ```
 
-**Note**:
-- Some systems may have Python 3 installed as `python3` or `python`, so adjust installation steps as necessary.
-- Debian-based distributions of Linux may not have `pip` pre-installed. In this case, install it using `sudo apt install python3-pip`.
+> **Note**
+> - Some systems may have Python 3 installed as `python3` or `python`, so adjust installation steps as necessary.
+> - Debian-based distributions of Linux may not have `pip` pre-installed. In this case, install it using `sudo apt install python3-pip`.
 
 ## Development Team
 
