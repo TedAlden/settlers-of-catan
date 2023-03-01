@@ -34,7 +34,7 @@ Setup also assumes access to git CLI.
 
 ## Setup
 
-Setup instructions should apply to all platforms (Windows, Linux, and macOS). However, do note:
+Setup instructions should apply to all platforms (Windows, Linux, and macOS).
 
 1. Make sure you have the [required](#requirements) version of Python installed, and the git CLI.
 
