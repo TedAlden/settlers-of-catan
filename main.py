@@ -15,7 +15,8 @@ class Catan:
         pygame.display.set_caption(SCREEN_TITLE)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
-        self.board = Board(50)
+        # self.board = Board.load_from_file("board.json")
+        self.board = Board.make_random()
         self._running = True
 
     def on_event(self, event):
@@ -27,7 +28,7 @@ class Catan:
 
     def on_render(self):
         self.screen.fill((255, 255, 255))
-        self.board.draw(self.screen)
+        self.board.render(self.screen)
         pygame.display.flip()
 
     def on_execute(self):

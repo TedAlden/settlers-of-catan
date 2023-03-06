@@ -1,0 +1,2268 @@
+{
+    "py/object": "board.Board",
+    "hex_radius": 50,
+    "hex_height": 86.60254037844386,
+    "_graph": {
+        "py/object": "collections.defaultdict",
+        "Terrain(-2,0)": [
+            {
+                "py/object": "pieces.Settlement",
+                "value": 7,
+                "screen_coord": {
+                    "py/tuple": [
+                        515.0,
+                        270.0961894323342
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 13,
+                "screen_coord": {
+                    "py/tuple": [
+                        540.0,
+                        313.39745962155615
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 19,
+                "screen_coord": {
+                    "py/tuple": [
+                        515.0,
+                        356.6987298107781
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 18,
+                "screen_coord": {
+                    "py/tuple": [
+                        465.0,
+                        356.6987298107781
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 12,
+                "screen_coord": {
+                    "py/tuple": [
+                        440.0,
+                        313.39745962155615
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 6,
+                "screen_coord": {
+                    "py/tuple": [
+                        465.0,
+                        270.0961894323342
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement7": [
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        490.0,
+                        313.39745962155615
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        -2,
+                        0
+                    ]
+                },
+                "tile_radius": 40
+            },
+            {
+                "py/id": 4
+            },
+            {
+                "py/id": 8
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        565.0,
+                        270.0961894323342
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        -1,
+                        -1
+                    ]
+                },
+                "tile_radius": 40
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 2,
+                "screen_coord": {
+                    "py/tuple": [
+                        540.0,
+                        226.79491924311228
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement13": [
+            {
+                "py/id": 10
+            },
+            {
+                "py/id": 3
+            },
+            {
+                "py/id": 5
+            },
+            {
+                "py/id": 11
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 14,
+                "screen_coord": {
+                    "py/tuple": [
+                        590.0,
+                        313.39745962155615
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        565.0,
+                        356.69872981077805
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        -1,
+                        0
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement19": [
+            {
+                "py/id": 10
+            },
+            {
+                "py/id": 4
+            },
+            {
+                "py/id": 6
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        490.0,
+                        400.0
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        -2,
+                        1
+                    ]
+                },
+                "tile_radius": 40
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 25,
+                "screen_coord": {
+                    "py/tuple": [
+                        540.0,
+                        400.0
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 15
+            }
+        ],
+        "Settlement18": [
+            {
+                "py/id": 10
+            },
+            {
+                "py/id": 5
+            },
+            {
+                "py/id": 7
+            },
+            {
+                "py/id": 17
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 24,
+                "screen_coord": {
+                    "py/tuple": [
+                        440.0,
+                        400.0
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement12": [
+            {
+                "py/id": 10
+            },
+            {
+                "py/id": 6
+            },
+            {
+                "py/id": 8
+            }
+        ],
+        "Settlement6": [
+            {
+                "py/id": 10
+            },
+            {
+                "py/id": 7
+            },
+            {
+                "py/id": 3
+            }
+        ],
+        "Terrain(-2,1)": [
+            {
+                "py/id": 5
+            },
+            {
+                "py/id": 18
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 31,
+                "screen_coord": {
+                    "py/tuple": [
+                        515.0,
+                        443.30127018922195
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 30,
+                "screen_coord": {
+                    "py/tuple": [
+                        465.0,
+                        443.30127018922195
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 20
+            },
+            {
+                "py/id": 6
+            }
+        ],
+        "Settlement25": [
+            {
+                "py/id": 17
+            },
+            {
+                "py/id": 5
+            },
+            {
+                "py/id": 24
+            },
+            {
+                "py/id": 15
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 26,
+                "screen_coord": {
+                    "py/tuple": [
+                        590.0,
+                        400.0
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        565.0,
+                        443.30127018922195
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        -1,
+                        1
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement31": [
+            {
+                "py/id": 17
+            },
+            {
+                "py/id": 18
+            },
+            {
+                "py/id": 25
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        490.0,
+                        486.60254037844385
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        -2,
+                        2
+                    ]
+                },
+                "tile_radius": 40
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 37,
+                "screen_coord": {
+                    "py/tuple": [
+                        540.0,
+                        486.6025403784439
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 28
+            }
+        ],
+        "Settlement30": [
+            {
+                "py/id": 17
+            },
+            {
+                "py/id": 24
+            },
+            {
+                "py/id": 20
+            },
+            {
+                "py/id": 30
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 36,
+                "screen_coord": {
+                    "py/tuple": [
+                        440.0,
+                        486.60254037844385
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement24": [
+            {
+                "py/id": 17
+            },
+            {
+                "py/id": 25
+            },
+            {
+                "py/id": 6
+            }
+        ],
+        "Terrain(-2,2)": [
+            {
+                "py/id": 24
+            },
+            {
+                "py/id": 31
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 43,
+                "screen_coord": {
+                    "py/tuple": [
+                        515.0,
+                        529.9038105676658
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 42,
+                "screen_coord": {
+                    "py/tuple": [
+                        465.0,
+                        529.9038105676658
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 33
+            },
+            {
+                "py/id": 25
+            }
+        ],
+        "Settlement37": [
+            {
+                "py/id": 30
+            },
+            {
+                "py/id": 24
+            },
+            {
+                "py/id": 36
+            },
+            {
+                "py/id": 28
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 38,
+                "screen_coord": {
+                    "py/tuple": [
+                        590.0,
+                        486.6025403784439
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        565.0,
+                        529.9038105676658
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        -1,
+                        2
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement43": [
+            {
+                "py/id": 30
+            },
+            {
+                "py/id": 31
+            },
+            {
+                "py/id": 37
+            },
+            {
+                "py/id": 40
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 48,
+                "screen_coord": {
+                    "py/tuple": [
+                        540.0,
+                        573.2050807568877
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement42": [
+            {
+                "py/id": 30
+            },
+            {
+                "py/id": 36
+            },
+            {
+                "py/id": 33
+            }
+        ],
+        "Settlement36": [
+            {
+                "py/id": 30
+            },
+            {
+                "py/id": 37
+            },
+            {
+                "py/id": 25
+            }
+        ],
+        "Terrain(-1,-1)": [
+            {
+                "py/object": "pieces.Settlement",
+                "value": 3,
+                "screen_coord": {
+                    "py/tuple": [
+                        590.0,
+                        226.79491924311228
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 8,
+                "screen_coord": {
+                    "py/tuple": [
+                        615.0,
+                        270.0961894323342
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 14
+            },
+            {
+                "py/id": 4
+            },
+            {
+                "py/id": 3
+            },
+            {
+                "py/id": 12
+            }
+        ],
+        "Settlement3": [
+            {
+                "py/id": 11
+            },
+            {
+                "py/id": 47
+            },
+            {
+                "py/id": 12
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        640.0,
+                        226.79491924311228
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        0,
+                        -2
+                    ]
+                },
+                "tile_radius": 40
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 0,
+                "screen_coord": {
+                    "py/tuple": [
+                        615.0,
+                        183.49364905389035
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement8": [
+            {
+                "py/id": 11
+            },
+            {
+                "py/id": 46
+            },
+            {
+                "py/id": 14
+            },
+            {
+                "py/id": 49
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 9,
+                "screen_coord": {
+                    "py/tuple": [
+                        665.0,
+                        270.0961894323342
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        640.0,
+                        313.39745962155615
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        0,
+                        -1
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement14": [
+            {
+                "py/id": 11
+            },
+            {
+                "py/id": 47
+            },
+            {
+                "py/id": 4
+            },
+            {
+                "py/id": 15
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 20,
+                "screen_coord": {
+                    "py/tuple": [
+                        615.0,
+                        356.6987298107781
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 53
+            }
+        ],
+        "Settlement2": [
+            {
+                "py/id": 11
+            },
+            {
+                "py/id": 3
+            },
+            {
+                "py/id": 46
+            }
+        ],
+        "Terrain(-1,0)": [
+            {
+                "py/id": 14
+            },
+            {
+                "py/id": 55
+            },
+            {
+                "py/id": 27
+            },
+            {
+                "py/id": 18
+            },
+            {
+                "py/id": 5
+            },
+            {
+                "py/id": 4
+            }
+        ],
+        "Settlement20": [
+            {
+                "py/id": 15
+            },
+            {
+                "py/id": 14
+            },
+            {
+                "py/id": 27
+            },
+            {
+                "py/id": 53
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 21,
+                "screen_coord": {
+                    "py/tuple": [
+                        665.0,
+                        356.6987298107781
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        640.0,
+                        400.0
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        0,
+                        0
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement26": [
+            {
+                "py/id": 15
+            },
+            {
+                "py/id": 55
+            },
+            {
+                "py/id": 18
+            },
+            {
+                "py/id": 28
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 32,
+                "screen_coord": {
+                    "py/tuple": [
+                        615.0,
+                        443.30127018922195
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 60
+            }
+        ],
+        "Terrain(-1,1)": [
+            {
+                "py/id": 27
+            },
+            {
+                "py/id": 62
+            },
+            {
+                "py/id": 39
+            },
+            {
+                "py/id": 31
+            },
+            {
+                "py/id": 24
+            },
+            {
+                "py/id": 18
+            }
+        ],
+        "Settlement32": [
+            {
+                "py/id": 28
+            },
+            {
+                "py/id": 27
+            },
+            {
+                "py/id": 39
+            },
+            {
+                "py/id": 60
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 33,
+                "screen_coord": {
+                    "py/tuple": [
+                        665.0,
+                        443.30127018922195
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        640.0,
+                        486.60254037844385
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        0,
+                        1
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement38": [
+            {
+                "py/id": 28
+            },
+            {
+                "py/id": 62
+            },
+            {
+                "py/id": 31
+            },
+            {
+                "py/id": 40
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 44,
+                "screen_coord": {
+                    "py/tuple": [
+                        615.0,
+                        529.9038105676658
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 66
+            }
+        ],
+        "Terrain(-1,2)": [
+            {
+                "py/id": 39
+            },
+            {
+                "py/id": 68
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 49,
+                "screen_coord": {
+                    "py/tuple": [
+                        590.0,
+                        573.2050807568877
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 42
+            },
+            {
+                "py/id": 36
+            },
+            {
+                "py/id": 31
+            }
+        ],
+        "Settlement44": [
+            {
+                "py/id": 40
+            },
+            {
+                "py/id": 39
+            },
+            {
+                "py/id": 70
+            },
+            {
+                "py/id": 66
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 45,
+                "screen_coord": {
+                    "py/tuple": [
+                        665.0,
+                        529.9038105676658
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        640.0,
+                        573.2050807568877
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        0,
+                        2
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement49": [
+            {
+                "py/id": 40
+            },
+            {
+                "py/id": 68
+            },
+            {
+                "py/id": 42
+            },
+            {
+                "py/id": 73
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 52,
+                "screen_coord": {
+                    "py/tuple": [
+                        615.0,
+                        616.5063509461096
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement48": [
+            {
+                "py/id": 40
+            },
+            {
+                "py/id": 70
+            },
+            {
+                "py/id": 36
+            }
+        ],
+        "Terrain(0,-2)": [
+            {
+                "py/object": "pieces.Settlement",
+                "value": 1,
+                "screen_coord": {
+                    "py/tuple": [
+                        665.0,
+                        183.49364905389035
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 4,
+                "screen_coord": {
+                    "py/tuple": [
+                        690.0,
+                        226.79491924311228
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 52
+            },
+            {
+                "py/id": 47
+            },
+            {
+                "py/id": 46
+            },
+            {
+                "py/id": 50
+            }
+        ],
+        "Settlement1": [
+            {
+                "py/id": 49
+            },
+            {
+                "py/id": 79
+            },
+            {
+                "py/id": 50
+            }
+        ],
+        "Settlement4": [
+            {
+                "py/id": 49
+            },
+            {
+                "py/id": 78
+            },
+            {
+                "py/id": 52
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        715.0,
+                        270.0961894323342
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        1,
+                        -2
+                    ]
+                },
+                "tile_radius": 40
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 5,
+                "screen_coord": {
+                    "py/tuple": [
+                        740.0,
+                        226.79491924311228
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement9": [
+            {
+                "py/id": 49
+            },
+            {
+                "py/id": 79
+            },
+            {
+                "py/id": 47
+            },
+            {
+                "py/id": 53
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 15,
+                "screen_coord": {
+                    "py/tuple": [
+                        690.0,
+                        313.39745962155615
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 82
+            }
+        ],
+        "Settlement0": [
+            {
+                "py/id": 49
+            },
+            {
+                "py/id": 46
+            },
+            {
+                "py/id": 78
+            }
+        ],
+        "Terrain(0,-1)": [
+            {
+                "py/id": 52
+            },
+            {
+                "py/id": 85
+            },
+            {
+                "py/id": 59
+            },
+            {
+                "py/id": 55
+            },
+            {
+                "py/id": 14
+            },
+            {
+                "py/id": 47
+            }
+        ],
+        "Settlement15": [
+            {
+                "py/id": 53
+            },
+            {
+                "py/id": 52
+            },
+            {
+                "py/id": 59
+            },
+            {
+                "py/id": 82
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 16,
+                "screen_coord": {
+                    "py/tuple": [
+                        740.0,
+                        313.39745962155615
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        715.0,
+                        356.69872981077805
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        1,
+                        -1
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement21": [
+            {
+                "py/id": 53
+            },
+            {
+                "py/id": 85
+            },
+            {
+                "py/id": 55
+            },
+            {
+                "py/id": 60
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 27,
+                "screen_coord": {
+                    "py/tuple": [
+                        690.0,
+                        400.0
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 90
+            }
+        ],
+        "Terrain(0,0)": [
+            {
+                "py/id": 59
+            },
+            {
+                "py/id": 92
+            },
+            {
+                "py/id": 65
+            },
+            {
+                "py/id": 62
+            },
+            {
+                "py/id": 27
+            },
+            {
+                "py/id": 55
+            }
+        ],
+        "Settlement27": [
+            {
+                "py/id": 60
+            },
+            {
+                "py/id": 59
+            },
+            {
+                "py/id": 65
+            },
+            {
+                "py/id": 90
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 28,
+                "screen_coord": {
+                    "py/tuple": [
+                        740.0,
+                        400.0
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        715.0,
+                        443.30127018922195
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        1,
+                        0
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement33": [
+            {
+                "py/id": 60
+            },
+            {
+                "py/id": 92
+            },
+            {
+                "py/id": 62
+            },
+            {
+                "py/id": 66
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 39,
+                "screen_coord": {
+                    "py/tuple": [
+                        690.0,
+                        486.6025403784439
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 96
+            }
+        ],
+        "Terrain(0,1)": [
+            {
+                "py/id": 65
+            },
+            {
+                "py/id": 98
+            },
+            {
+                "py/id": 72
+            },
+            {
+                "py/id": 68
+            },
+            {
+                "py/id": 39
+            },
+            {
+                "py/id": 62
+            }
+        ],
+        "Settlement39": [
+            {
+                "py/id": 66
+            },
+            {
+                "py/id": 65
+            },
+            {
+                "py/id": 72
+            },
+            {
+                "py/id": 96
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 40,
+                "screen_coord": {
+                    "py/tuple": [
+                        740.0,
+                        486.6025403784439
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        715.0,
+                        529.9038105676658
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        1,
+                        1
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement45": [
+            {
+                "py/id": 66
+            },
+            {
+                "py/id": 98
+            },
+            {
+                "py/id": 68
+            },
+            {
+                "py/id": 73
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 50,
+                "screen_coord": {
+                    "py/tuple": [
+                        690.0,
+                        573.2050807568877
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 102
+            }
+        ],
+        "Terrain(0,2)": [
+            {
+                "py/id": 72
+            },
+            {
+                "py/id": 104
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 53,
+                "screen_coord": {
+                    "py/tuple": [
+                        665.0,
+                        616.5063509461096
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 75
+            },
+            {
+                "py/id": 70
+            },
+            {
+                "py/id": 68
+            }
+        ],
+        "Settlement50": [
+            {
+                "py/id": 73
+            },
+            {
+                "py/id": 72
+            },
+            {
+                "py/id": 106
+            },
+            {
+                "py/id": 102
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 51,
+                "screen_coord": {
+                    "py/tuple": [
+                        740.0,
+                        573.2050807568877
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement53": [
+            {
+                "py/id": 73
+            },
+            {
+                "py/id": 104
+            },
+            {
+                "py/id": 75
+            }
+        ],
+        "Settlement52": [
+            {
+                "py/id": 73
+            },
+            {
+                "py/id": 106
+            },
+            {
+                "py/id": 70
+            }
+        ],
+        "Terrain(1,-2)": [
+            {
+                "py/id": 83
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 10,
+                "screen_coord": {
+                    "py/tuple": [
+                        765.0,
+                        270.0961894323342
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 89
+            },
+            {
+                "py/id": 85
+            },
+            {
+                "py/id": 52
+            },
+            {
+                "py/id": 79
+            }
+        ],
+        "Settlement5": [
+            {
+                "py/id": 82
+            },
+            {
+                "py/id": 112
+            },
+            {
+                "py/id": 79
+            }
+        ],
+        "Settlement10": [
+            {
+                "py/id": 82
+            },
+            {
+                "py/id": 83
+            },
+            {
+                "py/id": 89
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        790.0,
+                        313.39745962155615
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        2,
+                        -2
+                    ]
+                },
+                "tile_radius": 40
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 11,
+                "screen_coord": {
+                    "py/tuple": [
+                        815.0,
+                        270.0961894323342
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement16": [
+            {
+                "py/id": 82
+            },
+            {
+                "py/id": 112
+            },
+            {
+                "py/id": 85
+            },
+            {
+                "py/id": 90
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 22,
+                "screen_coord": {
+                    "py/tuple": [
+                        765.0,
+                        356.6987298107781
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 115
+            }
+        ],
+        "Terrain(1,-1)": [
+            {
+                "py/id": 89
+            },
+            {
+                "py/id": 118
+            },
+            {
+                "py/id": 95
+            },
+            {
+                "py/id": 92
+            },
+            {
+                "py/id": 59
+            },
+            {
+                "py/id": 85
+            }
+        ],
+        "Settlement22": [
+            {
+                "py/id": 90
+            },
+            {
+                "py/id": 89
+            },
+            {
+                "py/id": 95
+            },
+            {
+                "py/id": 115
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 23,
+                "screen_coord": {
+                    "py/tuple": [
+                        815.0,
+                        356.6987298107781
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        790.0,
+                        400.0
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        2,
+                        -1
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement28": [
+            {
+                "py/id": 90
+            },
+            {
+                "py/id": 118
+            },
+            {
+                "py/id": 92
+            },
+            {
+                "py/id": 96
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 34,
+                "screen_coord": {
+                    "py/tuple": [
+                        765.0,
+                        443.30127018922195
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 122
+            }
+        ],
+        "Terrain(1,0)": [
+            {
+                "py/id": 95
+            },
+            {
+                "py/id": 124
+            },
+            {
+                "py/id": 101
+            },
+            {
+                "py/id": 98
+            },
+            {
+                "py/id": 65
+            },
+            {
+                "py/id": 92
+            }
+        ],
+        "Settlement34": [
+            {
+                "py/id": 96
+            },
+            {
+                "py/id": 95
+            },
+            {
+                "py/id": 101
+            },
+            {
+                "py/id": 122
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 35,
+                "screen_coord": {
+                    "py/tuple": [
+                        815.0,
+                        443.30127018922195
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/object": "pieces.Terrain",
+                "value": null,
+                "screen_coord": {
+                    "py/tuple": [
+                        790.0,
+                        486.60254037844385
+                    ]
+                },
+                "axial_coord": {
+                    "py/tuple": [
+                        2,
+                        0
+                    ]
+                },
+                "tile_radius": 40
+            }
+        ],
+        "Settlement40": [
+            {
+                "py/id": 96
+            },
+            {
+                "py/id": 124
+            },
+            {
+                "py/id": 98
+            },
+            {
+                "py/id": 102
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 46,
+                "screen_coord": {
+                    "py/tuple": [
+                        765.0,
+                        529.9038105676658
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 128
+            }
+        ],
+        "Terrain(1,1)": [
+            {
+                "py/id": 101
+            },
+            {
+                "py/id": 130
+            },
+            {
+                "py/id": 108
+            },
+            {
+                "py/id": 104
+            },
+            {
+                "py/id": 72
+            },
+            {
+                "py/id": 98
+            }
+        ],
+        "Settlement46": [
+            {
+                "py/id": 102
+            },
+            {
+                "py/id": 101
+            },
+            {
+                "py/id": 108
+            },
+            {
+                "py/id": 128
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 47,
+                "screen_coord": {
+                    "py/tuple": [
+                        815.0,
+                        529.9038105676658
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Settlement51": [
+            {
+                "py/id": 102
+            },
+            {
+                "py/id": 130
+            },
+            {
+                "py/id": 104
+            }
+        ],
+        "Terrain(2,-2)": [
+            {
+                "py/id": 116
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 17,
+                "screen_coord": {
+                    "py/tuple": [
+                        840.0,
+                        313.39745962155615
+                    ]
+                },
+                "radius": 10
+            },
+            {
+                "py/id": 121
+            },
+            {
+                "py/id": 118
+            },
+            {
+                "py/id": 89
+            },
+            {
+                "py/id": 112
+            }
+        ],
+        "Settlement11": [
+            {
+                "py/id": 115
+            },
+            {
+                "py/id": 136
+            },
+            {
+                "py/id": 112
+            }
+        ],
+        "Settlement17": [
+            {
+                "py/id": 115
+            },
+            {
+                "py/id": 116
+            },
+            {
+                "py/id": 121
+            }
+        ],
+        "Settlement23": [
+            {
+                "py/id": 115
+            },
+            {
+                "py/id": 136
+            },
+            {
+                "py/id": 118
+            },
+            {
+                "py/id": 122
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 29,
+                "screen_coord": {
+                    "py/tuple": [
+                        840.0,
+                        400.0
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Terrain(2,-1)": [
+            {
+                "py/id": 121
+            },
+            {
+                "py/id": 140
+            },
+            {
+                "py/id": 127
+            },
+            {
+                "py/id": 124
+            },
+            {
+                "py/id": 95
+            },
+            {
+                "py/id": 118
+            }
+        ],
+        "Settlement29": [
+            {
+                "py/id": 122
+            },
+            {
+                "py/id": 121
+            },
+            {
+                "py/id": 127
+            }
+        ],
+        "Settlement35": [
+            {
+                "py/id": 122
+            },
+            {
+                "py/id": 140
+            },
+            {
+                "py/id": 124
+            },
+            {
+                "py/id": 128
+            },
+            {
+                "py/object": "pieces.Settlement",
+                "value": 41,
+                "screen_coord": {
+                    "py/tuple": [
+                        840.0,
+                        486.60254037844385
+                    ]
+                },
+                "radius": 10
+            }
+        ],
+        "Terrain(2,0)": [
+            {
+                "py/id": 127
+            },
+            {
+                "py/id": 144
+            },
+            {
+                "py/id": 133
+            },
+            {
+                "py/id": 130
+            },
+            {
+                "py/id": 101
+            },
+            {
+                "py/id": 124
+            }
+        ],
+        "Settlement41": [
+            {
+                "py/id": 128
+            },
+            {
+                "py/id": 127
+            },
+            {
+                "py/id": 133
+            }
+        ],
+        "Settlement47": [
+            {
+                "py/id": 128
+            },
+            {
+                "py/id": 144
+            },
+            {
+                "py/id": 130
+            }
+        ],
+        "default_factory": {
+            "py/type": "builtins.list"
+        }
+    },
+    "settlements": [
+        {
+            "py/id": 50
+        },
+        {
+            "py/id": 78
+        },
+        {
+            "py/id": 12
+        },
+        {
+            "py/id": 46
+        },
+        {
+            "py/id": 79
+        },
+        {
+            "py/id": 83
+        },
+        {
+            "py/id": 8
+        },
+        {
+            "py/id": 3
+        },
+        {
+            "py/id": 47
+        },
+        {
+            "py/id": 52
+        },
+        {
+            "py/id": 112
+        },
+        {
+            "py/id": 116
+        },
+        {
+            "py/id": 7
+        },
+        {
+            "py/id": 4
+        },
+        {
+            "py/id": 14
+        },
+        {
+            "py/id": 85
+        },
+        {
+            "py/id": 89
+        },
+        {
+            "py/id": 136
+        },
+        {
+            "py/id": 6
+        },
+        {
+            "py/id": 5
+        },
+        {
+            "py/id": 55
+        },
+        {
+            "py/id": 59
+        },
+        {
+            "py/id": 118
+        },
+        {
+            "py/id": 121
+        },
+        {
+            "py/id": 20
+        },
+        {
+            "py/id": 18
+        },
+        {
+            "py/id": 27
+        },
+        {
+            "py/id": 92
+        },
+        {
+            "py/id": 95
+        },
+        {
+            "py/id": 140
+        },
+        {
+            "py/id": 25
+        },
+        {
+            "py/id": 24
+        },
+        {
+            "py/id": 62
+        },
+        {
+            "py/id": 65
+        },
+        {
+            "py/id": 124
+        },
+        {
+            "py/id": 127
+        },
+        {
+            "py/id": 33
+        },
+        {
+            "py/id": 31
+        },
+        {
+            "py/id": 39
+        },
+        {
+            "py/id": 98
+        },
+        {
+            "py/id": 101
+        },
+        {
+            "py/id": 144
+        },
+        {
+            "py/id": 37
+        },
+        {
+            "py/id": 36
+        },
+        {
+            "py/id": 68
+        },
+        {
+            "py/id": 72
+        },
+        {
+            "py/id": 130
+        },
+        {
+            "py/id": 133
+        },
+        {
+            "py/id": 42
+        },
+        {
+            "py/id": 70
+        },
+        {
+            "py/id": 104
+        },
+        {
+            "py/id": 108
+        },
+        {
+            "py/id": 75
+        },
+        {
+            "py/id": 106
+        }
+    ],
+    "roads": [
+        [
+            {
+                "py/id": 50
+            },
+            {
+                "py/id": 46
+            }
+        ],
+        [
+            {
+                "py/id": 47
+            },
+            {
+                "py/id": 46
+            }
+        ],
+        [
+            {
+                "py/id": 12
+            },
+            {
+                "py/id": 46
+            }
+        ],
+        [
+            {
+                "py/id": 47
+            },
+            {
+                "py/id": 14
+            }
+        ],
+        [
+            {
+                "py/id": 127
+            },
+            {
+                "py/id": 144
+            }
+        ],
+        [
+            {
+                "py/id": 144
+            },
+            {
+                "py/id": 133
+            }
+        ],
+        [
+            {
+                "py/id": 25
+            },
+            {
+                "py/id": 33
+            }
+        ],
+        [
+            {
+                "py/id": 33
+            },
+            {
+                "py/id": 37
+            }
+        ],
+        [
+            {
+                "py/id": 37
+            },
+            {
+                "py/id": 36
+            }
+        ]
+    ],
+    "terrain_tiles": {
+        "0,-2": {
+            "py/id": 49
+        },
+        "-1,-1": {
+            "py/id": 11
+        },
+        "1,-2": {
+            "py/id": 82
+        },
+        "-2,0": {
+            "py/id": 10
+        },
+        "0,-1": {
+            "py/id": 53
+        },
+        "2,-2": {
+            "py/id": 115
+        },
+        "-1,0": {
+            "py/id": 15
+        },
+        "1,-1": {
+            "py/id": 90
+        },
+        "-2,1": {
+            "py/id": 17
+        },
+        "0,0": {
+            "py/id": 60
+        },
+        "2,-1": {
+            "py/id": 122
+        },
+        "-1,1": {
+            "py/id": 28
+        },
+        "1,0": {
+            "py/id": 96
+        },
+        "-2,2": {
+            "py/id": 30
+        },
+        "0,1": {
+            "py/id": 66
+        },
+        "2,0": {
+            "py/id": 128
+        },
+        "-1,2": {
+            "py/id": 40
+        },
+        "1,1": {
+            "py/id": 102
+        },
+        "0,2": {
+            "py/id": 73
+        }
+    }
+}
