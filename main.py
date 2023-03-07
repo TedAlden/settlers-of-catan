@@ -22,6 +22,7 @@ class Catan:
     def on_event(self, event):
         if event.type == pygame.QUIT:
             self._running = False
+        self.board.events(event)
 
     def on_update(self):
         self.clock.tick(30)

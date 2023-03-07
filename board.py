@@ -2,6 +2,7 @@ import pygame
 import jsonpickle
 from math import sqrt
 from collections import defaultdict
+from random import shuffle
 from pieces import Terrain, Settlement
 
 
@@ -11,6 +12,12 @@ class Board:
         self.hex_radius = hex_radius
         self.hex_height = hex_radius * sqrt(3)
         self._graph = defaultdict(list)
+        self.settlements = []
+        self.roads = []
+        self.terrain_tiles = []
+
+        self.selected = []
+        self.action = "place_road"  # TODO: use enum for this
 
 
     def get_terrain_tile(self, axial_x, axial_y):
@@ -51,15 +58,59 @@ class Board:
         return self._graph[node]
 
 
+    def events(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:  # left click
+                for settlement in self.settlements:
+                    if settlement.rect.collidepoint(pygame.mouse.get_pos()):
+                        self._on_click_settlement(event, settlement)
+
+                for terrain in self.terrain_tiles.values():
+                    if terrain.rect.collidepoint(pygame.mouse.get_pos()):
+                        self._on_click_terrain(event, terrain)
+
+
+    def _on_click_settlement(self, event, settlement):
+        if self.action == "place_road":
+            # select first settlement
+            if len(self.selected) == 0:
+                self.selected.append(settlement)
+                settlement.selected = True
+
+            elif len(self.selected) == 1:
+                # select second settlement
+                if settlement not in self.selected and settlement in self.get_surrounding_nodes(self.selected[0]):
+                    self.selected.append(settlement)
+                    # TODO: assert road doesn't already exist before placing
+                    self.add_road(*self.selected)
+
+                    self.selected[0].selected = False
+                    self.selected[1].selected = False
+                    self.selected.clear()
+
+                # deselect the first settlement
+                elif settlement == self.selected[0]:
+                    self.selected[0].selected = False
+                    self.selected.clear()
+
+        elif self.action == "place_settlement":
+            pass
+    
+
+    def _on_click_terrain(self, event, terrain):
+        # TODO: allow placing a robber
+        pass
+
+
     def render(self, screen):
         for terrain_tile in self.terrain_tiles.values():
             terrain_tile.draw(screen)
 
+        for node1, node2 in self.roads:
+            pygame.draw.line(screen, "red", node1.get_pos(), node2.get_pos(), width=20)
+
         for settlement in self.settlements:
             settlement.draw(screen)
-
-        for node1, node2 in self.roads:
-            pygame.draw.line(screen, "green", node1.screen_coord, node2.screen_coord, width=12)
 
 
     @staticmethod
@@ -165,16 +216,39 @@ class Board:
             tx, ty = terrain_tile.axial_coord
             x = tx * 3/2 * b.hex_radius
             y = tx * 0.5 * b.hex_height + ty * b.hex_height
-            terrain_tile.screen_coord = (x + 640, y + 400)  # shift grid
+            terrain_tile.set_pos(x + 640, y + 400)  # shift grid
             # calculate screen coords for each settlement based on the
             # terrain that it neighbours.
             for settlement in b.get_surrounding_nodes(terrain_tile):
                 if settlement not in visited_settlements:
                     idx = b._graph[terrain_tile].index(settlement)
-                    x = terrain_tile.screen_coord[0] + relative_coords[idx][0]
-                    y = terrain_tile.screen_coord[1] - relative_coords[idx][1]
-                    settlement.screen_coord = (x, y)
+                    x = terrain_tile.get_pos()[0] + relative_coords[idx][0]
+                    y = terrain_tile.get_pos()[1] - relative_coords[idx][1]
+                    settlement.set_pos(x, y)
                     visited_settlements.append(settlement)
+
+        # ----------- assign resource types and numbers to terrains ----
+        numbers = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
+        types = ["forest", "forest", "forest", "forest",
+                 "pasture", "pasture", "pasture", "pasture",
+                 "field", "field", "field", "field",
+                 "hill", "hill", "hill",
+                 "mountain", "mountain", "mountain"
+                 ]
+                 
+        # first place the desert terrain in the center of the board
+        _terrains = b.terrain_tiles.copy()
+        desert_terrain = _terrains.pop("0,0")
+        desert_terrain.type = "desert"
+
+        # randomly place other terrains and assign random dice numbers
+        terrains = list(_terrains.values())
+        shuffle(types)
+        shuffle(numbers)
+
+        for i in range(18):
+            terrains[i].type = types[i]
+            terrains[i].number = numbers[i]
 
         # ----------- add example roads --------------------------------
         b.add_road(b.settlements[0], b.settlements[3])
