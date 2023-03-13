@@ -1,5 +1,5 @@
 import pygame
-from board import Board
+from gameview import GameView
 
 
 SCREEN_FPS = 30
@@ -15,26 +15,29 @@ class Catan:
         pygame.display.set_caption(SCREEN_TITLE)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
-        # testing board saving/loading always works
-        b = Board.make_random()
-        Board.save_to_file(b, "board.json")
-        self.board = Board.load_from_file("board.json")
+        
+        
         self._running = True
+
+        self.game_view = GameView()
+        self.current_view = self.game_view
 
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
             self._running = False
-        self.board.events(event)
+        self.current_view.on_event(event)
 
 
     def on_update(self):
+        self.current_view.on_update()
         self.clock.tick(30)
 
 
     def on_render(self):
         self.screen.fill((255, 255, 255))
-        self.board.render(self.screen)
+        self.current_view.on_render(self.screen)
+        
         pygame.display.flip()
 
 

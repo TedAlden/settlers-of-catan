@@ -4,7 +4,7 @@ from math import sqrt
 from collections import defaultdict
 from random import shuffle
 from pieces import Terrain, Settlement
-from type import TerrainType, ActionType
+from type import TerrainType
 
 
 class Board:
@@ -17,9 +17,6 @@ class Board:
         self.settlements = []
         self.roads = []
         self.terrain_tiles = {}
-
-        self.selected = []
-        self.action = ActionType.PLACE_ROAD
 
 
     def get_terrain_tile(self, axial_x, axial_y):
@@ -58,66 +55,6 @@ class Board:
 
     def get_surrounding_nodes(self, node):
         return self._graph[node]
-
-
-    def events(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:  # left click
-                mouse_pos = pygame.mouse.get_pos()
-                for settlement in self.settlements:
-                    if settlement.rect.collidepoint(mouse_pos):
-                        self._on_click_settlement(event, settlement)
-
-                for terrain in self.terrain_tiles.values():
-                    if terrain.rect.collidepoint(mouse_pos):
-                        self._on_click_terrain(event, terrain)
-
-
-    def _on_click_settlement(self, event, settlement):
-        print(self.selected, settlement)
-        if self.action == ActionType.PLACE_ROAD:
-            # select first settlement
-            if len(self.selected) == 0:
-                self.selected.append(settlement)
-                settlement.selected = True
-
-            elif len(self.selected) == 1:
-                # select second settlement
-                if settlement not in self.selected \
-                        and settlement in self.get_surrounding_nodes(self.selected[0]):
-
-                    self.selected.append(settlement)
-                    if not self.has_road(*self.selected):
-                        self.add_road(*self.selected)
-                    # deselect settlements when road successfully placed
-                    self.selected[0].selected = False
-                    self.selected[1].selected = False
-                    self.selected.clear()
-
-                # deselect the first settlement
-                elif settlement == self.selected[0]:
-                    self.selected[0].selected = False
-                    self.selected.clear()
-
-        elif self.action == ActionType.PLACE_SETTLEMENT:
-            pass
-    
-
-    def _on_click_terrain(self, event, terrain):
-        # TODO: allow placing a robber
-        if self.action == ActionType.PLACE_ROBBER:
-            pass
-
-
-    def render(self, screen):
-        for terrain_tile in self.terrain_tiles.values():
-            terrain_tile.draw(screen)
-
-        for node1, node2 in self.roads:
-            pygame.draw.line(screen, "red", node1.get_pos(), node2.get_pos(), width=20)
-
-        for settlement in self.settlements:
-            settlement.draw(screen)
 
 
     @staticmethod
@@ -272,4 +209,3 @@ class Board:
 
         return b
 
-# TODO: make types.py to contain the different needed enums
