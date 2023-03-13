@@ -4,6 +4,7 @@ from math import sqrt
 from collections import defaultdict
 from random import shuffle
 from pieces import Terrain, Settlement
+from type import TerrainType, ActionType
 
 
 class Board:
@@ -12,12 +13,13 @@ class Board:
         self.hex_radius = hex_radius
         self.hex_height = hex_radius * sqrt(3)
         self._graph = defaultdict(list)
+
         self.settlements = []
         self.roads = []
-        self.terrain_tiles = []
+        self.terrain_tiles = {}
 
         self.selected = []
-        self.action = "place_road"  # TODO: use enum for this
+        self.action = ActionType.PLACE_ROAD
 
 
     def get_terrain_tile(self, axial_x, axial_y):
@@ -73,7 +75,7 @@ class Board:
 
     def _on_click_settlement(self, event, settlement):
         print(self.selected, settlement)
-        if self.action == "place_road":
+        if self.action == ActionType.PLACE_ROAD:
             # select first settlement
             if len(self.selected) == 0:
                 self.selected.append(settlement)
@@ -97,13 +99,14 @@ class Board:
                     self.selected[0].selected = False
                     self.selected.clear()
 
-        elif self.action == "place_settlement":
+        elif self.action == ActionType.PLACE_SETTLEMENT:
             pass
     
 
     def _on_click_terrain(self, event, terrain):
         # TODO: allow placing a robber
-        pass
+        if self.action == ActionType.PLACE_ROBBER:
+            pass
 
 
     def render(self, screen):
@@ -233,17 +236,17 @@ class Board:
 
         # ----------- assign resource types and numbers to terrains ----
         numbers = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
-        types = ["forest", "forest", "forest", "forest",
-                 "pasture", "pasture", "pasture", "pasture",
-                 "field", "field", "field", "field",
-                 "hill", "hill", "hill",
-                 "mountain", "mountain", "mountain"
+        types = [TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST,
+                 TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE,
+                 TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD,
+                 TerrainType.HILL, TerrainType.HILL, TerrainType.HILL,
+                 TerrainType.MOUNTAIN, TerrainType.MOUNTAIN, TerrainType.MOUNTAIN
                  ]
     
         # first place the desert terrain in the center of the board
         _terrains = b.terrain_tiles.copy()
         desert_terrain = _terrains.pop("0,0")
-        desert_terrain.type = "desert"
+        desert_terrain.type = TerrainType.DESERT
 
         # randomly place other terrains and assign random dice numbers
         terrains = list(_terrains.values())

@@ -1,5 +1,6 @@
 import pygame
 from math import sin, cos, pi, sqrt
+from type import TerrainType
 
 
 pygame.font.init()
@@ -42,12 +43,7 @@ class Terrain(Node):
         self.image = pygame.Surface([self.radius * 2, height * 2])
         self.rect = self.image.get_rect()
 
-        self.type = "forest" # TODO: use enum here
-        # Forest (produces Lumber)
-        # Pasture (produces Wool)
-        # Field (produces Grain)
-        # Hill (produces Brick)
-        # Mountain (produces Ore)
+        self.type = None
         self.number = -1
 
 
@@ -56,16 +52,17 @@ class Terrain(Node):
 
 
     def draw(self, screen):
-        col = "#5aa832" # TODO: use default dict here instead of if/elif
-        if self.type == "field": col = "#e6d85e"
-        elif self.type == "pasture": col = "#5fc73a"
-        elif self.type == "forest": col = "#168a35"
-        elif self.type == "hill": col = "#e09e2b"
-        elif self.type == "mountain": col = "#8c8c8c"
-        elif self.type == "desert": col = "#b5ac6e"
+        col = "#5aa832"
+        if self.type == TerrainType.FIELD: col = "#e6d85e"
+        elif self.type == TerrainType.PASTURE: col = "#5fc73a"
+        elif self.type == TerrainType.FOREST: col = "#168a35"
+        elif self.type == TerrainType.HILL: col = "#e09e2b"
+        elif self.type == TerrainType.MOUNTAIN: col = "#8c8c8c"
+        elif self.type == TerrainType.DESERT: col = "#b5ac6e"
 
         draw_hexagon(screen, col, self.radius, self.get_pos())
 
+        # draw the dice number on the terrain
         if self.number > 0:
             img = FONT.render(str(self.number), True, "white")
             w, h = img.get_rect().width, img.get_rect().height
@@ -90,3 +87,6 @@ class Settlement(Node):
         col = "red" if self.selected else "#aaaaaa"
         # TODO: change green to the colour of the current player
         pygame.draw.circle(screen, col, self.get_pos(), self.radius)
+
+
+# TODO: make Road an object rather than just a (Settlement, Settlement)?
