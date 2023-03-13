@@ -80,7 +80,7 @@ class Board:
 
     @staticmethod
     def make_random():
-        b = Board(50)
+        b = Board(60)
 
         b.settlements = [Settlement(i) for i in range(54)]
         b.roads = []

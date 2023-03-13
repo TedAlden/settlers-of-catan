@@ -32,7 +32,6 @@ class Catan:
 
 
     def on_render(self):
-        self.screen.fill((255, 255, 255))
         self.current_view.on_render(self.screen)
         
         pygame.display.flip()

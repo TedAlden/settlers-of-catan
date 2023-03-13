@@ -33,6 +33,8 @@ class GameView:
 
 
     def on_render(self, screen):
+        screen.fill("#65cee0")
+
         for terrain_tile in self.board.terrain_tiles.values():
             terrain_tile.draw(screen)
 
@@ -40,7 +42,12 @@ class GameView:
             pygame.draw.line(screen, "red", node1.get_pos(), node2.get_pos(), width=20)
 
         for settlement in self.board.settlements:
-            settlement.draw(screen)
+            if settlement.owner is not None:
+                settlement.draw(screen)
+
+            else:
+                colour = "red" if settlement.selected else "#cccccc"
+                pygame.draw.circle(screen, colour, settlement.get_pos(), settlement.radius)
     
 
     def _on_click_settlement(self, event, settlement):
@@ -68,7 +75,7 @@ class GameView:
                     self.selected[0].selected = False
                     self.selected.clear()
 
-        elif self.action == ActionType.PLACE_SETTLEMENT:
+        elif self.action == ActionType.PLACE_SETTLEMENT:    
             pass
     
 
