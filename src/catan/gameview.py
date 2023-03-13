@@ -1,6 +1,6 @@
 import pygame
-from board import Board
-from type import ActionType
+from .board import Board
+from .type import ActionType
 
 
 class GameView:

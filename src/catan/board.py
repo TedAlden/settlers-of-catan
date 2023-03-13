@@ -1,10 +1,9 @@
-import pygame
 import jsonpickle
 from math import sqrt
 from collections import defaultdict
 from random import shuffle
-from pieces import Terrain, Settlement
-from type import TerrainType
+from .pieces import Terrain, Settlement
+from .type import TerrainType
 
 
 class Board:

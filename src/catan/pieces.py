@@ -1,6 +1,6 @@
 import pygame
 from math import sin, cos, pi, sqrt
-from type import TerrainType
+from .type import TerrainType
 
 
 pygame.font.init()

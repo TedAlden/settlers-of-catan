@@ -1,5 +1,5 @@
 import pygame
-from gameview import GameView
+from catan.gameview import GameView
 
 
 SCREEN_FPS = 30
@@ -15,10 +15,7 @@ class Catan:
         pygame.display.set_caption(SCREEN_TITLE)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
-        
-        
         self._running = True
-
         self.game_view = GameView()
         self.current_view = self.game_view
 
