@@ -43,11 +43,11 @@ class Board:
 
 
     def add_road(self, node1, node2):
-        self.roads.append([node1, node2])
+        self.roads.append((node1, node2))
 
     
     def remove_road(self, node1, node2):
-        self.roads.remove([node1,])
+        self.roads.remove((node1, node2))
 
 
     def has_road(self, node1, node2):
@@ -61,16 +61,18 @@ class Board:
     def events(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # left click
+                mouse_pos = pygame.mouse.get_pos()
                 for settlement in self.settlements:
-                    if settlement.rect.collidepoint(pygame.mouse.get_pos()):
+                    if settlement.rect.collidepoint(mouse_pos):
                         self._on_click_settlement(event, settlement)
 
                 for terrain in self.terrain_tiles.values():
-                    if terrain.rect.collidepoint(pygame.mouse.get_pos()):
+                    if terrain.rect.collidepoint(mouse_pos):
                         self._on_click_terrain(event, terrain)
 
 
     def _on_click_settlement(self, event, settlement):
+        print(self.selected, settlement)
         if self.action == "place_road":
             # select first settlement
             if len(self.selected) == 0:
@@ -79,11 +81,13 @@ class Board:
 
             elif len(self.selected) == 1:
                 # select second settlement
-                if settlement not in self.selected and settlement in self.get_surrounding_nodes(self.selected[0]):
-                    self.selected.append(settlement)
-                    # TODO: assert road doesn't already exist before placing
-                    self.add_road(*self.selected)
+                if settlement not in self.selected \
+                        and settlement in self.get_surrounding_nodes(self.selected[0]):
 
+                    self.selected.append(settlement)
+                    if not self.has_road(*self.selected):
+                        self.add_road(*self.selected)
+                    # deselect settlements when road successfully placed
                     self.selected[0].selected = False
                     self.selected[1].selected = False
                     self.selected.clear()
@@ -115,18 +119,18 @@ class Board:
 
     @staticmethod
     def serialize(board):
-        return jsonpickle.encode(board)
+        return jsonpickle.encode(board, keys=True)
 
 
     @staticmethod
     def deserialize(pickle):
-        return jsonpickle.decode(pickle)
+        return jsonpickle.decode(pickle, keys=True)
 
 
     @staticmethod
     def save_to_file(board, path):
         with open(path, "w") as file:
-            file.write(board.serialize())
+            file.write(Board.serialize(board))
 
 
     @staticmethod
@@ -235,7 +239,7 @@ class Board:
                  "hill", "hill", "hill",
                  "mountain", "mountain", "mountain"
                  ]
-                 
+    
         # first place the desert terrain in the center of the board
         _terrains = b.terrain_tiles.copy()
         desert_terrain = _terrains.pop("0,0")
@@ -264,3 +268,5 @@ class Board:
         b.add_road(b.settlements[42], b.settlements[43])
 
         return b
+
+# TODO: make types.py to contain the different needed enums

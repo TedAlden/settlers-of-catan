@@ -17,12 +17,16 @@ class Node(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        self.value = None
+
 
     def set_pos(self, x, y):
         self.rect.center = (x, y)
 
+
     def get_pos(self):
         return (self.rect.center[0], self.rect.center[1])
+
 
     def __repr__(self):
         return self.__class__.__name__ + str(self.value)
@@ -46,8 +50,10 @@ class Terrain(Node):
         # Mountain (produces Ore)
         self.number = -1
 
+
     def __repr__(self):
         return f"{self.__class__.__name__}({self.axial_coord[0]},{self.axial_coord[1]})"
+
 
     def draw(self, screen):
         col = "#5aa832" # TODO: use default dict here instead of if/elif
@@ -75,9 +81,10 @@ class Settlement(Node):
         self.radius = 10
         self.image = pygame.Surface([self.radius * 2, self.radius * 2])
         self.rect = self.image.get_rect()
-        self.index = index
+        self.value = index
         self.selected = False
         self.owner = None
+
 
     def draw(self, screen):
         col = "red" if self.selected else "#aaaaaa"

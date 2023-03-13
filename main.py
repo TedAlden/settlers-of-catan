@@ -15,22 +15,28 @@ class Catan:
         pygame.display.set_caption(SCREEN_TITLE)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
-        # self.board = Board.load_from_file("board.json")
-        self.board = Board.make_random()
+        # testing board saving/loading always works
+        b = Board.make_random()
+        Board.save_to_file(b, "board.json")
+        self.board = Board.load_from_file("board.json")
         self._running = True
+
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
             self._running = False
         self.board.events(event)
 
+
     def on_update(self):
         self.clock.tick(30)
+
 
     def on_render(self):
         self.screen.fill((255, 255, 255))
         self.board.render(self.screen)
         pygame.display.flip()
+
 
     def on_execute(self):
         while(self._running):
@@ -39,6 +45,7 @@ class Catan:
             self.on_update()
             self.on_render()
         self.on_cleanup()
+
 
     def on_cleanup(self):
         pygame.quit()
