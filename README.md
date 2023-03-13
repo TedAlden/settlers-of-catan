@@ -20,7 +20,7 @@ The Settlers of Catan is an attempt at a clone of the game [Catan](https://www.c
 ## Key Features
 
 - [x] Singleplayer against AI or multiplayer (local/hot-seat).
-- [ ] Games can be saved and resumed using JSON a save-file.
+- [x] Games can be saved and resumed using a JSON save-file.
 
 ## Requirements
 
