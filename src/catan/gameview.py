@@ -26,6 +26,12 @@ class GameView:
         self.current_player = self.players[1]
 
 
+    def deselect_settlements(self):
+        for settlement in self.selected:
+            settlement.selected = False
+        self.selected.clear()
+
+
     def on_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # left click
@@ -45,17 +51,17 @@ class GameView:
         # temporary controls until UI made
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                self.selected.clear() # clear when changing action
+                self.deselect_settlements()
                 idx = self.players.index(self.current_player)
                 idx = (idx + 1) % len(self.players)
                 self.current_player = self.players[idx]
 
             if event.key == pygame.K_1:
-                self.selected.clear() # clear when changing action
+                self.deselect_settlements()
                 self.action = ActionType.PLACE_SETTLEMENT
             
             elif event.key == pygame.K_2:
-                self.selected.clear() # clear when changing action
+                self.deselect_settlements()
                 self.action = ActionType.PLACE_ROAD
 
 
@@ -113,9 +119,7 @@ class GameView:
                     self.board.add_road(*self.selected, self.current_player)
 
                 # deselect settlements when road successfully placed
-                self.selected[0].selected = False
-                self.selected[1].selected = False
-                self.selected.clear()
+                self.deselect_settlements()
 
             # deselect the first settlement
             elif settlement == self.selected[0]:
