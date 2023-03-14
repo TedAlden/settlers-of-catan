@@ -4,7 +4,7 @@ from .type import TerrainType
 
 
 pygame.font.init()
-FONT = pygame.font.SysFont(None, 32)
+TERRAIN_FONT = pygame.font.SysFont(None, 32)
 # TODO: make font renderer class
 
 
@@ -69,7 +69,7 @@ class Terrain(Node):
 
         # draw the dice number on the terrain
         if self.number > 0:
-            img = FONT.render(str(self.number), True, "white")
+            img = TERRAIN_FONT.render(str(self.number), True, "white")
             w, h = img.get_rect().width, img.get_rect().height
             x, y = self.get_pos()
             x, y = x - 0.5 * w, y - 0.5 * h
@@ -89,12 +89,18 @@ class Settlement(Node):
 
 
     def draw(self, screen):
-        # TODO: change red to the colour of the current player
-        if not self.owner:
-            colour = "red" if self.selected else "#cccccc"
-            pygame.draw.circle(screen, colour, self.get_pos(), self.radius)
-        else:
-            pygame.draw.circle(screen, "red", self.get_pos(), self.radius)
+        # check has owner
+        colour = "#cccccc"
+        colour = self.owner.colour if self.owner is not None else "#cccccc"
+        colour = "#ffffff" if self.selected else colour
+        pygame.draw.circle(screen, colour, self.get_pos(), self.radius)
 
 
-# TODO: make Road an object rather than just a (Settlement, Settlement)?
+class Road(pygame.sprite.Sprite):
+    
+    def __init__(self, node1, node2, owner):
+        self.settlements = (node1, node2)
+        self.owner = owner
+
+    def draw(self, screen):
+        pygame.draw.line(screen, self.owner.colour, self.settlements[0].get_pos(), self.settlements[1].get_pos(), width=8)

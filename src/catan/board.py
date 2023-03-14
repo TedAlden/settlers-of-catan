@@ -2,7 +2,7 @@ import jsonpickle
 from math import sqrt
 from collections import defaultdict
 from random import shuffle
-from .pieces import Terrain, Settlement
+from .pieces import Terrain, Settlement, Road
 from .type import TerrainType
 
 
@@ -20,6 +20,19 @@ class Board:
 
     def get_terrain_tile(self, axial_x, axial_y):
         return self.terrain_tiles[f"{str(int(axial_x))},{str(int(axial_y))}"]
+
+
+    def add_settlement(self, node, owner):
+        print("added settlement")
+        if isinstance(node, Settlement):
+            node.owner = owner
+            owner.num_settlements += 1
+
+
+    def get_road_owner(self, node1, node2):
+        for road in self.roads:
+            if node1 in road.settlements and node2 in road.settlements:
+                return road.owner
 
 
     def add_edge(self, node1, node2):
@@ -40,8 +53,10 @@ class Board:
         return node2 in self._graph[node1] or node1 in self._graph[node2]
 
 
-    def add_road(self, node1, node2):
-        self.roads.append((node1, node2))
+    def add_road(self, node1, node2, owner):   
+        print("added road")     
+        self.roads.append(Road(node1, node2, owner))
+        owner.num_roads += 1
 
     
     def remove_road(self, node1, node2):
@@ -49,7 +64,11 @@ class Board:
 
 
     def has_road(self, node1, node2):
-        return (node1, node2) in self.roads or (node2, node1) in self.roads
+        for road in self.roads:
+            if node1 in road.settlements and node2 in road.settlements:
+                return True
+            
+        return False
 
 
     def get_surrounding_nodes(self, node):
@@ -193,18 +212,6 @@ class Board:
             terrains[i].type = types[i]
             terrains[i].number = numbers[i]
 
-        # ----------- add example roads --------------------------------
-        b.add_road(b.settlements[0], b.settlements[3])
-        b.add_road(b.settlements[8], b.settlements[3])
-        b.add_road(b.settlements[2], b.settlements[3])
-        b.add_road(b.settlements[8], b.settlements[14])
-
-        b.add_road(b.settlements[35], b.settlements[41])
-        b.add_road(b.settlements[41], b.settlements[47])
-
-        b.add_road(b.settlements[30], b.settlements[36])
-        b.add_road(b.settlements[36], b.settlements[42])
-        b.add_road(b.settlements[42], b.settlements[43])
-
         return b
 
+    # TODO: roads should be stored in the graph
