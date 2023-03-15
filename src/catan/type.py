@@ -27,4 +27,5 @@ class ResourceType(Enum):
 class ActionType(Enum):
     PLACE_ROAD = 1
     PLACE_SETTLEMENT = 2
-    PLACE_ROBBER = 4
+    PLACE_CITY = 4
+    PLACE_ROBBER = 8
