@@ -96,6 +96,11 @@ class Settlement(Node):
         pygame.draw.circle(screen, colour, self.get_pos(), self.radius)
 
 
+class City(Node):
+
+    pass
+
+
 class Road(pygame.sprite.Sprite):
     
     def __init__(self, node1, node2, owner):
