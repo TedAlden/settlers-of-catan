@@ -5,6 +5,10 @@ from .player import Player
 from .pieces import Settlement
 
 
+pygame.font.init()
+BUTTON_FONT = pygame.font.SysFont(None, 32)
+
+
 class GameView:
 
     def __init__(self):
@@ -23,8 +27,20 @@ class GameView:
             Player("Player 4", "white")
         ]
 
-        self.current_player = self.players[1]
+        self.current_player = self.players[0]
 
+        # TODO: make classes for buttons
+        self.btn_next_turn = BUTTON_FONT.render("Next turn", True, "white", "black")
+        self.btn_next_turn_rect = self.btn_next_turn.get_rect()
+        self.btn_next_turn_rect.topleft = (10, 10)
+
+        self.btn_place_settlement = BUTTON_FONT.render("Place settlement", True, "white", "black")
+        self.btn_place_settlement_rect = self.btn_place_settlement.get_rect()
+        self.btn_place_settlement_rect.topleft = (10, 42)
+
+        self.btn_place_road = BUTTON_FONT.render("Place road", True, "white", "black")
+        self.btn_place_road_rect = self.btn_place_road.get_rect()
+        self.btn_place_road_rect.topleft = (10, 74)
 
     def deselect_settlements(self):
         for settlement in self.selected:
@@ -36,6 +52,24 @@ class GameView:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # left click
                 mouse_pos = pygame.mouse.get_pos()
+                
+                if self.btn_next_turn_rect.collidepoint(mouse_pos):
+                    print("1")
+                    self.deselect_settlements()
+                    idx = self.players.index(self.current_player)
+                    idx = (idx + 1) % len(self.players)
+                    self.current_player = self.players[idx]
+
+                if self.btn_place_settlement_rect.collidepoint(mouse_pos):
+                    print("2")
+                    self.deselect_settlements()
+                    self.action = ActionType.PLACE_SETTLEMENT
+
+                if self.btn_place_road_rect.collidepoint(mouse_pos):
+                    print("3")
+                    self.deselect_settlements()
+                    self.action = ActionType.PLACE_ROAD
+
                 for settlement in self.board.settlements:
                     if settlement.rect.collidepoint(mouse_pos):
                         if self.action == ActionType.PLACE_ROAD:
@@ -48,7 +82,7 @@ class GameView:
                         if self.action == ActionType.PLACE_ROBBER:
                             self._on_place_robber(terrain)
 
-        # temporary controls until UI made
+        # temporary controls
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 self.deselect_settlements()
@@ -80,7 +114,17 @@ class GameView:
 
         for settlement in self.board.settlements:
             settlement.draw(screen)
+
+        screen.blit(self.btn_next_turn, self.btn_next_turn_rect)
+        screen.blit(self.btn_place_settlement, self.btn_place_settlement_rect)
+        screen.blit(self.btn_place_road, self.btn_place_road_rect)
     
+        current_turn = BUTTON_FONT.render(f"Current turn: {self.current_player.name}", True, "white", "#444444")
+        screen.blit(current_turn, (10, 106))
+
+        current_action = BUTTON_FONT.render(f"Current action: {self.action.name}", True, "white", "#444444")
+        screen.blit(current_action, (10, 138))
+
 
     def _on_place_road(self, settlement):
         # select first settlement
