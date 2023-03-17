@@ -12,7 +12,6 @@ class Board:
         self.hex_radius = hex_radius
         self.hex_height = hex_radius * sqrt(3)
         self._graph = defaultdict(list)
-
         self.settlements = []
         self.roads = []
         self.terrain_tiles = {}
