@@ -14,9 +14,9 @@ class Catan:
 
     def __init__(self):
         pygame.init()
-        pygame.display.set_icon(pygame.image.load(ICON_PATH))
         pygame.display.set_caption(SCREEN_TITLE)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        pygame.display.set_icon(pygame.image.load(ICON_PATH))
         self.clock = pygame.time.Clock()
         self._running = True
         self.game_view = GameView()
