@@ -42,7 +42,11 @@ class GameView:
         self.btn_place_road_rect = self.btn_place_road.get_rect()
         self.btn_place_road_rect.topleft = (10, 74)
 
+
     def deselect_settlements(self):
+        # placing roads and settlements on the board requires selecting
+        # settlements. events such as changing player, or changing
+        # action should deselect any that are selected to avoid errors.
         for settlement in self.selected:
             settlement.selected = False
         self.selected.clear()
@@ -54,19 +58,16 @@ class GameView:
                 mouse_pos = pygame.mouse.get_pos()
                 
                 if self.btn_next_turn_rect.collidepoint(mouse_pos):
-                    print("1")
                     self.deselect_settlements()
                     idx = self.players.index(self.current_player)
                     idx = (idx + 1) % len(self.players)
                     self.current_player = self.players[idx]
 
                 if self.btn_place_settlement_rect.collidepoint(mouse_pos):
-                    print("2")
                     self.deselect_settlements()
                     self.action = ActionType.PLACE_SETTLEMENT
 
                 if self.btn_place_road_rect.collidepoint(mouse_pos):
-                    print("3")
                     self.deselect_settlements()
                     self.action = ActionType.PLACE_ROAD
 
@@ -81,22 +82,6 @@ class GameView:
                     if terrain.rect.collidepoint(mouse_pos):
                         if self.action == ActionType.PLACE_ROBBER:
                             self._on_place_robber(terrain)
-
-        # temporary controls
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                self.deselect_settlements()
-                idx = self.players.index(self.current_player)
-                idx = (idx + 1) % len(self.players)
-                self.current_player = self.players[idx]
-
-            if event.key == pygame.K_1:
-                self.deselect_settlements()
-                self.action = ActionType.PLACE_SETTLEMENT
-            
-            elif event.key == pygame.K_2:
-                self.deselect_settlements()
-                self.action = ActionType.PLACE_ROAD
 
 
     def on_update(self):
@@ -119,7 +104,7 @@ class GameView:
         screen.blit(self.btn_place_settlement, self.btn_place_settlement_rect)
         screen.blit(self.btn_place_road, self.btn_place_road_rect)
     
-        current_turn = BUTTON_FONT.render(f"Current turn: {self.current_player.name}", True, "white", "#444444")
+        current_turn = BUTTON_FONT.render(f"Current turn: {self.current_player.name} ({self.current_player.colour})", True, "white", "#444444")
         screen.blit(current_turn, (10, 106))
 
         current_action = BUTTON_FONT.render(f"Current action: {self.action.name}", True, "white", "#444444")
@@ -134,7 +119,7 @@ class GameView:
 
         elif len(self.selected) == 1:
             # FIXME: stop players from placing roads over other players
-            # settlements
+            # settlements??
 
             # select second settlement.
             # check node not already selected, and that the node is
