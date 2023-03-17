@@ -1,4 +1,5 @@
 import pygame
+import pathlib
 from catan.gameview import GameView
 
 
@@ -6,12 +7,14 @@ SCREEN_FPS = 30
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 800
 SCREEN_TITLE = "The Settlers of Catan"
+ICON_PATH = pathlib.Path(__file__).parent.parent.joinpath("icon.png")
 
 
 class Catan:
 
     def __init__(self):
         pygame.init()
+        pygame.display.set_icon(pygame.image.load(ICON_PATH))
         pygame.display.set_caption(SCREEN_TITLE)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
