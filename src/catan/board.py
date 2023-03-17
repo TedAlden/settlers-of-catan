@@ -54,13 +54,15 @@ class Board:
 
 
     def add_road(self, node1, node2, owner):   
-        print("added road")     
+        print("added road")
         self.roads.append(Road(node1, node2, owner))
         owner.num_roads += 1
 
     
     def remove_road(self, node1, node2):
-        self.roads.remove((node1, node2))
+        for road in self.roads:
+            if node1 in road.settlements and node2 in road.settlements:
+                self.roads.remove(road)
 
 
     def has_road(self, node1, node2):
