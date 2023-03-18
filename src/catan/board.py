@@ -2,7 +2,7 @@ import jsonpickle
 from math import sqrt
 from collections import defaultdict
 from random import shuffle
-from .pieces import Terrain, Settlement, Road
+from .pieces import EmptySettlement, Terrain, Settlement, Road, City
 from .type import TerrainType
 
 
@@ -21,11 +21,55 @@ class Board:
         return self.terrain_tiles[f"{str(int(axial_x))},{str(int(axial_y))}"]
 
 
-    def add_settlement(self, node, owner):
+    def add_settlement(self, empty_settlement, owner):
         print("added settlement")
-        if isinstance(node, Settlement):
-            node.owner = owner
-            owner.num_settlements += 1
+        if isinstance(empty_settlement, EmptySettlement):
+            settlement = Settlement(empty_settlement.value, owner)
+            settlement.set_pos(*empty_settlement.get_pos())
+
+            # replace any connections referencing the old Settlement, to
+            # refer to the new City
+            for node, connections in self._graph.items():
+                if empty_settlement in connections:
+                    i = connections.index(empty_settlement)
+                    connections[i] = settlement
+                    self._graph[node] = connections
+            
+            # update the keys which are the old Settlement with keys
+            # that refer to the new City
+            self._graph[settlement] = self._graph[empty_settlement]
+            del self._graph[empty_settlement]
+
+            # Update list of settlements
+            self.settlements[self.settlements.index(empty_settlement)] = settlement
+
+    
+    def remove_settlement(self, node):
+        raise NotImplementedError
+    
+
+    def add_city(self, settlement):
+        if isinstance(settlement, Settlement):
+            print("upgraded to city")
+            # make new City to replace the Settlement being upgraded
+            city = City(settlement.value, settlement.owner)
+            city.set_pos(*settlement.get_pos())
+
+            # replace any connections referencing the old Settlement, to
+            # refer to the new City
+            for node, connections in self._graph.items():
+                if settlement in connections:
+                    i = connections.index(settlement)
+                    connections[i] = city
+                    self._graph[node] = connections
+            
+            # update the keys which are the old Settlement with keys
+            # that refer to the new City
+            self._graph[city] = self._graph[settlement]
+            del self._graph[settlement]
+
+            # Update list of settlements
+            self.settlements[self.settlements.index(settlement)] = city
 
 
     def get_road_owner(self, node1, node2):
@@ -55,7 +99,6 @@ class Board:
     def add_road(self, node1, node2, owner):   
         print("added road")
         self.roads.append(Road(node1, node2, owner))
-        owner.num_roads += 1
 
     
     def remove_road(self, node1, node2):
@@ -102,7 +145,7 @@ class Board:
     def make_random():
         b = Board(60)
 
-        b.settlements = [Settlement(i) for i in range(54)]
+        b.settlements = [EmptySettlement(i) for i in range(54)]
         b.roads = []
         b.terrain_tiles = {
             "0,-2": Terrain((0, -2)),

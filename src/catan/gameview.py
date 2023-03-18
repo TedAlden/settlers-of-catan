@@ -2,7 +2,7 @@ import pygame
 from .board import Board
 from .type import ActionType
 from .player import Player
-from .pieces import Settlement
+from .pieces import EmptySettlement, Settlement, City
 
 
 pygame.font.init()
@@ -42,6 +42,10 @@ class GameView:
         self.btn_place_road_rect = self.btn_place_road.get_rect()
         self.btn_place_road_rect.topleft = (10, 74)
 
+        self.btn_place_city = BUTTON_FONT.render("Place city", True, "white", "black")
+        self.btn_place_city_rect = self.btn_place_city.get_rect()
+        self.btn_place_city_rect.topleft = (10, 106)
+
 
     def deselect_settlements(self):
         # placing roads and settlements on the board requires selecting
@@ -71,12 +75,18 @@ class GameView:
                     self.deselect_settlements()
                     self.action = ActionType.PLACE_ROAD
 
+                if self.btn_place_city_rect.collidepoint(mouse_pos):
+                    self.deselect_settlements()
+                    self.action = ActionType.PLACE_CITY
+
                 for settlement in self.board.settlements:
                     if settlement.rect.collidepoint(mouse_pos):
                         if self.action == ActionType.PLACE_ROAD:
                             self._on_place_road(settlement)
                         elif self.action == ActionType.PLACE_SETTLEMENT:
                             self._on_place_settlement(settlement)
+                        elif self.action == ActionType.PLACE_CITY:
+                            self._on_place_city(settlement)
 
                 for terrain in self.board.terrain_tiles.values():
                     if terrain.rect.collidepoint(mouse_pos):
@@ -103,12 +113,13 @@ class GameView:
         screen.blit(self.btn_next_turn, self.btn_next_turn_rect)
         screen.blit(self.btn_place_settlement, self.btn_place_settlement_rect)
         screen.blit(self.btn_place_road, self.btn_place_road_rect)
+        screen.blit(self.btn_place_city, self.btn_place_city_rect)
     
         current_turn = BUTTON_FONT.render(f"Current turn: {self.current_player.name} ({self.current_player.colour})", True, "white", "#444444")
-        screen.blit(current_turn, (10, 106))
+        screen.blit(current_turn, (10, 138))
 
         current_action = BUTTON_FONT.render(f"Current action: {self.action.name}", True, "white", "#444444")
-        screen.blit(current_action, (10, 138))
+        screen.blit(current_action, (10, 170))
 
 
     def _on_place_road(self, settlement):
@@ -126,14 +137,13 @@ class GameView:
             # close enough to the other selected node
             if settlement not in self.selected and settlement in self.board.get_surrounding_nodes(self.selected[0]):
                 self.selected.append(settlement)
-                # check if the road attempting to be placed touches
-                # one of the players existing roads
+                # check if the road attempting to be placed touches one
+                # of the players existing roads
                 touching_own_road = False
-                for node in (self.selected):
-                    if isinstance(node, Settlement):
-                        for road in self.board.roads:
-                            if road.owner == self.current_player and node in road.settlements:
-                                touching_own_road = True
+                for node in self.selected:
+                    for road in self.board.roads:
+                        if road.owner == self.current_player and node in road.settlements:
+                            touching_own_road = True
 
                 # check if the road attempting to be placed touches
                 # one of the players existing settlements
@@ -146,6 +156,7 @@ class GameView:
                 road_occupied = self.board.has_road(*self.selected)
                 if (not road_occupied) and (touching_own_road or touching_own_settlement):
                     self.board.add_road(*self.selected, self.current_player)
+                    self.current_player.num_roads += 1
 
                 # deselect settlements when road successfully placed
                 self.deselect_settlements()
@@ -159,17 +170,16 @@ class GameView:
         space_around = True
         touching_roads = False
         for node in self.board.get_surrounding_nodes(settlement):
-            if isinstance(node, Settlement):
-                # check that there is enough space around the node to
-                # place the settlement, i.e. no other settlements
-                if node.owner is not None:
-                    space_around = False
+            # check that there is enough space around the node to  place
+            # the settlement, i.e. no other settlements
+            if isinstance(node, Settlement) or isinstance(node, City):
+                space_around = False
 
-                # check the settlement is touching one of the players
-                # roads existing roads
-                for road in self.board.roads:
-                    if settlement in road.settlements and node in road.settlements:
-                        touching_roads = True
+            # check the settlement is touching one of the players
+            # roads existing roads
+            for road in self.board.roads:
+                if settlement in road.settlements and node in road.settlements:
+                    touching_roads = True
 
         # check if this is one of the players initial 2 settlements
         # being placed as this overrides the rule of it having to touch
@@ -177,11 +187,18 @@ class GameView:
         placed_initial = self.current_player.num_settlements >= 2
 
         # check if settlement is already owned by any player
-        already_owned = settlement.owner is not None
+        already_owned = not isinstance(settlement, EmptySettlement)
 
         if not already_owned and space_around and (not placed_initial or touching_roads):
             self.board.add_settlement(settlement, self.current_player)
+            self.current_player.num_settlements += 1
     
+
+    def _on_place_city(self, settlement):
+        if settlement.owner == self.current_player:
+            self.board.add_city(settlement)
+            self.current_player.num_cities += 1
+
 
     def _on_place_robber(self, terrain):
         pass

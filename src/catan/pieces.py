@@ -1,6 +1,7 @@
 import pygame
-from math import sin, cos, pi, sqrt
+from math import sqrt
 from .type import TerrainType
+from .shapes import draw_settlement, draw_city, draw_hexagon
 
 
 pygame.font.init()
@@ -8,22 +9,10 @@ TERRAIN_FONT = pygame.font.SysFont(None, 32)
 # TODO: make font renderer class
 
 
-def draw_hexagon(surface, colour, radius, position, outline=None):
-    x, y, r = *position, radius
-    sides = [(x + r*cos(pi*i/3), y + r*sin(pi*i/3)) for i in range(6)]
-    # draw filled hexagon
-    pygame.draw.polygon(surface, colour, sides, width=0)
-    if outline:
-        # draw outline
-        for a, b in [[0,1], [1,2], [2,3], [3,4], [4,5], [5,0]]:
-            pygame.draw.aaline(surface, outline, sides[a], sides[b])
-
-
 class Node(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.value = None
 
 
     def set_pos(self, x, y):
@@ -32,10 +21,6 @@ class Node(pygame.sprite.Sprite):
 
     def get_pos(self):
         return (self.rect.center[0], self.rect.center[1])
-
-
-    def __repr__(self):
-        return self.__class__.__name__ + str(self.value)
 
 
 class Terrain(Node):
@@ -76,29 +61,52 @@ class Terrain(Node):
             screen.blit(img, (x, y))
 
 
-class Settlement(Node):
+class EmptySettlement(Node):
 
     def __init__(self, index):
         super().__init__()
-        self.radius = 10
-        self.image = pygame.Surface([self.radius * 2, self.radius * 2])
+        self.image = pygame.Surface((20, 20))
         self.rect = self.image.get_rect()
         self.value = index
-        self.selected = False
         self.owner = None
+        self.selected = False
+
+    
+    def draw(self, screen):
+        colour = "#ffffff" if self.selected else "#cccccc"
+        pygame.draw.circle(screen, colour, self.get_pos(), 10)
+
+
+class Settlement(Node):
+
+    def __init__(self, index, owner):
+        super().__init__()
+        self.image = pygame.Surface((20, 20))
+        self.rect = self.image.get_rect()
+        self.value = index
+        self.owner = owner
+        self.selected = False
 
 
     def draw(self, screen):
-        # check has owner
-        colour = "#cccccc"
-        colour = self.owner.colour if self.owner is not None else "#cccccc"
-        colour = "#ffffff" if self.selected else colour
-        pygame.draw.circle(screen, colour, self.get_pos(), self.radius)
+        colour = "#ffffff" if self.selected else self.owner.colour
+        draw_settlement(screen, colour, self.get_pos(), outline="black")
 
 
 class City(Node):
 
-    pass
+    def __init__(self, index, owner):
+        super().__init__()
+        self.image = pygame.Surface((30, 30))
+        self.rect = self.image.get_rect()
+        self.value = index
+        self.selected = False
+        self.owner = owner
+
+
+    def draw(self, screen):
+        colour = "#ffffff" if self.selected else self.owner.colour
+        draw_city(screen, colour, self.get_pos(), outline="black")
 
 
 class Road(pygame.sprite.Sprite):
@@ -106,6 +114,7 @@ class Road(pygame.sprite.Sprite):
     def __init__(self, node1, node2, owner):
         self.settlements = (node1, node2)
         self.owner = owner
+
 
     def draw(self, screen):
         pygame.draw.line(screen, self.owner.colour, self.settlements[0].get_pos(), self.settlements[1].get_pos(), width=8)
