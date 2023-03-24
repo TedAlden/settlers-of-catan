@@ -69,54 +69,30 @@ class TestBoard(unittest.TestCase):
         self.board.add_road(self.settlement2, self.settlement3, self.player1)
         self.board.add_road(self.settlement3, self.settlement4, self.player1)
         # check each individual road exists in both orientations
-        assert self.board.has_road(self.settlement1, self.settlement2)
-        assert self.board.has_road(self.settlement2, self.settlement1)
-        assert self.board.has_road(self.settlement2, self.settlement3)
-        assert self.board.has_road(self.settlement3, self.settlement2)
-        assert self.board.has_road(self.settlement3, self.settlement4)
-        assert self.board.has_road(self.settlement4, self.settlement3)
+        self.assertTrue(self.board.has_road(self.settlement1, self.settlement2))
+        self.assertTrue(self.board.has_road(self.settlement2, self.settlement1))
+        self.assertTrue(self.board.has_road(self.settlement2, self.settlement3))
+        self.assertTrue(self.board.has_road(self.settlement3, self.settlement2))
+        self.assertTrue(self.board.has_road(self.settlement3, self.settlement4))
+        self.assertTrue(self.board.has_road(self.settlement4, self.settlement3))
         # check that each settlement is only directly connected with a
         # road to the adjacent settlements, and not ones further down.
-        assert not self.board.has_road(self.settlement1, self.settlement3)
-        assert not self.board.has_road(self.settlement3, self.settlement1)
-        assert not self.board.has_road(self.settlement1, self.settlement4)
-        assert not self.board.has_road(self.settlement4, self.settlement1)
-        assert not self.board.has_road(self.settlement2, self.settlement4)       
-        assert not self.board.has_road(self.settlement4, self.settlement2)
+        self.assertFalse(self.board.has_road(self.settlement1, self.settlement3))
+        self.assertFalse(self.board.has_road(self.settlement3, self.settlement1))
+        self.assertFalse(self.board.has_road(self.settlement1, self.settlement4))
+        self.assertFalse(self.board.has_road(self.settlement4, self.settlement1))
+        self.assertFalse(self.board.has_road(self.settlement2, self.settlement4))
+        self.assertFalse(self.board.has_road(self.settlement4, self.settlement2))
         # check that none of the settlements in the road, have roads
         # connected to the unlinked settlements (settlement 5 and 6).
-        assert not self.board.has_road(self.settlement1, self.settlement5)
-        assert not self.board.has_road(self.settlement1, self.settlement6)
-        assert not self.board.has_road(self.settlement2, self.settlement5)
-        assert not self.board.has_road(self.settlement2, self.settlement6)
-        assert not self.board.has_road(self.settlement3, self.settlement5)
-        assert not self.board.has_road(self.settlement3, self.settlement6)
-        assert not self.board.has_road(self.settlement4, self.settlement5)
-        assert not self.board.has_road(self.settlement4, self.settlement6)
-
-        # settlement1 = Settlement([0, 0])
-        # settlement2 = Settlement([1, 0])
-        # player1 = Player("Player 1", "blue")
-     
-        # self.assertFalse(self.board.has_road(settlement1, settlement2))
-        # self.board.add_road(settlement1, settlement2, player1)
-        # self.assertTrue(self.board.has_road(settlement1, settlement2))
-
-
-    def test_get_surrounding_nodes(self):
-        
-        # Test case needs fixing...
-        
-        self.board.add_road(self.settlement1, self.settlement2, self.player1)
-        self.board.add_road(self.settlement2, self.settlement3, self.player1)
-        self.board.add_road(self.settlement3, self.settlement4, self.player1)
-
-        surrounding_nodes = self.board.get_surrounding_nodes(self.settlement1)
-
-        self.assertEqual(len(surrounding_nodes), 3)
-        # self.assertTrue((0, 1) in surrounding_nodes)
-        # self.assertTrue((1, 0) in surrounding_nodes)
-        # self.assertTrue((1, 1) in surrounding_nodes)
+        self.assertFalse(self.board.has_road(self.settlement1, self.settlement5))
+        self.assertFalse(self.board.has_road(self.settlement1, self.settlement6))
+        self.assertFalse(self.board.has_road(self.settlement2, self.settlement5))
+        self.assertFalse(self.board.has_road(self.settlement2, self.settlement6))
+        self.assertFalse(self.board.has_road(self.settlement3, self.settlement5))
+        self.assertFalse(self.board.has_road(self.settlement3, self.settlement6))
+        self.assertFalse(self.board.has_road(self.settlement4, self.settlement5))
+        self.assertFalse(self.board.has_road(self.settlement4, self.settlement6))
 
 
     def test_add_settlement(self):
@@ -131,18 +107,18 @@ class TestBoard(unittest.TestCase):
 
 
     def test_get_surrounding_nodes(self):
-        self.board.add_edge((0, 0), (0, 1))
-        self.board.add_edge((0, 0), (1, 0))
-        self.assertEqual(self.board.get_surrounding_nodes((0, 0)), [(0, 1), (1, 0)])
-        self.assertEqual(self.board.get_surrounding_nodes((0, 1)), [(0, 0)])
-        self.assertEqual(self.board.get_surrounding_nodes((1, 0)), [(0, 0)])
+        self.board.add_edge(self.settlement1, self.settlement2)
+        self.board.add_edge(self.settlement1, self.settlement3)
+
+        self.assertEqual(self.board.get_surrounding_nodes(self.settlement1), [self.settlement2, self.settlement3])
+        self.assertEqual(self.board.get_surrounding_nodes(self.settlement2), [self.settlement1])
+        self.assertEqual(self.board.get_surrounding_nodes(self.settlement3), [self.settlement1])
 
 
     def test_make_random(self):
-        b = Board.make_random()
-        self.assertEqual(len(b.settlements), 54)
-        self.assertEqual(len(b.terrain_tiles), 19)
-        del b
+        random_board = Board.make_random()
+        self.assertEqual(len(random_board.settlements), 54)
+        self.assertEqual(len(random_board.terrain_tiles), 19)
     
 
     def test_settlement_and_terrain_connections(self):
@@ -151,7 +127,7 @@ class TestBoard(unittest.TestCase):
             self.assertEqual(len(surrounding_settlements), 6)
             for settlement in surrounding_settlements:
                 self.assertIn(terrain_tile, self.board.get_surrounding_nodes(settlement))
-       
+
 
 if __name__ == "__main__":
     unittest.main()
