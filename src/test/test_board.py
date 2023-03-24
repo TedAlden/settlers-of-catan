@@ -1,9 +1,11 @@
 import unittest
+from math import sqrt
+from collections import defaultdict
+
 from catan.board import Board
 from catan.player import Player
 from catan.pieces import Settlement
-from math import sqrt
-from collections import defaultdict
+
 
 class TestBoard(unittest.TestCase):
 
