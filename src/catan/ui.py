@@ -1,14 +1,14 @@
 import pygame
 
-pygame.font.init()
-BUTTON_FONT = pygame.font.SysFont(None, 32)
-
 
 class Button(pygame.sprite.Sprite):
 
-    def __init__(self, text, top_left_x, top_left_y):
+    def __init__(self, text, top_left_x, top_left_y, colour, background, font):
         self.text = text
-        self.surf = BUTTON_FONT.render(self.text, True, "white", "black")
+        self.colour = colour
+        self.background = background
+        self.font = font
+        self.surf = self.font.render(self.text, True, self.colour, self.background)
         self.rect = self.surf.get_rect()
         self.rect.topleft = (top_left_x, top_left_y)
 
@@ -19,11 +19,14 @@ class Button(pygame.sprite.Sprite):
 
 class TextBox(pygame.sprite.Sprite):
 
-    def __init__(self, text_generator, top_left_x, top_left_y):
+    def __init__(self, text_generator, top_left_x, top_left_y, colour, background, font):
         self.topleft = top_left_x, top_left_y
+        self.colour = colour
+        self.background = background
+        self.font = font
         self.text_generator = text_generator
         self.text = str(self.text_generator())
-        self.surf = BUTTON_FONT.render(self.text, True, "white", "#444444")
+        self.surf = self.font.render(self.text, True, self.colour, self.background)
         self.rect = self.surf.get_rect()
         self.rect.topleft = (top_left_x, top_left_y)
 
@@ -33,7 +36,7 @@ class TextBox(pygame.sprite.Sprite):
 
     
     def draw(self, screen):
-        self.surf = BUTTON_FONT.render(self.text, True, "white", "#444444")
+        self.surf = self.font.render(self.text, True, self.colour, self.background)
         self.rect = self.surf.get_rect()
         self.rect.topleft = self.topleft
         screen.blit(self.surf, self.rect)

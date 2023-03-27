@@ -4,6 +4,7 @@ from .type import ActionType
 from .player import Player
 from .pieces import EmptySettlement, Settlement, City, Dice
 from .ui import Button, TextBox
+from .shapes import draw_settlement, draw_city
 
 
 pygame.font.init()
@@ -28,17 +29,29 @@ class GameView:
         self.action = ActionType.PLACE_SETTLEMENT
         self.current_player = self.players[0]
 
-        # UI buttons
-        self.dice1 = Dice(800, 684)
-        self.dice2 = Dice(800, 764)
-        self.btn_next_turn = Button("Next turn", 10, 10)
-        self.btn_place_settlement = Button("Place settlement", 10, 42)
-        self.btn_place_road = Button("Place road", 10, 74)
-        self.btn_place_city = Button("Place city", 10, 106)
+        # Dice
+        self.dice1 = Dice(800, 758)
+        self.dice2 = Dice(874, 758)
+
+        # Action buttons
+        self.btn_next_turn = Button("Next turn", 10, 10, "white", "black", BUTTON_FONT)
+        self.btn_place_settlement = Button("Place settlement", 10, 42, "white", "black", BUTTON_FONT)
+        self.btn_place_road = Button("Place road", 10, 74, "white", "black", BUTTON_FONT)
+        self.btn_place_city = Button("Place city", 10, 106, "white", "black", BUTTON_FONT)
 
         # UI textboxes
-        self.txt_current_player = TextBox(lambda: f"Current player: {self.current_player.name}", 10, 138)
-        self.txt_current_action = TextBox(lambda: f"Current action: {self.action.name}", 10, 170)
+        self.txt_current_player = TextBox(lambda: f"Player: {self.current_player.name}", 10, 238, "white", None, BUTTON_FONT)
+        self.txt_current_action = TextBox(lambda: f"Action: {self.action.name}", 10, 270, "white", None, BUTTON_FONT)
+        
+        self.txt_player1_settlements = TextBox(lambda: f"Settlements: {self.players[0].count_settlements()}", 40, 400, "white", None, BUTTON_FONT)
+        self.txt_player2_settlements = TextBox(lambda: f"Settlements: {self.players[1].count_settlements()}", 40, 432, "white", None, BUTTON_FONT)
+        self.txt_player3_settlements = TextBox(lambda: f"Settlements: {self.players[2].count_settlements()}", 40, 464, "white", None, BUTTON_FONT)
+        self.txt_player4_settlements = TextBox(lambda: f"Settlements: {self.players[3].count_settlements()}", 40, 496, "white", None, BUTTON_FONT)
+        
+        self.txt_player1_cities = TextBox(lambda: f"Cities: {self.players[0].count_cities()}", 40, 600, "white", None, BUTTON_FONT)
+        self.txt_player2_cities = TextBox(lambda: f"Cities: {self.players[1].count_cities()}", 40, 632, "white", None, BUTTON_FONT)
+        self.txt_player3_cities = TextBox(lambda: f"Cities: {self.players[2].count_cities()}", 40, 664, "white", None, BUTTON_FONT)
+        self.txt_player4_cities = TextBox(lambda: f"Cities: {self.players[3].count_cities()}", 40, 696, "white", None, BUTTON_FONT)
         
 
     def deselect_settlements(self):
@@ -57,9 +70,7 @@ class GameView:
                 
                 if self.btn_next_turn.rect.collidepoint(mouse_pos):
                     self.deselect_settlements()
-                    idx = self.players.index(self.current_player)
-                    idx = (idx + 1) % len(self.players)
-                    self.current_player = self.players[idx]
+                    self._on_next_turn()
 
                 if self.btn_place_settlement.rect.collidepoint(mouse_pos):
                     self.deselect_settlements()
@@ -75,9 +86,7 @@ class GameView:
 
                 if self.dice1.rect.collidepoint(mouse_pos) \
                         or self.dice2.rect.collidepoint(mouse_pos):
-                    self.dice1.roll()
-                    self.dice2.roll()
-                    self._on_dice_roll(self.dice1.value, self.dice2.value)
+                    self._on_dice_roll()
 
                 for settlement in self.board.settlements:
                     if settlement.rect.collidepoint(mouse_pos):
@@ -95,13 +104,25 @@ class GameView:
 
 
     def on_update(self):
+        # update the text on the textboxes
         self.txt_current_player.update()
         self.txt_current_action.update()
+
+        self.txt_player1_settlements.update()
+        self.txt_player2_settlements.update()
+        self.txt_player3_settlements.update()
+        self.txt_player4_settlements.update()
+
+        self.txt_player1_cities.update()
+        self.txt_player2_cities.update()
+        self.txt_player3_cities.update()
+        self.txt_player4_cities.update()
 
 
     def on_render(self, screen):
         screen.fill("#65cee0")
 
+        # draw board terrain tiles, roads, settlements/cities
         for terrain_tile in self.board.terrain_tiles.values():
             terrain_tile.draw(screen)
 
@@ -111,16 +132,39 @@ class GameView:
         for settlement in self.board.settlements:
             settlement.draw(screen)
 
+        # draw dice
         self.dice1.draw(screen)
         self.dice2.draw(screen)
 
+        # draw controls buttons
         self.btn_next_turn.draw(screen)
         self.btn_place_settlement.draw(screen)
         self.btn_place_road.draw(screen)
         self.btn_place_city.draw(screen)
 
+        # draw current player info
         self.txt_current_player.draw(screen)
         self.txt_current_action.draw(screen)
+
+        # draw player settlement counts
+        draw_settlement(screen, self.players[0].colour, (20, 410), outline="black")
+        draw_settlement(screen, self.players[1].colour, (20, 442), outline="black")
+        draw_settlement(screen, self.players[2].colour, (20, 474), outline="black")
+        draw_settlement(screen, self.players[3].colour, (20, 506), outline="black")
+        self.txt_player1_settlements.draw(screen)
+        self.txt_player2_settlements.draw(screen)
+        self.txt_player3_settlements.draw(screen)
+        self.txt_player4_settlements.draw(screen)
+        
+        # draw player city counts
+        draw_city(screen, self.players[0].colour, (20, 610), outline="black")
+        draw_city(screen, self.players[1].colour, (20, 642), outline="black")
+        draw_city(screen, self.players[2].colour, (20, 674), outline="black")
+        draw_city(screen, self.players[3].colour, (20, 706), outline="black")
+        self.txt_player1_cities.draw(screen)
+        self.txt_player2_cities.draw(screen)
+        self.txt_player3_cities.draw(screen)
+        self.txt_player4_cities.draw(screen)
 
 
     def _on_place_road(self, settlement):
@@ -129,11 +173,11 @@ class GameView:
             self.selected.append(settlement)
             settlement.selected = True
 
+        # select second settlement.
         elif len(self.selected) == 1:
             # FIXME: stop players from placing roads over other players
             # settlements??
 
-            # select second settlement.
             # check node not already selected, and that the node is
             # close enough to the other selected node
             if settlement not in self.selected and settlement in self.board.get_surrounding_nodes(self.selected[0]):
@@ -151,21 +195,19 @@ class GameView:
                 touching_own_settlement = False
                 if self.selected[0].owner == self.current_player or self.selected[1].owner == self.current_player:
                     touching_own_settlement = True
-
                 # place the road if it doesn't already exist, and is
                 # connected to players existing roads/settlements
                 road_occupied = self.board.has_road(*self.selected)
+                # finally place road if all conditions are valid
                 if (not road_occupied) and (touching_own_road or touching_own_settlement):
                     self.board.add_road(*self.selected, self.current_player)
                     self.current_player.num_roads += 1
-
                 # deselect settlements when road successfully placed
                 self.deselect_settlements()
 
-            # deselect the first settlement
+            # deselect the first settlement if clicked again
             elif settlement == self.selected[0]:
-                self.selected[0].selected = False
-                self.selected.clear()
+                self.deselect_settlements()
 
 
     def _on_place_settlement(self, settlement):
@@ -187,10 +229,9 @@ class GameView:
         # being placed as this overrides the rule of it having to touch
         # a currently owned road
         placed_initial = self.current_player.num_settlements >= 2
-
         # check if settlement is already owned by any player
         already_owned = not isinstance(settlement, EmptySettlement)
-
+        # finally place settlement if all conditions are valid
         if not already_owned and space_around and (not placed_initial or touching_roads):
             self.board.add_settlement(settlement, self.current_player)
             self.current_player.num_settlements += 1
@@ -206,6 +247,14 @@ class GameView:
         pass
 
 
-    def _on_dice_roll(self, num1, num2):
-        total = num1 + num2
+    def _on_dice_roll(self):
+        self.dice1.roll()
+        self.dice2.roll()
+        total = self.dice1.value + self.dice2.value
         # ...
+
+
+    def _on_next_turn(self):
+        idx = self.players.index(self.current_player)
+        idx = (idx + 1) % len(self.players)
+        self.current_player = self.players[idx]
