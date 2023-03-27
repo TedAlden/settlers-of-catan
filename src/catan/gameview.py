@@ -1,6 +1,6 @@
 import pygame
 from .board import Board
-from .type import ActionType
+from .type import ActionType, TerrainType
 from .player import Player
 from .pieces import EmptySettlement, Settlement, City, Dice
 from .ui import Button, TextBox
@@ -251,7 +251,29 @@ class GameView:
         self.dice1.roll()
         self.dice2.roll()
         total = self.dice1.value + self.dice2.value
-        # ...
+        
+        for terrain_tile in self.board.terrain_tiles.values():
+            if terrain_tile.number == total:
+                for settlement in self.board.get_surrounding_nodes(terrain_tile):
+                    if isinstance(settlement, Settlement) or isinstance(settlement, City):
+                        if terrain_tile.type == TerrainType.FOREST:
+                            settlement.owner.add_resources(lumber=1)
+                        elif terrain_tile.type == TerrainType.PASTURE:
+                            settlement.owner.add_resources(wool=1)
+                        elif terrain_tile.type == TerrainType.FIELD:
+                            settlement.owner.add_resources(grain=1)
+                        elif terrain_tile.type == TerrainType.HILL:
+                            settlement.owner.add_resources(brick=1)
+                        elif terrain_tile.type == TerrainType.MOUNTAIN:
+                            settlement.owner.add_resources(ore=1)
+
+        for player in self.players:
+            print("\n" + player.name)
+            print(f"Lumber {player.lumber}")
+            print(f"Wool {player.wool}")
+            print(f"Grain {player.grain}")
+            print(f"Brick {player.brick}")
+            print(f"Ore {player.ore}")
 
 
     def _on_next_turn(self):

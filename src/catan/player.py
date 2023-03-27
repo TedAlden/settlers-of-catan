@@ -39,3 +39,19 @@ class Player:
             and self.grain >= grain \
             and self.brick >= brick \
             and self.ore >= ore
+
+
+    def add_resources(self, lumber=0, wool=0, grain=0, brick=0, ore=0):
+        self.lumber += lumber
+        self.wool += wool
+        self.grain += grain
+        self.brick += brick
+        self.ore += ore
+
+
+    def remove_resources(self, lumber=0, wool=0, grain=0, brick=0, ore=0):
+        self.lumber -= lumber
+        self.wool -= wool
+        self.grain -= grain
+        self.brick -= brick
+        self.ore -= ore
