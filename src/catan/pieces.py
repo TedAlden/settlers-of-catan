@@ -1,7 +1,8 @@
 import pygame
+import random
 from math import sqrt
 from .type import TerrainType
-from .shapes import draw_settlement, draw_city, draw_hexagon
+from .shapes import draw_settlement, draw_city, draw_hexagon, draw_dice
 
 
 pygame.font.init()
@@ -9,21 +10,21 @@ TERRAIN_FONT = pygame.font.SysFont(None, 32)
 # TODO: make font renderer class
 
 
-class Node(pygame.sprite.Sprite):
+class Sprite(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
 
-    def set_pos(self, x, y):
-        self.rect.center = (x, y)
+    def set_pos(self, center_x, center_y):
+        self.rect.center = (center_x, center_y)
 
 
     def get_pos(self):
         return (self.rect.center[0], self.rect.center[1])
 
 
-class Terrain(Node):
+class Terrain(Sprite):
  
     def __init__(self, axial_coord):
         super().__init__()
@@ -61,7 +62,7 @@ class Terrain(Node):
             screen.blit(img, (x, y))
 
 
-class EmptySettlement(Node):
+class EmptySettlement(Sprite):
 
     def __init__(self, index):
         super().__init__()
@@ -77,7 +78,7 @@ class EmptySettlement(Node):
         pygame.draw.circle(screen, colour, self.get_pos(), 10)
 
 
-class Settlement(Node):
+class Settlement(Sprite):
 
     def __init__(self, index, owner):
         super().__init__()
@@ -93,7 +94,7 @@ class Settlement(Node):
         draw_settlement(screen, colour, self.get_pos(), outline="black")
 
 
-class City(Node):
+class City(Sprite):
 
     def __init__(self, index, owner):
         super().__init__()
@@ -109,7 +110,7 @@ class City(Node):
         draw_city(screen, colour, self.get_pos(), outline="black")
 
 
-class Road(pygame.sprite.Sprite):
+class Road(Sprite):
     
     def __init__(self, node1, node2, owner):
         self.settlements = (node1, node2)
@@ -118,3 +119,21 @@ class Road(pygame.sprite.Sprite):
 
     def draw(self, screen):
         pygame.draw.line(screen, self.owner.colour, self.settlements[0].get_pos(), self.settlements[1].get_pos(), width=8)
+
+
+class Dice(Sprite):
+
+    def __init__(self, center_x, center_y):
+        super().__init__()
+        self.value = 6
+        self.image = pygame.Surface((64, 64))
+        self.rect = self.image.get_rect()
+        self.rect.center = (center_x, center_y)
+
+
+    def roll(self):
+        self.value = random.randint(1, 6)
+
+
+    def draw(self, screen):
+        draw_dice(screen, self.get_pos(), self.value)

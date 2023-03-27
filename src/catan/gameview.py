@@ -2,7 +2,7 @@ import pygame
 from .board import Board
 from .type import ActionType
 from .player import Player
-from .pieces import EmptySettlement, Settlement, City
+from .pieces import EmptySettlement, Settlement, City, Dice
 
 
 pygame.font.init()
@@ -15,10 +15,10 @@ class GameView:
         # testing board saving/loading always works
         b = Board.make_random()
         Board.save_to_file(b, "board.json")
-        self.board = Board.load_from_file("board.json")
 
-        self.selected = []  # stores the settlements selected on the UI
-        self.action = ActionType.PLACE_SETTLEMENT
+        self.board = Board.load_from_file("board.json")
+        self.dice1 = Dice(800, 684)
+        self.dice2 = Dice(800, 764)
 
         self.players = [
             Player("Player 1", "red"),
@@ -27,6 +27,8 @@ class GameView:
             Player("Player 4", "white")
         ]
 
+        self.selected = []  # stores the settlements selected on the UI
+        self.action = ActionType.PLACE_SETTLEMENT
         self.current_player = self.players[0]
 
         # TODO: make classes for buttons
@@ -79,6 +81,11 @@ class GameView:
                     self.deselect_settlements()
                     self.action = ActionType.PLACE_CITY
 
+                if self.dice1.rect.collidepoint(mouse_pos) \
+                        or self.dice2.rect.collidepoint(mouse_pos):
+                    self.dice1.roll()
+                    self.dice2.roll()
+
                 for settlement in self.board.settlements:
                     if settlement.rect.collidepoint(mouse_pos):
                         if self.action == ActionType.PLACE_ROAD:
@@ -120,6 +127,9 @@ class GameView:
 
         current_action = BUTTON_FONT.render(f"Current action: {self.action.name}", True, "white", "#444444")
         screen.blit(current_action, (10, 170))
+
+        self.dice1.draw(screen)
+        self.dice2.draw(screen)
 
 
     def _on_place_road(self, settlement):
