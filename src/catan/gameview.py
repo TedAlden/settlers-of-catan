@@ -3,6 +3,7 @@ from .board import Board
 from .type import ActionType
 from .player import Player
 from .pieces import EmptySettlement, Settlement, City, Dice
+from .ui import Button, TextBox
 
 
 pygame.font.init()
@@ -15,11 +16,7 @@ class GameView:
         # testing board saving/loading always works
         b = Board.make_random()
         Board.save_to_file(b, "board.json")
-
         self.board = Board.load_from_file("board.json")
-        self.dice1 = Dice(800, 684)
-        self.dice2 = Dice(800, 764)
-
         self.players = [
             Player("Player 1", "red"),
             Player("Player 2", "blue"),
@@ -31,23 +28,18 @@ class GameView:
         self.action = ActionType.PLACE_SETTLEMENT
         self.current_player = self.players[0]
 
-        # TODO: make classes for buttons
-        self.btn_next_turn = BUTTON_FONT.render("Next turn", True, "white", "black")
-        self.btn_next_turn_rect = self.btn_next_turn.get_rect()
-        self.btn_next_turn_rect.topleft = (10, 10)
+        # UI buttons
+        self.dice1 = Dice(800, 684)
+        self.dice2 = Dice(800, 764)
+        self.btn_next_turn = Button("Next turn", 10, 10)
+        self.btn_place_settlement = Button("Place settlement", 10, 42)
+        self.btn_place_road = Button("Place road", 10, 74)
+        self.btn_place_city = Button("Place city", 10, 106)
 
-        self.btn_place_settlement = BUTTON_FONT.render("Place settlement", True, "white", "black")
-        self.btn_place_settlement_rect = self.btn_place_settlement.get_rect()
-        self.btn_place_settlement_rect.topleft = (10, 42)
-
-        self.btn_place_road = BUTTON_FONT.render("Place road", True, "white", "black")
-        self.btn_place_road_rect = self.btn_place_road.get_rect()
-        self.btn_place_road_rect.topleft = (10, 74)
-
-        self.btn_place_city = BUTTON_FONT.render("Place city", True, "white", "black")
-        self.btn_place_city_rect = self.btn_place_city.get_rect()
-        self.btn_place_city_rect.topleft = (10, 106)
-
+        # UI textboxes
+        self.txt_current_player = TextBox(lambda: f"Current player: {self.current_player.name}", 10, 138)
+        self.txt_current_action = TextBox(lambda: f"Current action: {self.action.name}", 10, 170)
+        
 
     def deselect_settlements(self):
         # placing roads and settlements on the board requires selecting
@@ -63,21 +55,21 @@ class GameView:
             if event.button == 1:  # left click
                 mouse_pos = pygame.mouse.get_pos()
                 
-                if self.btn_next_turn_rect.collidepoint(mouse_pos):
+                if self.btn_next_turn.rect.collidepoint(mouse_pos):
                     self.deselect_settlements()
                     idx = self.players.index(self.current_player)
                     idx = (idx + 1) % len(self.players)
                     self.current_player = self.players[idx]
 
-                if self.btn_place_settlement_rect.collidepoint(mouse_pos):
+                if self.btn_place_settlement.rect.collidepoint(mouse_pos):
                     self.deselect_settlements()
                     self.action = ActionType.PLACE_SETTLEMENT
 
-                if self.btn_place_road_rect.collidepoint(mouse_pos):
+                if self.btn_place_road.rect.collidepoint(mouse_pos):
                     self.deselect_settlements()
                     self.action = ActionType.PLACE_ROAD
 
-                if self.btn_place_city_rect.collidepoint(mouse_pos):
+                if self.btn_place_city.rect.collidepoint(mouse_pos):
                     self.deselect_settlements()
                     self.action = ActionType.PLACE_CITY
 
@@ -85,6 +77,7 @@ class GameView:
                         or self.dice2.rect.collidepoint(mouse_pos):
                     self.dice1.roll()
                     self.dice2.roll()
+                    self._on_dice_roll(self.dice1.value, self.dice2.value)
 
                 for settlement in self.board.settlements:
                     if settlement.rect.collidepoint(mouse_pos):
@@ -102,7 +95,8 @@ class GameView:
 
 
     def on_update(self):
-        pass
+        self.txt_current_player.update()
+        self.txt_current_action.update()
 
 
     def on_render(self, screen):
@@ -117,19 +111,16 @@ class GameView:
         for settlement in self.board.settlements:
             settlement.draw(screen)
 
-        screen.blit(self.btn_next_turn, self.btn_next_turn_rect)
-        screen.blit(self.btn_place_settlement, self.btn_place_settlement_rect)
-        screen.blit(self.btn_place_road, self.btn_place_road_rect)
-        screen.blit(self.btn_place_city, self.btn_place_city_rect)
-    
-        current_turn = BUTTON_FONT.render(f"Current turn: {self.current_player.name} ({self.current_player.colour})", True, "white", "#444444")
-        screen.blit(current_turn, (10, 138))
-
-        current_action = BUTTON_FONT.render(f"Current action: {self.action.name}", True, "white", "#444444")
-        screen.blit(current_action, (10, 170))
-
         self.dice1.draw(screen)
         self.dice2.draw(screen)
+
+        self.btn_next_turn.draw(screen)
+        self.btn_place_settlement.draw(screen)
+        self.btn_place_road.draw(screen)
+        self.btn_place_city.draw(screen)
+
+        self.txt_current_player.draw(screen)
+        self.txt_current_action.draw(screen)
 
 
     def _on_place_road(self, settlement):
@@ -176,6 +167,7 @@ class GameView:
                 self.selected[0].selected = False
                 self.selected.clear()
 
+
     def _on_place_settlement(self, settlement):
         space_around = True
         touching_roads = False
@@ -212,3 +204,8 @@ class GameView:
 
     def _on_place_robber(self, terrain):
         pass
+
+
+    def _on_dice_roll(self, num1, num2):
+        total = num1 + num2
+        # ...
