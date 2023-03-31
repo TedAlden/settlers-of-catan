@@ -25,6 +25,7 @@ class ResourceType(Enum):
 
 
 class ActionType(Enum):
+    NONE = 0
     PLACE_ROAD = 1
     PLACE_SETTLEMENT = 2
     PLACE_CITY = 4

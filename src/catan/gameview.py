@@ -54,13 +54,14 @@ class GameView:
         self.txt_player4_cities = TextBox(lambda: f"Cities: {self.players[3].count_cities()}", 40, 696, "white", None, BUTTON_FONT)
         
 
-    def deselect_settlements(self):
-        # placing roads and settlements on the board requires selecting
-        # settlements. events such as changing player, or changing
-        # action should deselect any that are selected to avoid errors.
+    def finish_action(self):
+        # When finishing an action, deselect any settlement markers that
+        # were selected, and set the action back to none. This will
+        # happen whether an action completes successfully or not.
         for settlement in self.selected:
             settlement.selected = False
         self.selected.clear()
+        self.action = ActionType.NONE
 
 
     def on_event(self, event):
@@ -69,19 +70,19 @@ class GameView:
                 mouse_pos = pygame.mouse.get_pos()
                 
                 if self.btn_next_turn.rect.collidepoint(mouse_pos):
-                    self.deselect_settlements()
+                    self.finish_action()
                     self._on_next_turn()
 
                 if self.btn_place_settlement.rect.collidepoint(mouse_pos):
-                    self.deselect_settlements()
+                    self.finish_action()
                     self.action = ActionType.PLACE_SETTLEMENT
 
                 if self.btn_place_road.rect.collidepoint(mouse_pos):
-                    self.deselect_settlements()
+                    self.finish_action()
                     self.action = ActionType.PLACE_ROAD
 
                 if self.btn_place_city.rect.collidepoint(mouse_pos):
-                    self.deselect_settlements()
+                    self.finish_action()
                     self.action = ActionType.PLACE_CITY
 
                 if self.dice1.rect.collidepoint(mouse_pos) \
@@ -207,11 +208,11 @@ class GameView:
                     self.board.add_road(*self.selected, self.current_player)
                     self.current_player.num_roads += 1
                 # deselect settlements when road successfully placed
-                self.deselect_settlements()
+                self.finish_action()
 
             # deselect the first settlement if clicked again
             elif settlement == self.selected[0]:
-                self.deselect_settlements()
+                self.finish_action()
 
 
     def _on_place_settlement(self, settlement):
@@ -239,6 +240,8 @@ class GameView:
         if not already_owned and space_around and (not placed_initial or touching_roads):
             self.board.add_settlement(settlement, self.current_player)
             self.current_player.num_settlements += 1
+
+        self.finish_action()
     
 
     def _on_place_city(self, settlement):
