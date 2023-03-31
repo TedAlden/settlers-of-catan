@@ -29,7 +29,7 @@ class Terrain(Sprite):
     def __init__(self, axial_coord):
         super().__init__()
         self.axial_coord = axial_coord
-        self.radius = 60
+        self.radius = 55
         height = self.radius * sqrt(3)
         self.image = pygame.Surface([self.radius * 2, height * 2])
         self.rect = self.image.get_rect()
@@ -118,7 +118,9 @@ class Road(Sprite):
 
 
     def draw(self, screen):
-        pygame.draw.line(screen, self.owner.colour, self.settlements[0].get_pos(), self.settlements[1].get_pos(), width=8)
+        pygame.draw.line(screen, self.owner.colour, self.settlements[0].get_pos(), self.settlements[1].get_pos(), width=12)
+        pygame.draw.circle(screen, self.owner.colour, self.settlements[0].get_pos(), 5)
+        pygame.draw.circle(screen, self.owner.colour, self.settlements[1].get_pos(), 5)
 
 
 class Dice(Sprite):

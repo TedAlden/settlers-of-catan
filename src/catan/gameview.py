@@ -10,6 +10,8 @@ from .shapes import draw_settlement, draw_city
 pygame.font.init()
 BUTTON_FONT = pygame.font.SysFont(None, 32)
 
+BACKGROUND_IMAGE = pygame.image.load("catan/bg.png")
+
 
 class GameView:
 
@@ -121,14 +123,14 @@ class GameView:
 
 
     def on_render(self, screen):
-        screen.fill("#65cee0")
+        screen.blit(BACKGROUND_IMAGE, (0, 0))
 
         # draw board terrain tiles, roads, settlements/cities
-        for terrain_tile in self.board.terrain_tiles.values():
-            terrain_tile.draw(screen)
-
         for road in self.board.roads:
             road.draw(screen)
+
+        for terrain_tile in self.board.terrain_tiles.values():
+            terrain_tile.draw(screen)
 
         for settlement in self.board.settlements:
             if isinstance(settlement, (Settlement, City)):

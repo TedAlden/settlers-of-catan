@@ -14,7 +14,7 @@ DICE_DOTS = {
 
 def draw_settlement(surface, colour, position, outline=None):
     x, y = position
-    sides = [(x-10,y+10),(x-10,y+0),(x+0,y-10),(x+10,y+0),(x+10,y+10)]
+    sides = [(x-10,y+10),(x-10,y-5),(x+0,y-15),(x+10,y-5),(x+10,y+10)]
     pygame.draw.polygon(surface, colour, sides, width=0)
     if outline:
         n = len(sides)
