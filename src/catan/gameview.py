@@ -26,7 +26,7 @@ class GameView:
         ]
 
         self.selected = []  # stores the settlements selected on the UI
-        self.action = ActionType.PLACE_SETTLEMENT
+        self.action = ActionType.NONE
         self.current_player = self.players[0]
 
         # Dice
