@@ -130,7 +130,11 @@ class GameView:
             road.draw(screen)
 
         for settlement in self.board.settlements:
-            settlement.draw(screen)
+            if isinstance(settlement, (Settlement, City)):
+                settlement.draw(screen)
+
+            elif self.action in (ActionType.PLACE_CITY, ActionType.PLACE_ROAD, ActionType.PLACE_SETTLEMENT):
+                settlement.draw(screen)
 
         # draw dice
         self.dice1.draw(screen)
