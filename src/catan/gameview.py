@@ -248,6 +248,7 @@ class GameView:
         if settlement.owner == self.current_player:
             self.board.add_city(settlement)
             self.current_player.num_cities += 1
+        self.finish_action()
 
 
     def _on_place_robber(self, terrain):
