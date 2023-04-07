@@ -1,53 +1,17 @@
-class Player:
+class Bank:
 
-    def __init__(self, name, colour):
-        self.name = name
-        self.colour = colour
+    def __init__(self):
+        self.lumber = 19
+        self.wool = 19
+        self.grain = 19
+        self.brick = 19
+        self.ore = 19
 
-        self.vp = 0
-        
-        self.lumber = 0
-        self.wool = 0
-        self.grain = 0
-        self.brick = 0
-        self.ore = 0
-
-        self.card_knight = 0
-        self.card_road = 0
-        self.card_year_plenty = 0
-        self.card_monopoly = 0
-        self.card_vp = 0
-        
-        self.cities = 0
-        self.settlements = 0
-        self.roads = 0
-
-        # FIXME: when placing roads/settlements make sure limit is not
-        # exceded, i.e. 15 roads max
-
-
-    def count_settlements(self):
-        return self.settlements
-    
-
-    def count_roads(self):
-        return self.roads
-    
-
-    def count_cities(self):
-        return self.cities
-    
-
-    def count_vp(self):
-        return self.vp
-    
-
-    def count_longest_road(self):
-        return 0
-    
-
-    def count_army(self):
-        return self.card_knight
+        self.card_knight = 14
+        self.card_road = 2
+        self.card_year_plenty = 2
+        self.card_monopoly = 2
+        self.card_vp = 5
     
 
     def count_lumber(self):
@@ -68,16 +32,6 @@ class Player:
 
     def count_ore(self):
         return self.ore
-    
-
-    def count_resource_cards(self):
-        return sum((
-            self.lumber,
-            self.wool,
-            self.grain,
-            self.brick,
-            self.ore
-        ))
 
 
     def count_development_cards(self):
@@ -89,7 +43,6 @@ class Player:
             self.card_vp
         ))
     
-
     def has_resources(self, lumber=0, wool=0, grain=0, brick=0, ore=0):
         # e.g. for a road, use player1.has_resources(lumber=1, brick=1)
         return all((

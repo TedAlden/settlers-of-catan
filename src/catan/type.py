@@ -1,11 +1,5 @@
 from enum import Enum
 
-# Forest (produces Lumber)
-# Pasture (produces Wool)
-# Field (produces Grain)
-# Hill (produces Brick)
-# Mountain (produces Ore)
-
 
 class TerrainType(Enum):
     FOREST = 1
@@ -25,8 +19,13 @@ class ResourceType(Enum):
 
 
 class ActionType(Enum):
-    NONE = 0
-    PLACE_ROAD = 1
-    PLACE_SETTLEMENT = 2
-    PLACE_CITY = 4
-    PLACE_ROBBER = 8
+    NONE = "None"
+    PLACE_ROAD = "Placing road"
+    PLACE_SETTLEMENT = "Placing settlement"
+    PLACE_CITY = "Placing city"
+    PLACE_ROBBER = "Placing robber"
+
+
+class GameMode(Enum):
+    FIRST_TO_TEN = 1
+    TIME_LIMIT = 2

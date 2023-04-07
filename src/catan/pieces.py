@@ -121,21 +121,3 @@ class Road(Sprite):
         pygame.draw.line(screen, self.owner.colour, self.settlements[0].get_pos(), self.settlements[1].get_pos(), width=12)
         pygame.draw.circle(screen, self.owner.colour, self.settlements[0].get_pos(), 5)
         pygame.draw.circle(screen, self.owner.colour, self.settlements[1].get_pos(), 5)
-
-
-class Dice(Sprite):
-
-    def __init__(self, center_x, center_y):
-        super().__init__()
-        self.value = 6
-        self.image = pygame.Surface((64, 64))
-        self.rect = self.image.get_rect()
-        self.rect.center = (center_x, center_y)
-
-
-    def roll(self):
-        self.value = random.randint(1, 6)
-
-
-    def draw(self, screen):
-        draw_dice(screen, self.get_pos(), self.value)
