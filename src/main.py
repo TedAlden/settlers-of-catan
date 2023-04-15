@@ -1,6 +1,9 @@
 import pygame
 import pathlib
-from catan.gameview import GameView
+
+from catan.models.game import GameModel
+from catan.views.game import GameView
+from catan.controllers.game import GameController
 
 
 SCREEN_FPS = 30
@@ -18,14 +21,26 @@ class Catan:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_icon(pygame.image.load(ICON_PATH))
         self.clock = pygame.time.Clock()
-        self._running = True
-        self.game_view = GameView()
+        
+    
+    def on_init(self):
+        # testing saving and loading game files
+        g = GameModel()
+        GameModel.save_to_file(g, "game.json")
+
+        # create game MVC
+        self.game_model = GameModel.load_from_file("game.json")
+        self.game_controller = GameController(self.game_model)
+        self.game_view = GameView(self.game_controller)
+
+        # initial view
         self.current_view = self.game_view
+        self.running = True
 
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
-            self._running = False
+            self.running = False
         self.current_view.on_event(event)
 
 
@@ -41,7 +56,8 @@ class Catan:
 
 
     def on_execute(self):
-        while(self._running):
+        self.on_init()
+        while(self.running):
             for event in pygame.event.get():
                 self.on_event(event)
             self.on_update()

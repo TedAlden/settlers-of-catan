@@ -2,15 +2,15 @@ import unittest
 from math import sqrt
 from collections import defaultdict
 
-from catan.board import Board
-from catan.player import Player
-from catan.pieces import Settlement
+from catan.models.board import Board
+from catan.models.player import Player
+from catan.models.settlement import Settlement
 
 
 class TestBoard(unittest.TestCase):
 
     def setUp(self):
-        self.board = Board(50)
+        self.board = Board()
         self.player1 = Player("Player 1", "red")
         self.settlement1 = Settlement(0, self.player1)
         self.settlement2 = Settlement(1, self.player1)
@@ -29,12 +29,6 @@ class TestBoard(unittest.TestCase):
         del self.settlement4
         del self.settlement5
         del self.settlement6
-
-
-    def test_board_initialized_correctly(self):
-        self.assertEqual(self.board.hex_radius, 50)
-        self.assertAlmostEqual(self.board.hex_height, 50*sqrt(3))
-        self.assertIsInstance(self.board._graph, defaultdict)
 
 
     def test_add_edge(self):

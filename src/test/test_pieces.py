@@ -1,8 +1,8 @@
 import unittest
 
-from catan.board import Board
-from catan.player import Player
-from catan.pieces import Settlement
+from catan.models.board import Board
+from catan.models.player import Player
+from catan.models.settlement import Settlement
 
 
 class TestBoard(unittest.TestCase):

@@ -1,16 +1,18 @@
-import jsonpickle
 from math import sqrt
 from collections import defaultdict
 from random import shuffle
-from .pieces import EmptySettlement, Terrain, Settlement, Road, City
-from .type import TerrainType
+
+from catan.models.settlement import Settlement
+from catan.models.emptysettlement import EmptySettlement
+from catan.models.hextile import HexTile
+from catan.models.road import Road
+from catan.models.city import City
+from catan.type import TerrainType
 
 
 class Board:
 
-    def __init__(self, hex_radius):
-        self.hex_radius = hex_radius
-        self.hex_height = hex_radius * sqrt(3)
+    def __init__(self):
         self._graph = defaultdict(list)
         self.settlements = []
         self.roads = []
@@ -22,26 +24,32 @@ class Board:
 
 
     def add_settlement(self, empty_settlement, owner):
-        print("added settlement")
         if isinstance(empty_settlement, EmptySettlement):
             settlement = Settlement(empty_settlement.value, owner)
             settlement.set_pos(*empty_settlement.get_pos())
 
-            # replace any connections referencing the old Settlement, to
-            # refer to the new City
+            # replace graph connections referring to the empty
+            # settlement with the new settlement
             for node, connections in self._graph.items():
                 if empty_settlement in connections:
                     i = connections.index(empty_settlement)
                     connections[i] = settlement
                     self._graph[node] = connections
             
-            # update the keys which are the old Settlement with keys
-            # that refer to the new City
+            # update dict keys from empty settlement to new settlement
             self._graph[settlement] = self._graph[empty_settlement]
             del self._graph[empty_settlement]
 
-            # Update list of settlements
-            self.settlements[self.settlements.index(empty_settlement)] = settlement
+            # update list of settlements
+            index = self.settlements.index(empty_settlement)
+            self.settlements[index] = settlement
+
+            # replace references to this settlement in any roads, to
+            # refer to the city instead
+            for road in self.roads:
+                if empty_settlement in road.settlements:
+                    index = road.settlements.index(empty_settlement)
+                    road.settlements[index] = settlement
 
     
     def remove_settlement(self, node):
@@ -50,26 +58,31 @@ class Board:
 
     def add_city(self, settlement):
         if isinstance(settlement, Settlement):
-            print("upgraded to city")
-            # make new City to replace the Settlement being upgraded
             city = City(settlement.value, settlement.owner)
             city.set_pos(*settlement.get_pos())
 
-            # replace any connections referencing the old Settlement, to
-            # refer to the new City
+            # replace graph connections referring to the old settlement
+            # with the new city
             for node, connections in self._graph.items():
                 if settlement in connections:
                     i = connections.index(settlement)
                     connections[i] = city
                     self._graph[node] = connections
             
-            # update the keys which are the old Settlement with keys
-            # that refer to the new City
+            # update dict keys from old settlement to new city
             self._graph[city] = self._graph[settlement]
             del self._graph[settlement]
 
-            # Update list of settlements
-            self.settlements[self.settlements.index(settlement)] = city
+            # update list of settlements
+            index = self.settlements.index(settlement)
+            self.settlements[index] = city
+
+            # replace references to this settlement in any roads, to
+            # refer to the city instead
+            for road in self.roads:
+                if settlement in road.settlements:
+                    index = road.settlements.index(settlement)
+                    road.settlements[index] = city
 
 
     def get_road_owner(self, node1, node2):
@@ -96,8 +109,7 @@ class Board:
         return node2 in self._graph[node1] or node1 in self._graph[node2]
 
 
-    def add_road(self, node1, node2, owner):   
-        print("added road")
+    def add_road(self, node1, node2, owner):
         self.roads.append(Road(node1, node2, owner))
 
     
@@ -120,54 +132,33 @@ class Board:
 
 
     @staticmethod
-    def serialize(board):
-        return jsonpickle.encode(board, keys=True)
-
-
-    @staticmethod
-    def deserialize(pickle):
-        return jsonpickle.decode(pickle, keys=True)
-
-
-    @staticmethod
-    def save_to_file(board, path):
-        with open(path, "w") as file:
-            file.write(Board.serialize(board))
-
-
-    @staticmethod
-    def load_from_file(path):
-        with open(path, "r") as file:
-            return Board.deserialize(file.read())
-
-
-    @staticmethod
     def make_random():
-        b = Board(60)
-
+        b = Board()
         b.settlements = [EmptySettlement(i) for i in range(54)]
         b.roads = []
         b.terrain_tiles = {
-            "0,-2": Terrain((0, -2)),
-            "-1,-1": Terrain((-1, -1)),
-            "1,-2": Terrain((1,-2)),
-            "-2,0": Terrain((-2, 0)),
-            "0,-1": Terrain((0, -1)),
-            "2,-2": Terrain((2,-2)),
-            "-1,0": Terrain((-1, 0)),
-            "1,-1": Terrain((1,-1)),
-            "-2,1": Terrain((-2, 1)),
-            "0,0": Terrain((0, 0)),
-            "2,-1": Terrain((2,-1)),
-            "-1,1": Terrain((-1, 1)),
-            "1,0": Terrain((1,0)),
-            "-2,2": Terrain((-2, 2)),
-            "0,1": Terrain((0, 1)),
-            "2,0": Terrain((2,0)),
-            "-1,2": Terrain((-1, 2)),
-            "1,1": Terrain((1,1)),
-            "0,2": Terrain((0, 2))
+            "0,-2": HexTile((0, -2)),
+            "-1,-1": HexTile((-1, -1)),
+            "1,-2": HexTile((1,-2)),
+            "-2,0": HexTile((-2, 0)),
+            "0,-1": HexTile((0, -1)),
+            "2,-2": HexTile((2,-2)),
+            "-1,0": HexTile((-1, 0)),
+            "1,-1": HexTile((1,-1)),
+            "-2,1": HexTile((-2, 1)),
+            "0,0": HexTile((0, 0)),
+            "2,-1": HexTile((2,-1)),
+            "-1,1": HexTile((-1, 1)),
+            "1,0": HexTile((1,0)),
+            "-2,2": HexTile((-2, 2)),
+            "0,1": HexTile((0, 1)),
+            "2,0": HexTile((2,0)),
+            "-1,2": HexTile((-1, 2)),
+            "1,1": HexTile((1,1)),
+            "0,2": HexTile((0, 2))
         }
+
+        # TODO: change terrain_tiles to a list instead?
 
         # hard-coded map of each terrain to the indices of the
         # settlements it is connected to. clock-wise, starting top-right
@@ -193,17 +184,6 @@ class Board:
             "2,0": [35, 41, 47, 46, 40, 34]
         }
 
-        # position of a settlement relative to the terrain it surrounds.
-        # clock-wise, starting top-right.
-        relative_coords = [
-            (b.hex_radius / 2, b.hex_height / 2),
-            (b.hex_radius, 0),
-            (b.hex_radius / 2, -(b.hex_height / 2)),
-            (-(b.hex_radius / 2), -(b.hex_height / 2)),
-            (-b.hex_radius, 0),
-            (-(b.hex_radius / 2), b.hex_height / 2)
-        ]
-
         # ----------- create connections in the graph ------------------
         for terrain_coord, settlement_idxs in connections.items():
             # connect each settlement to the terrain it is neighbouring
@@ -215,33 +195,17 @@ class Board:
                 b.add_edge(b.settlements[settlement_idxs[idx1]],
                               b.settlements[settlement_idxs[idx2]])
 
-        # ----------- calculate coordinates of components --------------
-        visited_settlements = []
-        for terrain_tile in b.terrain_tiles.values():
-            # convert axial terrain coords to screen/pixel coords.
-            tx, ty = terrain_tile.axial_coord
-            x = tx * 3/2 * b.hex_radius
-            y = tx * 0.5 * b.hex_height + ty * b.hex_height
-            terrain_tile.set_pos(x + 640, y + 400)  # shift grid
-            # calculate screen coords for each settlement based on the
-            # terrain that it neighbours.
-            for settlement in b.get_surrounding_nodes(terrain_tile):
-                if settlement not in visited_settlements:
-                    idx = b._graph[terrain_tile].index(settlement)
-                    x = terrain_tile.get_pos()[0] + relative_coords[idx][0]
-                    y = terrain_tile.get_pos()[1] - relative_coords[idx][1]
-                    settlement.set_pos(x, y)
-                    visited_settlements.append(settlement)
-
         # ----------- assign resource types and numbers to terrains ----
         numbers = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
-        types = [TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST,
-                 TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE,
-                 TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD,
+        types = [TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST,
+                 TerrainType.FOREST, TerrainType.PASTURE, TerrainType.PASTURE,
+                 TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.FIELD,
+                 TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD,
                  TerrainType.HILL, TerrainType.HILL, TerrainType.HILL,
-                 TerrainType.MOUNTAIN, TerrainType.MOUNTAIN, TerrainType.MOUNTAIN
+                 TerrainType.MOUNTAIN, TerrainType.MOUNTAIN,
+                 TerrainType.MOUNTAIN
                  ]
-    
+
         # first place the desert terrain in the center of the board
         _terrains = b.terrain_tiles.copy()
         desert_terrain = _terrains.pop("0,0")
@@ -257,5 +221,3 @@ class Board:
             terrains[i].number = numbers[i]
 
         return b
-
-    # TODO: roads should be stored in the graph
