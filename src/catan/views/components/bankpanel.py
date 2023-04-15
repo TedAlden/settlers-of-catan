@@ -1,7 +1,7 @@
 import pygame
 
-pygame.font.init()
-EIGHT_BIT_FONT = pygame.font.Font("src\\catan\\assets\\fonts\\EightBitDragon-anqx.ttf", 18)
+FONT_PATH = "src\\catan\\assets\\fonts\\EightBitDragon-anqx.ttf"
+# FONT_PATH = "src\\catan\\assets\\fonts\\WashingtonText.ttf"
 
 
 class BankPanel(pygame.sprite.Sprite):
@@ -9,22 +9,39 @@ class BankPanel(pygame.sprite.Sprite):
     def __init__(self, bank, top_left):
         self.bank = bank
         self.topleft = top_left
-        self.font = EIGHT_BIT_FONT
+        self.font = pygame.font.Font(FONT_PATH, 18)
         
-        self.surf = pygame.Surface((300, 220))
+        self.surf = pygame.Surface((300, 148))
         self.rect = self.surf.get_rect()
-        self.rect.topleft = top_left   
+        self.rect.topleft = top_left
 
-    
+
+    def update(self):
+        self.lumber = self.bank.count_lumber()
+        self.wool = self.bank.count_wool()
+        self.grain = self.bank.count_grain()
+        self.brick = self.bank.count_brick()
+        self.ore = self.bank.count_ore()
+        self.devs = self.bank.count_development_cards()
+
+
     def draw(self, screen):
         self.surf.fill("#999999")
-        b = self.bank
-        self.surf.blit(self.font.render("Bank", True, "gold"), (10, 10))
-        self.surf.blit(self.font.render(f"Lumber: {b.count_lumber()}", True, "white"), (10, 40))
-        self.surf.blit(self.font.render(f"Wool: {b.count_wool()}", True, "white"), (10, 70))
-        self.surf.blit(self.font.render(f"Grain: {b.count_grain()}", True, "white"), (10, 100))
-        self.surf.blit(self.font.render(f"Brick: {b.count_brick()}", True, "white"), (10, 130))
-        self.surf.blit(self.font.render(f"Ore: {b.count_ore()}", True, "white"), (10, 160))
-        self.surf.blit(self.font.render(f"Development cards: {b.count_development_cards()}", True, "white"), (10, 190))
+
+        self.surf.blit(self.font.render("Bank", True, "white"), (10, 10))
+
+        pygame.draw.rect(self.surf, "#e6d85e", (10, 40, 40, 60))
+        pygame.draw.rect(self.surf, "#5fc73a", (58, 40, 40, 60))
+        pygame.draw.rect(self.surf, "#168a35", (106, 40, 40, 60))
+        pygame.draw.rect(self.surf, "#e09e2b", (154, 40, 40, 60))
+        pygame.draw.rect(self.surf, "#8c8c8c", (202, 40, 40, 60))
+        pygame.draw.rect(self.surf, "purple", (250, 40, 40, 60))
+
+        self.surf.blit(self.font.render(str(self.lumber), True, "white"), (24, 108))
+        self.surf.blit(self.font.render(str(self.wool), True, "white"), (72, 108))
+        self.surf.blit(self.font.render(str(self.grain), True, "white"), (120, 108))
+        self.surf.blit(self.font.render(str(self.brick), True, "white"), (168, 108))
+        self.surf.blit(self.font.render(str(self.ore), True, "white"), (216, 108))
+        self.surf.blit(self.font.render(str(self.devs), True, "white"), (264, 108))
 
         screen.blit(self.surf, self.rect)

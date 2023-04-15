@@ -25,6 +25,26 @@ class Player:
         # FIXME: when placing roads/settlements make sure limit is not
         # exceded, i.e. 15 roads max
 
+    
+    def count_card_knight(self):
+        return self.card_knight
+    
+
+    def count_card_road(self):
+        return self.card_road
+    
+
+    def count_card_year_plenty(self):
+        return self.card_year_plenty
+    
+
+    def count_card_monopoly(self):
+        return self.card_monopoly
+    
+
+    def count_card_vp(self):
+        return self.card_vp
+
 
     def count_settlements(self):
         return self.settlements

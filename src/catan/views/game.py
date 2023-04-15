@@ -8,6 +8,7 @@ from catan.models.settlement import Settlement
 from catan.models.city import City
 
 from catan.views.components.bankpanel import BankPanel
+from catan.views.components.inventorypanel import InventoryPanel
 from catan.views.components.playerpanel import PlayerPanel
 from catan.views.components.button import Button
 from catan.views.components.dice import DiceView
@@ -46,26 +47,29 @@ class GameView:
         self.dice2 = DiceView(dice2, (166, 740))
 
         # UI buttons (left hand side)
-        self.btn_menu = Button("Menu", (10, 10), FONT)
-        self.btn_save = Button("Save", (10, 70), FONT)
+        self.btn_menu = Button("Menu", (10, 10))
+        self.btn_save = Button("Save", (10, 70))
 
-        self.btn_settlement = Button("Settlement", (10, 170), FONT)
-        self.btn_road = Button("Road", (10, 230), FONT)
-        self.btn_city = Button("City", (10, 290), FONT)
-        self.btn_dev_card = Button("Development card", (10, 350), FONT)
+        self.btn_settlement = Button("Build Settlement", (10, 170))
+        self.btn_road = Button("Build Road", (10, 230))
+        self.btn_city = Button("Upgrade to City", (10, 290))
+        self.btn_dev_card = Button("Development Card", (10, 350))
 
-        self.btn_roll_dice = Button("Roll dice", (10, 450), FONT)
-        self.btn_player_trade = Button("Player trade", (10, 510), FONT)
-        self.btn_bank_trade = Button("Bank trade", (10, 570), FONT)
-        self.btn_next_turn = Button("End turn", (10, 630), FONT)
+        self.btn_roll_dice = Button("Roll Dice", (10, 450))
+        self.btn_player_trade = Button("Player Trade", (10, 510))
+        self.btn_bank_trade = Button("Bank Trade", (10, 570))
+        self.btn_next_turn = Button("End Turn", (10, 630))
+
+
+        self.inventory_table = InventoryPanel((320, 680))
 
         # UI panels (right hand side)
-        self.bank_table = BankPanel(self.controller.get_bank(), (970, 10))
         players = self.controller.get_players()
-        self.player_table_1 = PlayerPanel(players[0], (970, 240))
-        self.player_table_2 = PlayerPanel(players[1], (970, 380))
-        self.player_table_3 = PlayerPanel(players[2], (970, 520))
-        self.player_table_4 = PlayerPanel(players[3], (970, 660))
+        self.bank_table = BankPanel(self.controller.get_bank(), (970, 10))
+        self.player_table_1 = PlayerPanel(players[0], (970, 168))
+        self.player_table_2 = PlayerPanel(players[1], (970, 326))
+        self.player_table_3 = PlayerPanel(players[2], (970, 484))
+        self.player_table_4 = PlayerPanel(players[3], (970, 642))
 
         self.init()
 
@@ -207,6 +211,8 @@ class GameView:
 
         # update resource panels on right hand side of screen UI
         self.bank_table.update()
+        self.inventory_table.set_player(self.controller.get_current_player())
+        self.inventory_table.update()
         self.player_table_1.update()
         self.player_table_2.update()
         self.player_table_3.update()
@@ -218,7 +224,7 @@ class GameView:
         screen.blit(BACKGROUND_IMAGE, (0, 0))
 
         # draw robber
-        draw_robber(screen, (300, 100), "red")
+        # draw_robber(screen, (300, 100), "red")
 
         # draw the boards roads
         for road in self.controller.get_roads():
@@ -256,6 +262,7 @@ class GameView:
 
         # draw UI panels
         self.bank_table.draw(screen)
+        self.inventory_table.draw(screen)
         self.player_table_1.draw(screen)
         self.player_table_2.draw(screen)
         self.player_table_3.draw(screen)
