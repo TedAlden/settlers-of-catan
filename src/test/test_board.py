@@ -1,6 +1,4 @@
 import unittest
-from math import sqrt
-from collections import defaultdict
 
 from catan.models.board import Board
 from catan.models.player import Player
