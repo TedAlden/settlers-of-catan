@@ -35,7 +35,6 @@ class GameView:
         self.controller = controller  # game controller
 
         self.selected = []
-        self.action = ActionType.NONE
         self.last_tick = 0
 
         self.hex_radius = 60
@@ -60,12 +59,10 @@ class GameView:
         self.btn_bank_trade = Button("Bank Trade", (10, 570))
         self.btn_next_turn = Button("End Turn", (10, 630))
 
-
-        self.inventory_table = InventoryPanel((320, 680))
-
-        # UI panels (right hand side)
+        # UI panels
         players = self.controller.get_players()
         self.bank_table = BankPanel(self.controller.get_bank(), (970, 10))
+        self.inventory_table = InventoryPanel((320, 680))
         self.player_table_1 = PlayerPanel(players[0], (970, 168))
         self.player_table_2 = PlayerPanel(players[1], (970, 326))
         self.player_table_3 = PlayerPanel(players[2], (970, 484))
@@ -108,7 +105,7 @@ class GameView:
             settlement.selected = False
 
         self.selected.clear()
-        self.action = ActionType.NONE
+        self.controller.action = ActionType.NONE
 
 
     def get_time(self):
@@ -133,15 +130,15 @@ class GameView:
 
                 if self.btn_settlement.rect.collidepoint(mouse_pos):
                     self.on_finish_action()
-                    self.action = ActionType.PLACE_SETTLEMENT
+                    self.controller.action = ActionType.PLACE_SETTLEMENT
 
                 if self.btn_road.rect.collidepoint(mouse_pos):
                     self.on_finish_action()
-                    self.action = ActionType.PLACE_ROAD
+                    self.controller.action = ActionType.PLACE_ROAD
 
                 if self.btn_city.rect.collidepoint(mouse_pos):
                     self.on_finish_action()
-                    self.action = ActionType.PLACE_CITY
+                    self.controller.action = ActionType.PLACE_CITY
 
                 if self.btn_dev_card.rect.collidepoint(mouse_pos):
                     self.on_finish_action()
@@ -166,21 +163,21 @@ class GameView:
                 # clicking on settlement
                 for settlement in self.controller.get_settlements():
                     if settlement.rect.collidepoint(mouse_pos):
-                        if self.action == ActionType.PLACE_ROAD:
+                        if self.controller.action == ActionType.PLACE_ROAD:
                             self.on_place_road(settlement)
 
-                        elif self.action == ActionType.PLACE_SETTLEMENT:
+                        elif self.controller.action == ActionType.PLACE_SETTLEMENT:
                             self.controller.place_settlement(settlement)
                             self.on_finish_action()
 
-                        elif self.action == ActionType.PLACE_CITY:
+                        elif self.controller.action == ActionType.PLACE_CITY:
                             self.controller.place_city(settlement)
                             self.on_finish_action()
 
                 # clicking on terrain tile
                 for terrain in self.controller.get_tiles():
                     if terrain.rect.collidepoint(mouse_pos):
-                        if self.action == ActionType.PLACE_ROBBER:
+                        if self.controller.action == ActionType.PLACE_ROBBER:
                             self.controller.place_robber(terrain)
                             self.on_finish_action()
 
@@ -223,9 +220,6 @@ class GameView:
         # draw catan background
         screen.blit(BACKGROUND_IMAGE, (0, 0))
 
-        # draw robber
-        # draw_robber(screen, (300, 100), "red")
-
         # draw the boards roads
         for road in self.controller.get_roads():
             pos1, pos2 = road.settlements[0].get_pos(), road.settlements[1].get_pos()
@@ -233,9 +227,14 @@ class GameView:
 
         # draw the boards hex tiles
         for tile in self.controller.get_tiles():
-            # draw hexagon
             col = SETTLEMENT_COLOURS[tile.type]
             draw_hextile(screen, col, self.hex_radius - 5, tile.get_pos(), tile.number)
+
+            # draw robber if it is placed here
+            robber = self.controller.get_robber()
+            if tile == robber.get_hex():
+                x, y = tile.get_pos()
+                draw_robber(screen, (x, y + 30), robber.get_owner().colour)
 
         # draw the boards settlements
         for settlement in self.controller.get_settlements():
@@ -250,9 +249,9 @@ class GameView:
                 draw_city(screen, colour, settlement.get_pos())
 
             # draw empty settlement marker when placing board pieces
-            elif self.action in (ActionType.PLACE_CITY,
-                                 ActionType.PLACE_ROAD,
-                                 ActionType.PLACE_SETTLEMENT):
+            elif self.controller.action in (ActionType.PLACE_CITY,
+                                            ActionType.PLACE_ROAD,
+                                            ActionType.PLACE_SETTLEMENT):
                 colour = "#ffffff" if settlement.selected else "#cccccc"
                 pygame.draw.circle(screen, colour, settlement.get_pos(), 10)
 
@@ -289,3 +288,7 @@ class GameView:
         # display game time
         t = self.get_time()
         screen.blit(FONT.render(f"Time: {t}", True, "white"), (260, 60))
+
+        # display current action
+        a = self.controller.action.value
+        screen.blit(FONT.render(f"Currently: {a}", True, "white"), (260, 90))

@@ -24,7 +24,9 @@ class GameController:
         # self.turn_number = 0
         # self.round_number = 0
 
-        # self.robber_tile
+
+    def get_robber(self):
+        return self.model.robber
     
     
     def get_dice(self):
@@ -123,6 +125,8 @@ class GameController:
 
 
     def place_robber(self, terrain):
+        self.get_robber().set_hex(terrain)
+        self.get_robber().set_owner(self.current_player)
         print(f"Player '{self.current_player.name}' placed the robber!")
 
 
@@ -134,16 +138,22 @@ class GameController:
         dice2.roll()
         total = dice1.value + dice2.value
 
-        turn_info = f"\nPlayer '{self.current_player.name}' rolled a {total}\n"
+        turn_info = f"{self.current_player.name} rolled a {total}\n"
+
+        if total == 7:
+            self.action = ActionType.PLACE_ROBBER
+
 
         for terrain_tile in self.get_tiles():
             if terrain_tile.number == total:
                 for settlement in self.model.board.get_surrounding_nodes(terrain_tile):
                     if isinstance(settlement, (Settlement, City)):
                         collector = settlement.owner
-                        # TODO: change collector if their is a robber
-                        # if terrain_tile.robber != None:
-                        #   collector = terrain_tile.robber.owner
+                        robber = self.get_robber()
+                        if terrain_tile == robber.get_hex():
+                            collector = self.get_robber().get_owner()
+                            robber_owner = robber.get_owner().name
+                            turn_info += f"{robber_owner} has the robber here!\n"
 
                         # receive double resources if city, else 1
                         amount = 2 if isinstance(settlement, City) else 1
