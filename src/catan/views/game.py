@@ -1,6 +1,7 @@
 import time
 import pygame
 
+from os import path
 from math import sqrt
 
 from catan.models.game import GameModel
@@ -17,8 +18,12 @@ from catan.type import ActionType, TerrainType
 from catan.util.shapes import draw_city, draw_hextile, draw_road, draw_settlement, draw_robber
 
 pygame.font.init()
-FONT = pygame.font.Font("src\\catan\\assets\\fonts\\EightBitDragon-anqx.ttf", 18)
-BACKGROUND_IMAGE = pygame.image.load("src\\catan\\assets\\images\\background.png")
+FONT_PATH = path.join("src", "catan", "assets", "fonts", "EightBitDragon-anqx.ttf")
+BACKGROUND_IMAGE_PATH = path.join("src", "catan", "assets", "images", "background.png")
+
+FONT = pygame.font.Font(FONT_PATH, 18)
+BACKGROUND_IMAGE = pygame.image.load(BACKGROUND_IMAGE_PATH)
+
 SETTLEMENT_COLOURS = {
     TerrainType.FIELD : "#e6d85e",
     TerrainType.PASTURE : "#5fc73a",

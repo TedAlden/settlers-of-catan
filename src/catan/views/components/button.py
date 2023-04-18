@@ -1,9 +1,9 @@
 import pygame
 
-FONT_PATH = "src\\catan\\assets\\fonts\\EightBitDragon-anqx.ttf"
+from os import path
+
+FONT_PATH = path.join("src", "catan", "assets", "fonts", "EightBitDragon-anqx.ttf")
 FONT_SIZE = 18
-# FONT_PATH = "src\\catan\\assets\\fonts\\WashingtonText.ttf"
-# FONT_SIZE = 24
 
 
 class Button(pygame.sprite.Sprite):
