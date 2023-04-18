@@ -68,10 +68,6 @@ class GameView:
         self.player_table_3 = PlayerPanel(players[2], (970, 484))
         self.player_table_4 = PlayerPanel(players[3], (970, 642))
 
-        self.init()
-
-
-    def init(self):
         # calculate coordinates of terrain tiles and settlements
         relative_coords = [
             (self.hex_radius / 2, self.hex_height / 2),
