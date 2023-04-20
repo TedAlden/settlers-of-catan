@@ -1,8 +1,8 @@
 import pygame
 
-from os import path
+from catan.util.pathresolver import resolve_path
 
-FONT_PATH = path.join("src", "catan", "assets", "fonts", "EightBitDragon-anqx.ttf")
+FONT_PATH = resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf")
 
 
 class PlayerPanel(pygame.sprite.Sprite):

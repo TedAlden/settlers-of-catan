@@ -1,7 +1,6 @@
 import time
 import pygame
 
-from os import path
 from math import sqrt
 
 from catan.models.game import GameModel
@@ -15,11 +14,15 @@ from catan.views.components.button import Button
 from catan.views.components.dice import DiceView
 
 from catan.type import ActionType, TerrainType
+
+from catan.util.pathresolver import resolve_path
 from catan.util.shapes import draw_city, draw_hextile, draw_road, draw_settlement, draw_robber
 
 pygame.font.init()
-FONT_PATH = path.join("src", "catan", "assets", "fonts", "EightBitDragon-anqx.ttf")
-BACKGROUND_IMAGE_PATH = path.join("src", "catan", "assets", "images", "background.png")
+
+
+FONT_PATH = resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf")
+BACKGROUND_IMAGE_PATH = resolve_path("catan/assets/images/background.png")
 
 FONT = pygame.font.Font(FONT_PATH, 18)
 BACKGROUND_IMAGE = pygame.image.load(BACKGROUND_IMAGE_PATH)

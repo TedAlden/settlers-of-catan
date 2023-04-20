@@ -1,17 +1,17 @@
 import pygame
-import pathlib
 
 from catan.models.game import GameModel
 from catan.views.game import GameView
 from catan.views.menu import MenuView
 from catan.controllers.game import GameController
+from catan.util.pathresolver import resolve_path
 
 
 SCREEN_FPS = 30
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 800
 SCREEN_TITLE = "The Settlers of Catan"
-ICON_PATH = pathlib.Path(__file__).parent.parent.joinpath("icon.png")
+ICON_PATH = resolve_path("catan/assets/images/icon.png")
 
 
 class Catan:
