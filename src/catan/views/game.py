@@ -36,8 +36,9 @@ SETTLEMENT_COLOURS = {
 
 class GameView:
 
-    def __init__(self, controller):
+    def __init__(self, controller, app):
         self.controller = controller  # game controller
+        self.app = app
 
         self.selected = []
         self.last_tick = 0
@@ -121,8 +122,7 @@ class GameView:
 
                 # clicking on left hand side UI buttons...
                 if self.btn_menu.rect.collidepoint(mouse_pos):
-                    pass
-                    # TODO
+                    self.app.set_view(self.app.menu_view)
 
                 if self.btn_save.rect.collidepoint(mouse_pos):
                     # TODO: include date and time in save file name?

@@ -3,6 +3,7 @@ import pathlib
 
 from catan.models.game import GameModel
 from catan.views.game import GameView
+from catan.views.menu import MenuView
 from catan.controllers.game import GameController
 
 
@@ -27,15 +28,21 @@ class Catan:
         # testing saving and loading game files
         g = GameModel()
         GameModel.save_to_file(g, "game.json")
-
+        
         # create game MVC
         self.game_model = GameModel.load_from_file("game.json")
         self.game_controller = GameController(self.game_model)
-        self.game_view = GameView(self.game_controller)
+
+        self.game_view = GameView(self.game_controller, self)
+        self.menu_view = MenuView(self)
 
         # initial view
-        self.current_view = self.game_view
+        self.current_view = self.menu_view
         self.running = True
+
+
+    def set_view(self, view):
+        self.current_view = view
 
 
     def on_event(self, event):
@@ -51,7 +58,6 @@ class Catan:
 
     def on_render(self):
         self.current_view.on_render(self.screen)
-        
         pygame.display.flip()
 
 
