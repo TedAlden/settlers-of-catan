@@ -21,11 +21,8 @@ from catan.util.shapes import draw_city, draw_hextile, draw_road, draw_settlemen
 pygame.font.init()
 
 
-FONT_PATH = resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf")
-BACKGROUND_IMAGE_PATH = resolve_path("catan/assets/images/background.png")
-
-FONT = pygame.font.Font(FONT_PATH, 18)
-BACKGROUND_IMAGE = pygame.image.load(BACKGROUND_IMAGE_PATH)
+FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
+BACKGROUND_IMAGE = pygame.image.load(resolve_path("catan/assets/images/background.png"))
 
 SETTLEMENT_COLOURS = {
     TerrainType.FIELD : "#e6d85e",

@@ -2,7 +2,7 @@ import pygame
 
 from catan.util.pathresolver import resolve_path
 
-FONT_PATH = resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf")
+FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
 
 
 class PlayerPanel(pygame.sprite.Sprite):
@@ -10,7 +10,7 @@ class PlayerPanel(pygame.sprite.Sprite):
     def __init__(self, player, top_left):
         self.player = player
         self.topleft = top_left
-        self.font = pygame.font.Font(FONT_PATH, 18)
+        self.font = FONT
         
         self.surf = pygame.Surface((300, 148))
         self.rect = self.surf.get_rect()

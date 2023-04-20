@@ -2,8 +2,7 @@ import pygame
 
 from catan.util.pathresolver import resolve_path
 
-FONT_PATH = resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf")
-FONT_SIZE = 18
+FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
 
 
 class Button(pygame.sprite.Sprite):
@@ -12,7 +11,7 @@ class Button(pygame.sprite.Sprite):
         self.text = text
         self.colour = colour
         self.background = background
-        self.font = pygame.font.Font(FONT_PATH, FONT_SIZE)
+        self.font = FONT
 
         self.surf = pygame.Surface((220, 50))
         self.rect = self.surf.get_rect()
