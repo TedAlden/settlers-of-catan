@@ -4,6 +4,8 @@ from catan.util.pathresolver import resolve_path
 
 FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
 
+DEV_CARD = pygame.image.load(resolve_path("catan/assets/images/dev_card_back.png"))
+
 
 class BankPanel(pygame.sprite.Sprite):
 
@@ -36,7 +38,7 @@ class BankPanel(pygame.sprite.Sprite):
         pygame.draw.rect(self.surf, "#168a35", (106, 40, 40, 60))
         pygame.draw.rect(self.surf, "#e09e2b", (154, 40, 40, 60))
         pygame.draw.rect(self.surf, "#8c8c8c", (202, 40, 40, 60))
-        pygame.draw.rect(self.surf, "purple", (250, 40, 40, 60))
+        self.surf.blit(DEV_CARD, (250, 40))
 
         self.surf.blit(self.font.render(str(self.lumber), True, "white"), (24, 108))
         self.surf.blit(self.font.render(str(self.wool), True, "white"), (72, 108))

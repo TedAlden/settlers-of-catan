@@ -11,26 +11,34 @@ from catan.views.components.bankpanel import BankPanel
 from catan.views.components.inventorypanel import InventoryPanel
 from catan.views.components.playerpanel import PlayerPanel
 from catan.views.components.button import Button
-from catan.views.components.dice import DiceView
 
 from catan.type import ActionType, TerrainType
 
 from catan.util.pathresolver import resolve_path
-from catan.util.shapes import draw_city, draw_hextile, draw_road, draw_settlement, draw_robber
+from catan.util.shapes import draw_city, draw_dice, draw_hextile, draw_road, draw_settlement, draw_robber
 
 pygame.font.init()
 
-
+TERRAIN_NUMBER_FONT = pygame.font.SysFont(None, 32)
 FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
 BACKGROUND_IMAGE = pygame.image.load(resolve_path("catan/assets/images/background.png"))
 
-SETTLEMENT_COLOURS = {
+HEXTILE_COLOURS = {
     TerrainType.FIELD : "#e6d85e",
     TerrainType.PASTURE : "#5fc73a",
     TerrainType.FOREST : "#168a35",
     TerrainType.HILL : "#e09e2b",
     TerrainType.MOUNTAIN : "#8c8c8c",
     TerrainType.DESERT : "#b5ac6e"
+}
+
+HEXTILE_IMAGES = {
+    TerrainType.FIELD : pygame.image.load(resolve_path("catan/assets/images/hex_grain.png")),
+    TerrainType.PASTURE : pygame.image.load(resolve_path("catan/assets/images/hex_wool.png")),
+    TerrainType.FOREST : pygame.image.load(resolve_path("catan/assets/images/hex_lumber.png")),
+    TerrainType.HILL : pygame.image.load(resolve_path("catan/assets/images/hex_brick.png")),
+    TerrainType.MOUNTAIN : pygame.image.load(resolve_path("catan/assets/images/hex_ore.png")),
+    TerrainType.DESERT : pygame.image.load(resolve_path("catan/assets/images/hex_desert.png")),
 }
 
 
@@ -45,11 +53,6 @@ class GameView:
 
         self.hex_radius = 60
         self.hex_height = self.hex_radius * sqrt(3)
-
-        # dice
-        dice1, dice2 = self.controller.get_dice()
-        self.dice1 = DiceView(dice1, (74, 740))
-        self.dice2 = DiceView(dice2, (166, 740))
 
         # UI buttons (left hand side)
         self.btn_menu = Button("Menu", (10, 10))
@@ -228,8 +231,18 @@ class GameView:
 
         # draw the boards hex tiles
         for tile in self.controller.get_tiles():
-            col = SETTLEMENT_COLOURS[tile.type]
-            draw_hextile(screen, col, self.hex_radius - 5, tile.get_pos(), tile.number)
+            # col = SETTLEMENT_COLOURS[tile.type]
+            # draw_hextile(screen, col, self.hex_radius - 5, tile.get_pos(), tile.number)
+
+            img = HEXTILE_IMAGES[tile.type]
+            hw, hh = img.get_width() / 2, img.get_height() / 2
+            x, y = tile.get_pos()
+            screen.blit(img, (x-hw, y-hh))
+
+            if tile.number > 0:
+                img = TERRAIN_NUMBER_FONT.render(str(tile.number), True, "white")
+                w, h = img.get_rect().width, img.get_rect().height
+                screen.blit(img, (x - 0.5 * w, y - 0.5 * h))
 
             # draw robber if it is placed here
             robber = self.controller.get_robber()
@@ -257,8 +270,9 @@ class GameView:
                 pygame.draw.circle(screen, colour, settlement.get_pos(), 10)
 
         # draw dice
-        self.dice1.draw(screen)
-        self.dice2.draw(screen)
+        dice1, dice2 = self.controller.get_dice()
+        draw_dice(screen, (74, 740), dice1.value)
+        draw_dice(screen, (166, 740), dice2.value)
 
         # draw UI panels
         self.bank_table.draw(screen)

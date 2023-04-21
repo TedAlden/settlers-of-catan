@@ -1,6 +1,14 @@
 import pygame
 
 from catan.util.shapes import draw_dice
+from catan.util.pathresolver import resolve_path
+
+DICE1 = pygame.image.load(resolve_path("catan/assets/images/dice_1.png"))
+DICE2 = pygame.image.load(resolve_path("catan/assets/images/dice_2.png"))
+DICE3 = pygame.image.load(resolve_path("catan/assets/images/dice_3.png"))
+DICE4 = pygame.image.load(resolve_path("catan/assets/images/dice_4.png"))
+DICE5 = pygame.image.load(resolve_path("catan/assets/images/dice_5.png"))
+DICE6 = pygame.image.load(resolve_path("catan/assets/images/dice_6.png"))
 
 
 class DiceView(pygame.sprite.Sprite):
@@ -27,3 +35,20 @@ class DiceView(pygame.sprite.Sprite):
 
     def draw(self, screen):
         draw_dice(screen, self.rect.topleft, self.model.value)
+        
+        # image = DICE6 # default
+
+        # if self.model.value == 1:
+        #     image = DICE1
+        # elif self.model.value == 2:
+        #     image = DICE2
+        # elif self.model.value == 3:
+        #     image = DICE3
+        # elif self.model.value == 4:
+        #     image = DICE4
+        # elif self.model.value == 5:
+        #     image = DICE5
+        # elif self.model.value == 6:
+        #     image = DICE6
+        
+        # screen.blit(image, self.rect.topleft)
