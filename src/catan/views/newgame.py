@@ -5,6 +5,7 @@ from catan.util.pathresolver import resolve_path
 from catan.views.components.textinput import TextInput
 
 FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
+TITLE_FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 54)
 
 PLAYER_COLOURS = ["red", "orange", "green", "blue", "purple"]
 
@@ -30,6 +31,7 @@ class NewGameView:
 
         self.btn_classic = Button("Classic (10VP)", (415, 150))
         self.btn_timed = Button("Time limited", (645, 150))
+        
         self.btn_decr_time = Button("<", (1000, 150), size=(40, 50))
         self.txt_time = Button(format_time(self.time), (1050, 150), size=(100, 50))
         self.btn_incr_time = Button(">", (1160, 150), size=(40, 50))
@@ -202,6 +204,10 @@ class NewGameView:
 
     def on_render(self, screen):
         screen.fill("black")
+
+        title = TITLE_FONT.render("New game", True, "white")
+        width, _ = title.get_rect().size
+        screen.blit(title, (1280/2 - width/2, 50))
 
         self.btn_menu.draw(screen)
 

@@ -1,6 +1,9 @@
 import pygame
 
 from catan.views.components.button import Button
+from catan.util.pathresolver import resolve_path
+
+BACKGROUND_IMAGE = pygame.image.load(resolve_path("catan/assets/images/main_menu_background.png"))
 
 
 class MenuView:
@@ -22,7 +25,7 @@ class MenuView:
                     self.app.set_view(self.app.new_game_view)
 
                 if self.btn_load.rect.collidepoint(mouse_pos):
-                    pass
+                    self.app.set_view(self.app.load_game_view)
 
                 if self.btn_exit.rect.collidepoint(mouse_pos):
                     self.app.running = False
@@ -34,6 +37,7 @@ class MenuView:
 
     def on_render(self, screen):
         screen.fill("black")
+        # screen.blit(BACKGROUND_IMAGE, (0, 0))
 
         self.btn_new.draw(screen)
         self.btn_load.draw(screen)

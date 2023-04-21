@@ -4,6 +4,11 @@ from catan.util.pathresolver import resolve_path
 
 FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
 
+LUMBER = pygame.image.load(resolve_path("catan/assets/images/res_card_lumber_small.png"))
+WOOL = pygame.image.load(resolve_path("catan/assets/images/res_card_wool_small.png"))
+GRAIN = pygame.image.load(resolve_path("catan/assets/images/res_card_grain_small.png"))
+BRICK = pygame.image.load(resolve_path("catan/assets/images/res_card_brick_small.png"))
+ORE = pygame.image.load(resolve_path("catan/assets/images/res_card_ore_small.png"))
 DEV_CARD = pygame.image.load(resolve_path("catan/assets/images/dev_card_back.png"))
 
 
@@ -33,18 +38,18 @@ class BankPanel(pygame.sprite.Sprite):
 
         self.surf.blit(self.font.render("Bank", True, "white"), (10, 10))
 
-        pygame.draw.rect(self.surf, "#e6d85e", (10, 40, 40, 60))
-        pygame.draw.rect(self.surf, "#5fc73a", (58, 40, 40, 60))
-        pygame.draw.rect(self.surf, "#168a35", (106, 40, 40, 60))
-        pygame.draw.rect(self.surf, "#e09e2b", (154, 40, 40, 60))
-        pygame.draw.rect(self.surf, "#8c8c8c", (202, 40, 40, 60))
+        self.surf.blit(LUMBER, (10, 40))
+        self.surf.blit(WOOL, (58, 40))
+        self.surf.blit(GRAIN, (106, 40))
+        self.surf.blit(BRICK, (154, 40))
+        self.surf.blit(ORE, (202, 40))
         self.surf.blit(DEV_CARD, (250, 40))
 
-        self.surf.blit(self.font.render(str(self.lumber), True, "white"), (24, 108))
-        self.surf.blit(self.font.render(str(self.wool), True, "white"), (72, 108))
-        self.surf.blit(self.font.render(str(self.grain), True, "white"), (120, 108))
-        self.surf.blit(self.font.render(str(self.brick), True, "white"), (168, 108))
-        self.surf.blit(self.font.render(str(self.ore), True, "white"), (216, 108))
-        self.surf.blit(self.font.render(str(self.devs), True, "white"), (264, 108))
+        self.surf.blit(self.font.render(str(self.lumber), True, "white"), (20, 108))
+        self.surf.blit(self.font.render(str(self.wool), True, "white"), (68, 108))
+        self.surf.blit(self.font.render(str(self.grain), True, "white"), (116, 108))
+        self.surf.blit(self.font.render(str(self.brick), True, "white"), (164, 108))
+        self.surf.blit(self.font.render(str(self.ore), True, "white"), (212, 108))
+        self.surf.blit(self.font.render(str(self.devs), True, "white"), (260, 108))
 
         screen.blit(self.surf, self.rect)

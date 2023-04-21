@@ -4,6 +4,7 @@ from catan.models.game import GameModel
 from catan.views.game import GameView
 from catan.views.menu import MenuView
 from catan.views.newgame import NewGameView
+from catan.views.loadgame import LoadGameView
 from catan.controllers.game import GameController
 from catan.util.pathresolver import resolve_path
 
@@ -28,15 +29,15 @@ class Catan:
     def on_init(self):
         # testing saving and loading game files
         g = GameModel()
-        GameModel.save_to_file(g, "game.json")
+        GameModel.save_to_file(g, resolve_path("saves/game.json"))
         
         # create game MVC
-        self.game_model = GameModel.load_from_file("game.json")
+        self.game_model = GameModel.load_from_file(resolve_path("saves/game.json"))
         self.game_controller = GameController(self.game_model)
-
         self.game_view = GameView(self.game_controller, self)
         self.menu_view = MenuView(self)
         self.new_game_view = NewGameView(self)
+        self.load_game_view = LoadGameView(self)
 
         # initial view
         self.current_view = self.menu_view

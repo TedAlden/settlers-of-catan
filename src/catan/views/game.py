@@ -23,6 +23,13 @@ TERRAIN_NUMBER_FONT = pygame.font.SysFont(None, 32)
 FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
 BACKGROUND_IMAGE = pygame.image.load(resolve_path("catan/assets/images/background.png"))
 
+DICE1 = pygame.image.load(resolve_path("catan/assets/images/dice_1.png"))
+DICE2 = pygame.image.load(resolve_path("catan/assets/images/dice_2.png"))
+DICE3 = pygame.image.load(resolve_path("catan/assets/images/dice_3.png"))
+DICE4 = pygame.image.load(resolve_path("catan/assets/images/dice_4.png"))
+DICE5 = pygame.image.load(resolve_path("catan/assets/images/dice_5.png"))
+DICE6 = pygame.image.load(resolve_path("catan/assets/images/dice_6.png"))
+
 HEXTILE_COLOURS = {
     TerrainType.FIELD : "#e6d85e",
     TerrainType.PASTURE : "#5fc73a",
@@ -128,9 +135,8 @@ class GameView:
                     self.app.set_view(self.app.menu_view)
 
                 if self.btn_save.rect.collidepoint(mouse_pos):
-                    # TODO: include date and time in save file name?
-                    name = "game1.json"
-                    GameModel.save_to_file(self.controller.model, name)
+                    path = resolve_path("saves/game1.json")
+                    GameModel.save_to_file(self.controller.model, path)
 
                 if self.btn_settlement.rect.collidepoint(mouse_pos):
                     self.on_finish_action()
@@ -270,9 +276,7 @@ class GameView:
                 pygame.draw.circle(screen, colour, settlement.get_pos(), 10)
 
         # draw dice
-        dice1, dice2 = self.controller.get_dice()
-        draw_dice(screen, (74, 740), dice1.value)
-        draw_dice(screen, (166, 740), dice2.value)
+        self.__draw_dice(screen)
 
         # draw UI panels
         self.bank_table.draw(screen)
@@ -307,3 +311,38 @@ class GameView:
         # display current action
         a = self.controller.action.value
         screen.blit(FONT.render(f"Currently: {a}", True, "white"), (260, 90))
+
+
+    def __draw_dice(self, screen):
+        dice1, dice2 = self.controller.get_dice()
+        image1 = DICE6 # default
+        image2 = DICE6 # default
+
+        if dice1.value == 1:
+            image1 = DICE1
+        elif dice1.value == 2:
+            image1 = DICE2
+        elif dice1.value == 3:
+            image1 = DICE3
+        elif dice1.value == 4:
+            image1 = DICE4
+        elif dice1.value == 5:
+            image1 = DICE5
+        elif dice1.value == 6:
+            image1 = DICE6
+
+        if dice2.value == 1:
+            image2 = DICE1
+        elif dice2.value == 2:
+            image2 = DICE2
+        elif dice2.value == 3:
+            image2 = DICE3
+        elif dice2.value == 4:
+            image2 = DICE4
+        elif dice2.value == 5:
+            image2 = DICE5
+        elif dice2.value == 6:
+            image2 = DICE6
+
+        screen.blit(image1, (42, 708))        
+        screen.blit(image2, (134, 708))
