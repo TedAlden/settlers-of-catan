@@ -7,24 +7,37 @@ FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf
 
 class Button(pygame.sprite.Sprite):
 
-    def __init__(self, text, top_left, colour="white", background=None):
+    def __init__(self, text, top_left, colour="white", size=(220, 50)):
         self.text = text
         self.colour = colour
-        self.background = background
         self.font = FONT
+        self.selected = False
 
-        self.surf = pygame.Surface((220, 50))
+        self.surf = pygame.Surface(size)
         self.rect = self.surf.get_rect()
         self.rect.topleft = top_left
     
-        self.text = self.font.render(self.text, True, self.colour, self.background)
+        self.text = self.font.render(self.text, True, self.colour)
         text_rect = self.text.get_rect()
-        text_x = (self.rect.width / 2) - (text_rect.width / 2)
-        text_y = (self.rect.height / 2) - (text_rect.height / 2)
+        self.text_x = (self.rect.width / 2) - (text_rect.width / 2)
+        self.text_y = (self.rect.height / 2) - (text_rect.height / 2)
 
-        self.surf.fill("#999999")
-        self.surf.blit(self.text, (text_x, text_y))
+
+    def on_event(self, event):
+        pass
+
+
+    def set_text(self, text):
+        self.text = text
+        self.text = self.font.render(self.text, True, self.colour)
+        text_rect = self.text.get_rect()
+        self.text_x = (self.rect.width / 2) - (text_rect.width / 2)
+        self.text_y = (self.rect.height / 2) - (text_rect.height / 2)
         
 
     def draw(self, screen):
+        self.surf.fill("#999999")
+        if self.selected:
+            pygame.draw.rect(self.surf, "gold", (0,0,*self.rect.size), width=3)
+        self.surf.blit(self.text, (self.text_x, self.text_y))
         screen.blit(self.surf, self.rect)

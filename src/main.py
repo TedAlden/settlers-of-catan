@@ -3,6 +3,7 @@ import pygame
 from catan.models.game import GameModel
 from catan.views.game import GameView
 from catan.views.menu import MenuView
+from catan.views.newgame import NewGameView
 from catan.controllers.game import GameController
 from catan.util.pathresolver import resolve_path
 
@@ -35,6 +36,7 @@ class Catan:
 
         self.game_view = GameView(self.game_controller, self)
         self.menu_view = MenuView(self)
+        self.new_game_view = NewGameView(self)
 
         # initial view
         self.current_view = self.menu_view

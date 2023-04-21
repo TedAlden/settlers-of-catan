@@ -7,9 +7,9 @@ class MenuView:
 
     def __init__(self, app):
         self.app = app
-        self.btn_new = Button("New game", (200, 200))
-        self.btn_load = Button("Load game", (200, 300))
-        self.btn_exit = Button("Exit", (200, 400))
+        self.btn_new = Button("New game", (300, 600))
+        self.btn_load = Button("Load game", (530, 600))
+        self.btn_exit = Button("Exit", (760, 600))
 
 
     def on_event(self, event):
@@ -19,7 +19,7 @@ class MenuView:
 
                 # clicking on left hand side UI buttons...
                 if self.btn_new.rect.collidepoint(mouse_pos):
-                    self.app.set_view(self.app.game_view)
+                    self.app.set_view(self.app.new_game_view)
 
                 if self.btn_load.rect.collidepoint(mouse_pos):
                     pass
