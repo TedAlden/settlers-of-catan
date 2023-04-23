@@ -1,9 +1,12 @@
 import pygame
 import os
 
+from catan.controllers.game import GameController
+from catan.models.game import GameModel
 from catan.views.components.button import Button
 from catan.views.components.textinput import TextInput
 from catan.util.pathresolver import resolve_path
+from catan.views.game import GameView
 
 FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
 TITLE_FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 54)
@@ -53,9 +56,43 @@ class LoadGameView:
                     self.app.set_view(self.app.menu_view)
 
                 if self.btn_load_1.rect.collidepoint(mouse_pos):
+                    idx = (self.page - 1) * self.saves_per_page + 0
+                    path = resolve_path(os.path.join(SAVES_PATH, self.saves[idx]))
+                    self.__load_and_start_game(path)
+
+                if self.btn_del_1.rect.collidepoint(mouse_pos):
                     pass
 
-                if self.btn_load_1.rect.collidepoint(mouse_pos):
+                if self.btn_load_2.rect.collidepoint(mouse_pos):
+                    idx = (self.page - 1) * self.saves_per_page + 1
+                    path = resolve_path(os.path.join(SAVES_PATH, self.saves[idx]))
+                    self.__load_and_start_game(path)
+
+                if self.btn_del_2.rect.collidepoint(mouse_pos):
+                    pass
+
+                if self.btn_load_3.rect.collidepoint(mouse_pos):
+                    idx = (self.page - 1) * self.saves_per_page + 2
+                    path = resolve_path(os.path.join(SAVES_PATH, self.saves[idx]))
+                    self.__load_and_start_game(path)
+
+                if self.btn_del_3.rect.collidepoint(mouse_pos):
+                    pass
+
+                if self.btn_load_4.rect.collidepoint(mouse_pos):
+                    idx = (self.page - 1) * self.saves_per_page + 3
+                    path = resolve_path(os.path.join(SAVES_PATH, self.saves[idx]))
+                    self.__load_and_start_game(path)
+
+                if self.btn_del_4.rect.collidepoint(mouse_pos):
+                    pass
+
+                if self.btn_load_5.rect.collidepoint(mouse_pos):
+                    idx = (self.page - 1) * self.saves_per_page + 4
+                    path = resolve_path(os.path.join(SAVES_PATH, self.saves[idx]))
+                    self.__load_and_start_game(path)
+
+                if self.btn_del_5.rect.collidepoint(mouse_pos):
                     pass
 
                 if self.btn_prev_page.rect.collidepoint(mouse_pos):
@@ -117,7 +154,13 @@ class LoadGameView:
                 self.btn_load_5.draw(screen)
                 self.btn_del_5.draw(screen)
     
+
     def __format_page_text(self, current_page, last_page):
         return f"{current_page} / {last_page}"
+    
 
-
+    def __load_and_start_game(self, save_path):
+        self.app.game_model = GameModel.load_from_file(save_path)
+        self.app.game_controller = GameController(self.app.game_model)
+        self.app.game_view = GameView(self.app.game_controller, self.app)
+        self.app.set_view(self.app.game_view)
