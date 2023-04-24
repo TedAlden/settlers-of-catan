@@ -29,3 +29,8 @@ class ActionType(Enum):
 class GameMode(Enum):
     FIRST_TO_TEN = 1
     TIME_LIMIT = 2
+
+
+class PlayerType(Enum):
+    PLAYER = 1
+    AI = 2

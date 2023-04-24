@@ -1,8 +1,12 @@
 import pygame
+from catan.controllers.game import GameController
+from catan.models.game import GameModel
 
 from catan.views.components.button import Button
 from catan.util.pathresolver import resolve_path
 from catan.views.components.textinput import TextInput
+from catan.type import GameMode, PlayerType
+from catan.views.game import GameView
 
 FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
 TITLE_FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 54)
@@ -22,16 +26,16 @@ class NewGameView:
 
         self.time = 900  # seconds
 
-        self.player_col_1 = PLAYER_COLOURS[0]
-        self.player_col_2 = PLAYER_COLOURS[1]
-        self.player_col_3 = PLAYER_COLOURS[2]
-        self.player_col_4 = PLAYER_COLOURS[3]
+        self.player_1_col = PLAYER_COLOURS[0]
+        self.player_2_col = PLAYER_COLOURS[1]
+        self.player_3_col = PLAYER_COLOURS[2]
+        self.player_4_col = PLAYER_COLOURS[3]
 
         self.btn_menu = Button("Menu", (10, 10))
 
         self.btn_classic = Button("Classic (10VP)", (415, 150))
         self.btn_timed = Button("Time limited", (645, 150))
-        
+
         self.btn_decr_time = Button("<", (1000, 150), size=(40, 50))
         self.txt_time = Button(format_time(self.time), (1050, 150), size=(100, 50))
         self.btn_incr_time = Button(">", (1160, 150), size=(40, 50))
@@ -106,14 +110,14 @@ class NewGameView:
                     self.btn_ai_1.selected = True
 
                 if self.btn_decr_col_1.rect.collidepoint(mouse_pos):
-                    idx = PLAYER_COLOURS.index(self.player_col_1)
+                    idx = PLAYER_COLOURS.index(self.player_1_col)
                     idx = (idx - 1) % len(PLAYER_COLOURS)
-                    self.player_col_1 = PLAYER_COLOURS[idx]
+                    self.player_1_col = PLAYER_COLOURS[idx]
 
                 if self.btn_incr_col_1.rect.collidepoint(mouse_pos):
-                    idx = PLAYER_COLOURS.index(self.player_col_1)
+                    idx = PLAYER_COLOURS.index(self.player_1_col)
                     idx = (idx + 1) % len(PLAYER_COLOURS)
-                    self.player_col_1 = PLAYER_COLOURS[idx]
+                    self.player_1_col = PLAYER_COLOURS[idx]
 
                 if self.btn_player_2.rect.collidepoint(mouse_pos):
                     self.btn_player_2.selected = True
@@ -124,14 +128,14 @@ class NewGameView:
                     self.btn_ai_2.selected = True
 
                 if self.btn_decr_col_2.rect.collidepoint(mouse_pos):
-                    idx = PLAYER_COLOURS.index(self.player_col_2)
+                    idx = PLAYER_COLOURS.index(self.player_2_col)
                     idx = (idx - 1) % len(PLAYER_COLOURS)
-                    self.player_col_2 = PLAYER_COLOURS[idx]
+                    self.player_2_col = PLAYER_COLOURS[idx]
 
                 if self.btn_incr_col_2.rect.collidepoint(mouse_pos):
-                    idx = PLAYER_COLOURS.index(self.player_col_2)
+                    idx = PLAYER_COLOURS.index(self.player_2_col)
                     idx = (idx + 1) % len(PLAYER_COLOURS)
-                    self.player_col_2 = PLAYER_COLOURS[idx]
+                    self.player_2_col = PLAYER_COLOURS[idx]
 
                 if self.btn_player_3.rect.collidepoint(mouse_pos):
                     self.btn_player_3.selected = True
@@ -142,14 +146,14 @@ class NewGameView:
                     self.btn_ai_3.selected = True
 
                 if self.btn_decr_col_3.rect.collidepoint(mouse_pos):
-                    idx = PLAYER_COLOURS.index(self.player_col_3)
+                    idx = PLAYER_COLOURS.index(self.player_3_col)
                     idx = (idx - 1) % len(PLAYER_COLOURS)
-                    self.player_col_3 = PLAYER_COLOURS[idx]
+                    self.player_3_col = PLAYER_COLOURS[idx]
 
                 if self.btn_incr_col_3.rect.collidepoint(mouse_pos):
-                    idx = PLAYER_COLOURS.index(self.player_col_3)
+                    idx = PLAYER_COLOURS.index(self.player_3_col)
                     idx = (idx + 1) % len(PLAYER_COLOURS)
-                    self.player_col_3 = PLAYER_COLOURS[idx]
+                    self.player_3_col = PLAYER_COLOURS[idx]
 
                 if self.btn_player_4.rect.collidepoint(mouse_pos):
                     self.btn_player_4.selected = True
@@ -160,17 +164,17 @@ class NewGameView:
                     self.btn_ai_4.selected = True
 
                 if self.btn_decr_col_4.rect.collidepoint(mouse_pos):
-                    idx = PLAYER_COLOURS.index(self.player_col_4)
+                    idx = PLAYER_COLOURS.index(self.player_4_col)
                     idx = (idx - 1) % len(PLAYER_COLOURS)
-                    self.player_col_4 = PLAYER_COLOURS[idx]
+                    self.player_4_col = PLAYER_COLOURS[idx]
 
                 if self.btn_incr_col_4.rect.collidepoint(mouse_pos):
-                    idx = PLAYER_COLOURS.index(self.player_col_4)
+                    idx = PLAYER_COLOURS.index(self.player_4_col)
                     idx = (idx + 1) % len(PLAYER_COLOURS)
-                    self.player_col_4 = PLAYER_COLOURS[idx]
+                    self.player_4_col = PLAYER_COLOURS[idx]
 
                 if self.btn_start.rect.collidepoint(mouse_pos):
-                    self.app.set_view(self.app.game_view)
+                    self.__start_game_with_settings()
 
                 if self.ipt_name_1.rect.collidepoint(mouse_pos):
                     self.ipt_name_1.selected = True
@@ -229,7 +233,7 @@ class NewGameView:
         self.btn_ai_1.draw(screen)
         self.ipt_name_1.draw(screen)
         self.btn_decr_col_1.draw(screen)
-        self.box_col_1.fill(self.player_col_1)
+        self.box_col_1.fill(self.player_1_col)
         screen.blit(self.box_col_1, (1050, 300))
         self.btn_incr_col_1.draw(screen)
 
@@ -238,7 +242,7 @@ class NewGameView:
         self.btn_ai_2.draw(screen)
         self.ipt_name_2.draw(screen)
         self.btn_decr_col_2.draw(screen)
-        self.box_col_2.fill(self.player_col_2)
+        self.box_col_2.fill(self.player_2_col)
         screen.blit(self.box_col_2, (1050, 360))
         self.btn_incr_col_2.draw(screen)
 
@@ -247,7 +251,7 @@ class NewGameView:
         self.btn_ai_3.draw(screen)
         self.ipt_name_3.draw(screen)
         self.btn_decr_col_3.draw(screen)
-        self.box_col_3.fill(self.player_col_3)
+        self.box_col_3.fill(self.player_3_col)
         screen.blit(self.box_col_3, (1050, 420))
         self.btn_incr_col_3.draw(screen)
 
@@ -256,9 +260,46 @@ class NewGameView:
         self.btn_ai_4.draw(screen)
         self.ipt_name_4.draw(screen)
         self.btn_decr_col_4.draw(screen)
-        self.box_col_4.fill(self.player_col_4)
+        self.box_col_4.fill(self.player_4_col)
         screen.blit(self.box_col_4, (1050, 480))
         self.btn_incr_col_4.draw(screen)
 
         self.btn_start.draw(screen)
+
+
+    def __start_game_with_settings(self):
         
+
+        game_type = GameMode.FIRST_TO_TEN if self.btn_classic.selected else GameMode.TIME_LIMIT
+
+        player_1_type = PlayerType.PLAYER if self.btn_player_1.selected else PlayerType.AI
+        player_2_type = PlayerType.PLAYER if self.btn_player_2.selected else PlayerType.AI
+        player_3_type = PlayerType.PLAYER if self.btn_player_3.selected else PlayerType.AI
+        player_4_type = PlayerType.PLAYER if self.btn_player_4.selected else PlayerType.AI
+
+        player_1_name = self.ipt_name_1.input_text if self.ipt_name_1.input_text != "" else "Player 1"
+        player_2_name = self.ipt_name_2.input_text if self.ipt_name_2.input_text != "" else "Player 2"
+        player_3_name = self.ipt_name_3.input_text if self.ipt_name_3.input_text != "" else "Player 3"
+        player_4_name = self.ipt_name_4.input_text if self.ipt_name_4.input_text != "" else "Player 4"
+
+
+        self.app.game_model = GameModel(game_mode=game_type,
+                                        game_time_limit=self.time,
+                                        player_1_type = player_1_type,
+                                        player_2_type = player_2_type,
+                                        player_3_type = player_3_type,
+                                        player_4_type = player_4_type,
+                                        player_1_name = player_1_name,
+                                        player_2_name = player_2_name,
+                                        player_3_name = player_3_name,
+                                        player_4_name = player_4_name,
+                                        player_1_colour = self.player_1_col,
+                                        player_2_colour = self.player_2_col,
+                                        player_3_colour = self.player_3_col,
+                                        player_4_colour = self.player_4_col
+                                        )
+
+        self.app.game_controller = GameController(self.app.game_model)
+        self.app.game_view = GameView(self.app.game_controller, self.app)
+
+        self.app.set_view(self.app.game_view)
