@@ -22,4 +22,4 @@ class HexTile(pygame.sprite.Sprite):
 
 
     def get_pos(self):
-        return (self.rect.center[0], self.rect.center[1])
+        return self.rect.center

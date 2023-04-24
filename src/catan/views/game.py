@@ -6,38 +6,41 @@ from math import sqrt
 from catan.models.game import GameModel
 from catan.models.settlement import Settlement
 from catan.models.city import City
-
-from catan.views.components.bankpanel import BankPanel
-from catan.views.components.inventorypanel import InventoryPanel
-from catan.views.components.playerpanel import PlayerPanel
 from catan.views.components.button import Button
-
 from catan.type import ActionType, TerrainType
-
 from catan.util.pathresolver import resolve_path
-from catan.util.shapes import draw_city, draw_dice, draw_hextile, draw_road, draw_settlement, draw_robber
+from catan.util.shapes import draw_city, draw_road, draw_settlement, draw_robber
 
 pygame.font.init()
 
 TERRAIN_NUMBER_FONT = pygame.font.SysFont(None, 32)
 FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
+
 BACKGROUND_IMAGE = pygame.image.load(resolve_path("catan/assets/images/background.png"))
 
-DICE1 = pygame.image.load(resolve_path("catan/assets/images/dice_1.png"))
-DICE2 = pygame.image.load(resolve_path("catan/assets/images/dice_2.png"))
-DICE3 = pygame.image.load(resolve_path("catan/assets/images/dice_3.png"))
-DICE4 = pygame.image.load(resolve_path("catan/assets/images/dice_4.png"))
-DICE5 = pygame.image.load(resolve_path("catan/assets/images/dice_5.png"))
-DICE6 = pygame.image.load(resolve_path("catan/assets/images/dice_6.png"))
+RC_LUMBER_SMALL = pygame.image.load(resolve_path("catan/assets/images/res_card_lumber_small.png"))
+RC_WOOL_SMALL = pygame.image.load(resolve_path("catan/assets/images/res_card_wool_small.png"))
+RC_GRAIN_SMALL = pygame.image.load(resolve_path("catan/assets/images/res_card_grain_small.png"))
+RC_BRICK_SMALL = pygame.image.load(resolve_path("catan/assets/images/res_card_brick_small.png"))
+RC_ORE_SMALL = pygame.image.load(resolve_path("catan/assets/images/res_card_ore_small.png"))
 
-HEXTILE_COLOURS = {
-    TerrainType.FIELD : "#e6d85e",
-    TerrainType.PASTURE : "#5fc73a",
-    TerrainType.FOREST : "#168a35",
-    TerrainType.HILL : "#e09e2b",
-    TerrainType.MOUNTAIN : "#8c8c8c",
-    TerrainType.DESERT : "#b5ac6e"
-}
+RC_LUMBER = pygame.image.load(resolve_path("catan/assets/images/res_card_lumber.png"))
+RC_WOOL = pygame.image.load(resolve_path("catan/assets/images/res_card_wool.png"))
+RC_GRAIN = pygame.image.load(resolve_path("catan/assets/images/res_card_grain.png"))
+RC_BRICK = pygame.image.load(resolve_path("catan/assets/images/res_card_brick.png"))
+RC_ORE = pygame.image.load(resolve_path("catan/assets/images/res_card_ore.png"))
+
+DC_KNIGHT = pygame.image.load(resolve_path("catan/assets/images/dev_card_knight.png"))
+DC_ROAD = pygame.image.load(resolve_path("catan/assets/images/dev_card_road.png"))
+DC_PLENTY = pygame.image.load(resolve_path("catan/assets/images/dev_card_plenty.png"))
+DC_MONOPOLY = pygame.image.load(resolve_path("catan/assets/images/dev_card_monopoly.png"))
+DC_VP = pygame.image.load(resolve_path("catan/assets/images/dev_card_knight.png"))
+
+DEV_CARD = pygame.image.load(resolve_path("catan/assets/images/dev_card_back.png"))
+RES_CARD = pygame.image.load(resolve_path("catan/assets/images/res_card_back.png"))
+VP_ICON = pygame.image.load(resolve_path("catan/assets/images/vp_icon.png"))
+LARGEST_ARMY = pygame.image.load(resolve_path("catan/assets/images/largest_army.png"))
+LONGEST_ROAD = pygame.image.load(resolve_path("catan/assets/images/longest_road.png"))
 
 HEXTILE_IMAGES = {
     TerrainType.FIELD : pygame.image.load(resolve_path("catan/assets/images/hex_grain.png")),
@@ -46,6 +49,15 @@ HEXTILE_IMAGES = {
     TerrainType.HILL : pygame.image.load(resolve_path("catan/assets/images/hex_brick.png")),
     TerrainType.MOUNTAIN : pygame.image.load(resolve_path("catan/assets/images/hex_ore.png")),
     TerrainType.DESERT : pygame.image.load(resolve_path("catan/assets/images/hex_desert.png")),
+}
+
+DICE_IMAGES = {
+    1: pygame.image.load(resolve_path("catan/assets/images/dice_1.png")),
+    2: pygame.image.load(resolve_path("catan/assets/images/dice_2.png")),
+    3: pygame.image.load(resolve_path("catan/assets/images/dice_3.png")),
+    4: pygame.image.load(resolve_path("catan/assets/images/dice_4.png")),
+    5: pygame.image.load(resolve_path("catan/assets/images/dice_5.png")),
+    6: pygame.image.load(resolve_path("catan/assets/images/dice_6.png"))
 }
 
 
@@ -74,15 +86,6 @@ class GameView:
         self.btn_player_trade = Button("Player Trade", (10, 510))
         self.btn_bank_trade = Button("Bank Trade", (10, 570))
         self.btn_next_turn = Button("End Turn", (10, 630))
-
-        # UI panels
-        players = self.controller.get_players()
-        self.bank_table = BankPanel(self.controller.get_bank(), (970, 10))
-        self.inventory_table = InventoryPanel((320, 680))
-        self.player_table_1 = PlayerPanel(players[0], (970, 168))
-        self.player_table_2 = PlayerPanel(players[1], (970, 326))
-        self.player_table_3 = PlayerPanel(players[2], (970, 484))
-        self.player_table_4 = PlayerPanel(players[3], (970, 642))
 
         # calculate coordinates of terrain tiles and settlements
         relative_coords = [
@@ -174,7 +177,7 @@ class GameView:
                 for settlement in self.controller.get_settlements():
                     if settlement.rect.collidepoint(mouse_pos):
                         if self.controller.action == ActionType.PLACE_ROAD:
-                            self.on_place_road(settlement)
+                            self.__handle_place_road(settlement)
 
                         elif self.controller.action == ActionType.PLACE_SETTLEMENT:
                             self.controller.place_settlement(settlement)
@@ -192,7 +195,7 @@ class GameView:
                             self.on_finish_action()
 
 
-    def on_place_road(self, settlement):
+    def __handle_place_road(self, settlement):
         # select first settlement
         if len(self.selected) == 0:
             self.selected.append(settlement)
@@ -216,75 +219,28 @@ class GameView:
         self.last_tick = tick
         self.controller.model.game_time += delta_time
 
-        # update resource panels on right hand side of screen UI
-        self.bank_table.update()
-        self.inventory_table.set_player(self.controller.get_current_player())
-        self.inventory_table.update()
-        self.player_table_1.update()
-        self.player_table_2.update()
-        self.player_table_3.update()
-        self.player_table_4.update()
-
 
     def on_render(self, screen):
         # draw catan background
         screen.blit(BACKGROUND_IMAGE, (0, 0))
 
-        # draw the boards roads
-        for road in self.controller.get_roads():
-            pos1, pos2 = road.settlements[0].get_pos(), road.settlements[1].get_pos()
-            draw_road(screen, pos1, pos2, road.owner.colour)
+        # draw board
+        self.__draw_board(screen)
 
-        # draw the boards hex tiles
-        for tile in self.controller.get_tiles():
-            # col = SETTLEMENT_COLOURS[tile.type]
-            # draw_hextile(screen, col, self.hex_radius - 5, tile.get_pos(), tile.number)
-
-            img = HEXTILE_IMAGES[tile.type]
-            hw, hh = img.get_width() / 2, img.get_height() / 2
-            x, y = tile.get_pos()
-            screen.blit(img, (x-hw, y-hh))
-
-            if tile.number > 0:
-                img = TERRAIN_NUMBER_FONT.render(str(tile.number), True, "white")
-                w, h = img.get_rect().width, img.get_rect().height
-                screen.blit(img, (x - 0.5 * w, y - 0.5 * h))
-
-            # draw robber if it is placed here
-            robber = self.controller.get_robber()
-            if tile == robber.get_hex():
-                x, y = tile.get_pos()
-                draw_robber(screen, (x, y + 30), robber.get_owner().colour)
-
-        # draw the boards settlements
-        for settlement in self.controller.get_settlements():
-            # draw settlement
-            if isinstance(settlement, Settlement):
-                colour = "#ffffff" if settlement.selected else settlement.owner.colour
-                draw_settlement(screen, colour, settlement.get_pos())
-
-            # draw city
-            elif isinstance(settlement, City):
-                colour = "#ffffff" if settlement.selected else settlement.owner.colour
-                draw_city(screen, colour, settlement.get_pos())
-
-            # draw empty settlement marker when placing board pieces
-            elif self.controller.action in (ActionType.PLACE_CITY,
-                                            ActionType.PLACE_ROAD,
-                                            ActionType.PLACE_SETTLEMENT):
-                colour = "#ffffff" if settlement.selected else "#cccccc"
-                pygame.draw.circle(screen, colour, settlement.get_pos(), 10)
+        # draw UI panels
+        bank = self.controller.get_bank()
+        current_player = self.controller.get_current_player()
+        players = self.controller.get_players()
+        
+        self.__draw_bank_panel(screen, bank, (970, 10))
+        self.__draw_inventory_panel(screen, current_player, (320, 680))
+        self.__draw_player_panel(screen, players[0], (970, 168))
+        self.__draw_player_panel(screen, players[1], (970, 326))
+        self.__draw_player_panel(screen, players[2], (970, 484))
+        self.__draw_player_panel(screen, players[3], (970, 642))
 
         # draw dice
         self.__draw_dice(screen)
-
-        # draw UI panels
-        self.bank_table.draw(screen)
-        self.inventory_table.draw(screen)
-        self.player_table_1.draw(screen)
-        self.player_table_2.draw(screen)
-        self.player_table_3.draw(screen)
-        self.player_table_4.draw(screen)
 
         # draw UI buttons
         self.btn_menu.draw(screen)
@@ -300,49 +256,167 @@ class GameView:
         self.btn_bank_trade.draw(screen)
         self.btn_next_turn.draw(screen)
 
-        # display current player
+        # display current player, game time, current action
         p = self.controller.get_current_player().name
-        screen.blit(FONT.render(f"Turn: {p}", True, "white"), (260, 30))
-
-        # display game time
         t = self.get_time()
-        screen.blit(FONT.render(f"Time: {t}", True, "white"), (260, 60))
-
-        # display current action
         a = self.controller.action.value
+        screen.blit(FONT.render(f"Turn: {p}", True, "white"), (260, 30))
+        screen.blit(FONT.render(f"Time: {t}", True, "white"), (260, 60))      
         screen.blit(FONT.render(f"Currently: {a}", True, "white"), (260, 90))
+
+    
+    def __draw_board(self, screen):
+        # draw the boards roads
+        for road in self.controller.get_roads():
+            pos1, pos2 = road.settlements[0].get_pos(), road.settlements[1].get_pos()
+            draw_road(screen, pos1, pos2, road.owner.colour)
+
+        # draw the boards hex tiles
+        for tile in self.controller.get_tiles():
+            # draw terrain hex
+            x, y = tile.get_pos()
+            img = HEXTILE_IMAGES[tile.type]
+            half_w, half_h = img.get_width() / 2, img.get_height() / 2
+            screen.blit(img, (x - half_w, y - half_h))
+
+            # draw hex tile number
+            if tile.number > 0:
+                img = TERRAIN_NUMBER_FONT.render(str(tile.number), True, "white")
+                w, h = img.get_rect().width, img.get_rect().height
+                screen.blit(img, (x - 0.5 * w, y - 0.5 * h))
+
+            # draw robber if it is placed here
+            robber = self.controller.get_robber()
+            if tile == robber.get_hex():
+                draw_robber(screen, (x, y + 30), robber.get_owner().colour)
+
+        # draw the boards settlements
+        for settlement in self.controller.get_settlements():
+            x, y = settlement.get_pos()
+            # draw settlement
+            if isinstance(settlement, Settlement):
+                colour = "#ffffff" if settlement.selected else settlement.owner.colour
+                draw_settlement(screen, colour, (x, y))
+
+            # draw city
+            elif isinstance(settlement, City):
+                colour = "#ffffff" if settlement.selected else settlement.owner.colour
+                draw_city(screen, colour, (x, y))
+
+            # draw empty settlement indicator when placing board pieces
+            elif self.controller.action in (ActionType.PLACE_CITY,
+                                            ActionType.PLACE_ROAD,
+                                            ActionType.PLACE_SETTLEMENT):
+                colour = "#ffffff" if settlement.selected else "#cccccc"
+                pygame.draw.circle(screen, colour, (x, y), 10)
 
 
     def __draw_dice(self, screen):
         dice1, dice2 = self.controller.get_dice()
-        image1 = DICE6 # default
-        image2 = DICE6 # default
 
-        if dice1.value == 1:
-            image1 = DICE1
-        elif dice1.value == 2:
-            image1 = DICE2
-        elif dice1.value == 3:
-            image1 = DICE3
-        elif dice1.value == 4:
-            image1 = DICE4
-        elif dice1.value == 5:
-            image1 = DICE5
-        elif dice1.value == 6:
-            image1 = DICE6
-
-        if dice2.value == 1:
-            image2 = DICE1
-        elif dice2.value == 2:
-            image2 = DICE2
-        elif dice2.value == 3:
-            image2 = DICE3
-        elif dice2.value == 4:
-            image2 = DICE4
-        elif dice2.value == 5:
-            image2 = DICE5
-        elif dice2.value == 6:
-            image2 = DICE6
+        image1 = DICE_IMAGES[dice1.value]
+        image2 = DICE_IMAGES[dice2.value]
 
         screen.blit(image1, (42, 708))        
         screen.blit(image2, (134, 708))
+
+
+    def __draw_bank_panel(self, screen, bank, pos):
+        x, y, w, h = *pos, 300, 148
+
+        lumber = bank.count_lumber()
+        wool = bank.count_wool()
+        grain = bank.count_grain()
+        brick = bank.count_brick()
+        ore = bank.count_ore()
+        devs = bank.count_development_cards()
+
+        pygame.draw.rect(screen, "#999999", (x, y, w, h))
+
+        screen.blit(FONT.render("Bank", True, "white"), (x+10, y+10))
+
+        screen.blit(RC_LUMBER_SMALL, (x+10, y+40))
+        screen.blit(RC_WOOL_SMALL, (x+58, y+40))
+        screen.blit(RC_GRAIN_SMALL, (x+106, y+40))
+        screen.blit(RC_BRICK_SMALL, (x+154, y+40))
+        screen.blit(RC_ORE_SMALL, (x+202, y+40))
+        screen.blit(DEV_CARD, (x+250, y+40))
+
+        screen.blit(FONT.render(str(lumber), True, "white"), (x+20, y+108))
+        screen.blit(FONT.render(str(wool), True, "white"), (x+68, y+108))
+        screen.blit(FONT.render(str(grain), True, "white"), (x+116, y+108))
+        screen.blit(FONT.render(str(brick), True, "white"), (x+164, y+108))
+        screen.blit(FONT.render(str(ore), True, "white"), (x+212, y+108))
+        screen.blit(FONT.render(str(devs), True, "white"), (x+260, y+108))
+
+    
+    def __draw_player_panel(self, screen, player, pos):
+        x, y, w, h = *pos, 300, 148
+
+        name = player.name
+        colour = player.colour
+        vp = player.count_vp()
+        road = player.count_longest_road()
+        army = player.count_army()
+        res = player.count_resource_cards()
+        dev = player.count_development_cards()
+
+        pygame.draw.rect(screen, "#999999", (x, y, w, h))
+
+        pygame.draw.circle(screen, colour, (x+19, y+19), 9)
+        screen.blit(FONT.render(name, True, colour), (x+38, y+10))
+
+        screen.blit(RES_CARD, (x+10, y+40))
+        screen.blit(DEV_CARD, (x+58, y+40))
+        screen.blit(VP_ICON, (x+106, y+40))
+
+        # FIXME: only show if player has longest road...
+        screen.blit(LONGEST_ROAD, (x+160, y+24))
+
+        # FIXME: only show if player has largest army...
+        screen.blit(LARGEST_ARMY, (x+230, y+24))
+
+        screen.blit(FONT.render(str(res), True, "white"), (x+24, y+108))
+        screen.blit(FONT.render(str(dev), True, "white"), (x+72, y+108))
+        screen.blit(FONT.render(str(vp), True, "white"), (x+120, y+108))
+
+    
+    def __draw_inventory_panel(self, screen, player, pos):
+        x, y, w, h = *pos, 640, 120
+
+        lumber = player.count_lumber()
+        wool = player.count_wool()
+        grain = player.count_grain()
+        brick = player.count_brick()
+        ore = player.count_ore()
+        knight = player.count_card_knight()
+        road = player.count_card_road()
+        plenty = player.count_card_year_plenty()
+        monopoly = player.count_card_monopoly()
+        vp = player.count_card_vp()
+
+        pygame.draw.rect(screen, "#999999", (x, y, w, h))
+
+        screen.blit(RC_LUMBER, (x+10, y+10))
+        screen.blit(RC_WOOL, (x+68, y+10))
+        screen.blit(RC_GRAIN, (x+126, y+10))
+        screen.blit(RC_BRICK, (x+184, y+10))
+        screen.blit(RC_ORE, (x+242, y+10))
+
+        screen.blit(FONT.render(str(lumber), True, "white"), (x+28, y+90))
+        screen.blit(FONT.render(str(wool), True, "white"), (x+86, y+90))
+        screen.blit(FONT.render(str(grain), True, "white"), (x+144, y+90))
+        screen.blit(FONT.render(str(brick), True, "white"), (x+202, y+90))
+        screen.blit(FONT.render(str(ore), True, "white"), (x+260, y+90))
+
+        screen.blit(DC_KNIGHT, (x+350, y+10))
+        screen.blit(DC_ROAD, (x+408, y+10))
+        screen.blit(DC_PLENTY, (x+466, y+10))
+        screen.blit(DC_MONOPOLY, (x+524, y+10))
+        screen.blit(DC_VP, (x+582, y+10))
+
+        screen.blit(FONT.render(str(knight), True, "white"), (x+368, y+90))
+        screen.blit(FONT.render(str(road), True, "white"), (x+426, y+90))
+        screen.blit(FONT.render(str(plenty), True, "white"), (x+484, y+90))
+        screen.blit(FONT.render(str(monopoly), True, "white"), (x+542, y+90))
+        screen.blit(FONT.render(str(vp), True, "white"), (x+600, y+90))

@@ -29,7 +29,6 @@ class Catan:
     def on_init(self):
         # testing saving and loading game files
         g = GameModel()
-        GameModel.save_to_file(g, resolve_path("saves/game.json"))
         
         # create game MVC
         self.game_model = GameModel.load_from_file(resolve_path("saves/game.json"))
