@@ -9,7 +9,6 @@ class GameController:
     def __init__(self, model):
         self.model = model
         self.action = ActionType.NONE
-        self.current_player = self.model.players[0]
 
         # TODO:
         # ... = BankController
@@ -42,7 +41,11 @@ class GameController:
 
 
     def get_current_player(self):
-        return self.current_player
+        return self.model.current_turn
+    
+
+    def set_current_player(self, player):
+        self.model.current_turn = player
 
 
     def get_roads(self):
@@ -60,10 +63,10 @@ class GameController:
     def next_turn(self):
         # Skip to the next turn in order
         players = self.get_players()
-        idx = players.index(self.current_player)
+        idx = players.index(self.get_current_player())
         idx = (idx + 1) % len(players)
-        self.current_player = players[idx]
-        print(f"Player turn: {self.current_player.name}")
+        self.set_current_player(players[idx])
+        print(f"Player turn: {self.get_current_player().name}")
 
 
     def place_road(self, settlement1, settlement2):
@@ -73,12 +76,12 @@ class GameController:
             touching_own_road = False
             for node in (settlement1, settlement2):
                 for road in self.model.board.roads:
-                    if road.owner == self.current_player and node in road.settlements:
+                    if road.owner == self.get_current_player() and node in road.settlements:
                         touching_own_road = True
 
             # check if touching one of the players existing settlements
             touching_own_settlement = False
-            if self.current_player in (settlement1.owner, settlement2.owner):
+            if self.get_current_player() in (settlement1.owner, settlement2.owner):
                 touching_own_settlement = True
 
             # check that the road does not already exist
@@ -86,16 +89,16 @@ class GameController:
 
             # finally place road if all conditions are valid
             if (not road_occupied) and (touching_own_road or touching_own_settlement):
-                self.model.board.add_road(settlement1, settlement2, self.current_player)
-                self.current_player.roads += 1
-                print(f"Player '{self.current_player.name}' placed a road!")
+                self.model.board.add_road(settlement1, settlement2, self.get_current_player())
+                self.get_current_player().roads += 1
+                print(f"Player '{self.get_current_player().name}' placed a road!")
 
 
     def place_settlement(self, settlement):
         # check if settlement is already owned by any player
         already_owned = isinstance(settlement, (Settlement, City))
         # check if this is one of the players initial 2 settlements
-        placed_initial = self.current_player.count_settlements() >= 2
+        placed_initial = self.get_current_player().count_settlements() >= 2
         space_around = True
         touching_roads = False
         for node in self.model.board.get_surrounding_nodes(settlement):
@@ -110,24 +113,24 @@ class GameController:
 
         # finally place settlement if all conditions are valid
         if not already_owned and space_around and (not placed_initial or touching_roads):
-            self.model.board.add_settlement(settlement, self.current_player)
-            self.current_player.settlements += 1
-            print(f"Player '{self.current_player.name}' placed a settlement!")
+            self.model.board.add_settlement(settlement, self.get_current_player())
+            self.get_current_player().settlements += 1
+            print(f"Player '{self.get_current_player().name}' placed a settlement!")
 
 
     def place_city(self, settlement):
         # check player is upgrading their own settlement to a city
-        if settlement.owner == self.current_player:
+        if settlement.owner == self.get_current_player():
             # perform upgrade
             self.model.board.add_city(settlement)
-            self.current_player.cities += 1
-            print(f"Player '{self.current_player.name}' upgraded to a city!")
+            self.get_current_player().cities += 1
+            print(f"Player '{self.get_current_player().name}' upgraded to a city!")
 
 
     def place_robber(self, terrain):
         self.get_robber().set_hex(terrain)
-        self.get_robber().set_owner(self.current_player)
-        print(f"Player '{self.current_player.name}' placed the robber!")
+        self.get_robber().set_owner(self.get_current_player())
+        print(f"Player '{self.get_current_player().name}' placed the robber!")
 
 
     def roll_dice(self):
@@ -138,7 +141,7 @@ class GameController:
         dice2.roll()
         total = dice1.value + dice2.value
 
-        turn_info = f"{self.current_player.name} rolled a {total}\n"
+        turn_info = f"{self.get_current_player().name} rolled a {total}\n"
 
         if total == 7:
             self.action = ActionType.PLACE_ROBBER

@@ -58,6 +58,7 @@ class GameModel:
         else:
             self.players.append(Player(player_4_name, player_4_colour))
 
+        self.current_turn = self.players[0]
 
     @staticmethod
     def serialize(game):
