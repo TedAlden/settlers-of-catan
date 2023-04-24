@@ -30,7 +30,7 @@ class Button(pygame.sprite.Sprite):
     def set_text(self, text):
         self.text = text
         self.text_surf = self.font.render(self.text, True, self.colour)
-        text_rect = self.text.get_rect()
+        text_rect = self.text_surf.get_rect()
         self.text_x = (self.rect.width / 2) - (text_rect.width / 2)
         self.text_y = (self.rect.height / 2) - (text_rect.height / 2)
         
