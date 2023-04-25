@@ -3,8 +3,6 @@ import pygame
 from catan.views.components.button import Button
 from catan.util.pathresolver import resolve_path
 
-BACKGROUND_IMAGE = pygame.image.load(resolve_path("catan/assets/images/main_menu_background.png"))
-
 WATER = pygame.image.load(resolve_path("catan/assets/images/water.png"))
 TITLE_FONT_SMALL = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 48)
 TITLE_FONT_LARGE = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 96)
