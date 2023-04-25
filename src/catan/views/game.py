@@ -34,7 +34,7 @@ DC_KNIGHT = pygame.image.load(resolve_path("catan/assets/images/dev_card_knight.
 DC_ROAD = pygame.image.load(resolve_path("catan/assets/images/dev_card_road.png"))
 DC_PLENTY = pygame.image.load(resolve_path("catan/assets/images/dev_card_plenty.png"))
 DC_MONOPOLY = pygame.image.load(resolve_path("catan/assets/images/dev_card_monopoly.png"))
-DC_VP = pygame.image.load(resolve_path("catan/assets/images/dev_card_knight.png"))
+DC_VP = pygame.image.load(resolve_path("catan/assets/images/dev_card_vp.png"))
 
 DEV_CARD = pygame.image.load(resolve_path("catan/assets/images/dev_card_back.png"))
 RES_CARD = pygame.image.load(resolve_path("catan/assets/images/res_card_back.png"))
