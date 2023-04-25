@@ -5,6 +5,9 @@ from catan.util.pathresolver import resolve_path
 
 BACKGROUND_IMAGE = pygame.image.load(resolve_path("catan/assets/images/main_menu_background.png"))
 
+WATER = pygame.image.load(resolve_path("catan/assets/images/water.png"))
+TITLE_FONT_SMALL = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 48)
+TITLE_FONT_LARGE = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 96)
 
 class MenuView:
 
@@ -37,7 +40,15 @@ class MenuView:
 
     def on_render(self, screen):
         screen.fill("black")
-        # screen.blit(BACKGROUND_IMAGE, (0, 0))
+        screen.blit(WATER, (0, 0))
+
+        title_1 = TITLE_FONT_SMALL.render("Settlers of", True, "white")
+        width = title_1.get_rect().width
+        screen.blit(title_1, (640 - width / 2, 220))
+
+        title_2 = TITLE_FONT_LARGE.render("Catan", True, "white")
+        width = title_2.get_rect().width
+        screen.blit(title_2, (640 - width / 2, 300))
 
         self.btn_new.draw(screen)
         self.btn_load.draw(screen)

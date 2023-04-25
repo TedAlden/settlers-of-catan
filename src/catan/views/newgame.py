@@ -11,6 +11,8 @@ from catan.views.game import GameView
 FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 18)
 TITLE_FONT = pygame.font.Font(resolve_path("catan/assets/fonts/EightBitDragon-anqx.ttf"), 54)
 
+WATER = pygame.image.load(resolve_path("catan/assets/images/water.png"))
+
 PLAYER_COLOURS = ["red", "orange", "green", "blue", "purple"]
 
 def format_time(seconds):
@@ -208,6 +210,7 @@ class NewGameView:
 
     def on_render(self, screen):
         screen.fill("black")
+        screen.blit(WATER, (0, 0))
 
         title = TITLE_FONT.render("New game", True, "white")
         width, _ = title.get_rect().size
