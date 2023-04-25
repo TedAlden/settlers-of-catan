@@ -26,12 +26,9 @@ class Catan:
         self.clock = pygame.time.Clock()
         
     
-    def on_init(self):
-        # testing saving and loading game files
-        g = GameModel()
-        
+    def on_init(self):       
         # create game MVC
-        self.game_model = GameModel.load_from_file(resolve_path("saves/game.json"))
+        self.game_model = GameModel()
         self.game_controller = GameController(self.game_model)
         self.game_view = GameView(self.game_controller, self)
         self.menu_view = MenuView(self)
