@@ -63,8 +63,8 @@ class Bank:
 
 
     def remove_resources(self, lumber=0, wool=0, grain=0, brick=0, ore=0):
-        self.lumber -= lumber
-        self.wool -= wool
-        self.grain -= grain
-        self.brick -= brick
-        self.ore -= ore
+        self.lumber = max(0, self.lumber - lumber)
+        self.wool = max(0, self.wool - wool)
+        self.grain = max(0, self.grain - grain)
+        self.brick = max(0, self.brick - brick)
+        self.ore = max(0, self.ore - ore)
