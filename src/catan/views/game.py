@@ -8,7 +8,7 @@ from catan.models.settlement import Settlement
 from catan.models.city import City
 from catan.views.bank_trade import BankTradeView
 from catan.views.components.button import Button
-from catan.type import ActionType, TerrainType
+from catan.type import ActionType, ResourceType, TerrainType
 from catan.util.pathresolver import resolve_path
 from catan.util.shapes import draw_city, draw_road, draw_settlement, draw_robber
 from catan.views.playertrade import PlayerTradeView
@@ -60,6 +60,15 @@ DICE_IMAGES = {
     4: pygame.image.load(resolve_path("catan/assets/images/dice_4.png")),
     5: pygame.image.load(resolve_path("catan/assets/images/dice_5.png")),
     6: pygame.image.load(resolve_path("catan/assets/images/dice_6.png"))
+}
+
+HARBOUR_IMAGES = {
+    ResourceType.ANY: pygame.image.load(resolve_path("catan/assets/images/harbour_any.png")),
+    ResourceType.LUMBER: pygame.image.load(resolve_path("catan/assets/images/harbour_lumber.png")),
+    ResourceType.WOOL: pygame.image.load(resolve_path("catan/assets/images/harbour_wool.png")),
+    ResourceType.GRAIN: pygame.image.load(resolve_path("catan/assets/images/harbour_grain.png")),
+    ResourceType.BRICK: pygame.image.load(resolve_path("catan/assets/images/harbour_brick.png")),
+    ResourceType.ORE: pygame.image.load(resolve_path("catan/assets/images/harbour_ore.png"))
 }
 
 
@@ -115,6 +124,12 @@ class GameView:
                     y = terrain_tile.get_pos()[1] - relative_coords[idx][1]
                     settlement.set_pos(x, y)
                     visited_settlements.append(settlement)
+
+        for harbour in self.controller.get_harbours():
+            tx, ty = harbour.axial_coord
+            x = tx * 3/2 * self.hex_radius
+            y = tx * 0.5 * self.hex_height + ty * self.hex_height
+            harbour.set_pos(x + 640, y + 400)  # shift grid
 
 
     def on_finish_action(self):
@@ -320,6 +335,13 @@ class GameView:
                                             ActionType.PLACE_SETTLEMENT):
                 colour = "#ffffff" if settlement.selected else "#cccccc"
                 pygame.draw.circle(screen, colour, (x, y), 10)
+
+        # draw the harbours
+        for harbour in self.controller.get_harbours():
+            x, y = harbour.get_pos()
+            img = HARBOUR_IMAGES[harbour.get_type()]
+            half_w, half_h = img.get_width() / 2, img.get_height() / 2
+            screen.blit(img, (x - half_w, y - half_h))
 
 
     def __draw_dice(self, screen):

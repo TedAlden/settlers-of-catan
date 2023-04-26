@@ -139,6 +139,10 @@ class GameController:
         return self.model.board.terrain_tiles.values()
     
 
+    def get_harbours(self):
+        return self.model.board.harbours.values()
+    
+
     def is_turn_finished(
             self
         ) -> bool:

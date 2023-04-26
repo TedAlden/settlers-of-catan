@@ -16,6 +16,7 @@ class ResourceType(Enum):
     GRAIN = 4
     BRICK = 8
     ORE = 16
+    ANY = 32  # used for 3:1 harbours
 
 
 class ActionType(Enum):

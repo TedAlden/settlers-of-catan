@@ -2,12 +2,13 @@ from math import sqrt
 from collections import defaultdict
 from random import shuffle
 
+from catan.models.harbour import Harbour
 from catan.models.settlement import Settlement
 from catan.models.emptysettlement import EmptySettlement
 from catan.models.hextile import HexTile
 from catan.models.road import Road
 from catan.models.city import City
-from catan.type import TerrainType
+from catan.type import ResourceType, TerrainType
 
 
 class Board:
@@ -17,6 +18,7 @@ class Board:
         self.settlements = []
         self.roads = []
         self.terrain_tiles = {}
+        self.harbours = {}
 
 
     def get_terrain_tile(self, axial_x, axial_y):
@@ -183,6 +185,31 @@ class Board:
             "2,-1": [23, 29, 35, 34, 28, 22],
             "2,0": [35, 41, 47, 46, 40, 34]
         }
+
+        # ----------- add harbours -------------------------------------
+        harbour_types = [ResourceType.ANY,
+                         ResourceType.ANY,
+                         ResourceType.ANY,
+                         ResourceType.ANY,
+                         ResourceType.LUMBER,
+                         ResourceType.WOOL,
+                         ResourceType.GRAIN,
+                         ResourceType.BRICK,
+                         ResourceType.ORE]
+        
+        shuffle(harbour_types)
+        
+        b.harbours = {
+            "0,-3": Harbour((0, -3), harbour_types[0], b.settlements[0], b.settlements[0]),
+            "2,-3": Harbour((2, -3), harbour_types[1], b.settlements[5], b.settlements[10]),
+            "3,-2": Harbour((3, -2), harbour_types[2], b.settlements[23], b.settlements[29]),
+            "3,0": Harbour((3, 0), harbour_types[3], b.settlements[41], b.settlements[47]),
+            "1,2": Harbour((1, 2), harbour_types[4], b.settlements[50], b.settlements[51]),
+            "-1,3": Harbour((-1, 3), harbour_types[5], b.settlements[48], b.settlements[49]),
+            "-3,3": Harbour((-3, 3), harbour_types[6], b.settlements[36], b.settlements[42]),
+            "-3,1": Harbour((-3, 1), harbour_types[7], b.settlements[18], b.settlements[24]),
+            "-2,-1": Harbour((-2, -1), harbour_types[8], b.settlements[2], b.settlements[7]),
+        }        
 
         # ----------- create connections in the graph ------------------
         for terrain_coord, settlement_idxs in connections.items():
