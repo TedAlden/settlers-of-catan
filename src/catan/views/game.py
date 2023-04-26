@@ -6,10 +6,12 @@ from math import sqrt
 from catan.models.game import GameModel
 from catan.models.settlement import Settlement
 from catan.models.city import City
+from catan.views.bank_trade import BankTradeView
 from catan.views.components.button import Button
 from catan.type import ActionType, TerrainType
 from catan.util.pathresolver import resolve_path
 from catan.util.shapes import draw_city, draw_road, draw_settlement, draw_robber
+from catan.views.playertrade import PlayerTradeView
 
 pygame.font.init()
 
@@ -34,7 +36,7 @@ DC_KNIGHT = pygame.image.load(resolve_path("catan/assets/images/dev_card_knight.
 DC_ROAD = pygame.image.load(resolve_path("catan/assets/images/dev_card_road.png"))
 DC_PLENTY = pygame.image.load(resolve_path("catan/assets/images/dev_card_plenty.png"))
 DC_MONOPOLY = pygame.image.load(resolve_path("catan/assets/images/dev_card_monopoly.png"))
-DC_VP = pygame.image.load(resolve_path("catan/assets/images/dev_card_vp.png"))
+DC_VP = pygame.image.load(resolve_path("catan/assets/images/dev_card_knight.png"))
 
 DEV_CARD = pygame.image.load(resolve_path("catan/assets/images/dev_card_back.png"))
 RES_CARD = pygame.image.load(resolve_path("catan/assets/images/res_card_back.png"))
@@ -155,7 +157,7 @@ class GameView:
 
                 if self.btn_dev_card.rect.collidepoint(mouse_pos):
                     self.on_finish_action()
-                    # TODO
+                    self.__handle_buy_development_card()
 
                 if self.btn_roll_dice.rect.collidepoint(mouse_pos):
                     self.on_finish_action()
@@ -163,11 +165,13 @@ class GameView:
 
                 if self.btn_player_trade.rect.collidepoint(mouse_pos):
                     self.on_finish_action()
-                    # TODO
+                    self.app.player_trade_view = PlayerTradeView(self.app)
+                    self.app.set_view(self.app.player_trade_view)
 
                 if self.btn_bank_trade.rect.collidepoint(mouse_pos):
                     self.on_finish_action()
-                    # TODO
+                    self.app.bank_trade_view = BankTradeView(self.app)
+                    self.app.set_view(self.app.bank_trade_view)
 
                 if self.btn_next_turn.rect.collidepoint(mouse_pos):
                     self.on_finish_action()
@@ -193,6 +197,13 @@ class GameView:
                         if self.controller.action == ActionType.PLACE_ROBBER:
                             self.controller.place_robber(terrain)
                             self.on_finish_action()
+
+    
+    def __handle_buy_development_card(self):
+        
+        # TODO
+
+        pass
 
 
     def __handle_place_road(self, settlement):
