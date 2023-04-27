@@ -1,43 +1,60 @@
 import unittest
-
 from catan.models.board import Board
 from catan.models.player import Player
 from catan.models.settlement import Settlement
-
+from catan.models.emptysettlement import EmptySettlement
 
 class TestBoard(unittest.TestCase):
 
     def setUp(self):
-        # create board, players, and settlements
-        pass
-
+        self.board = Board.make_random()
+        self.player1 = Player("Player 1", "red")
+        self.player2 = Player("Player 2", "blue")
 
     def tearDown(self):
-        # delete board, players, and settlements
-        pass
-
+        del self.board
+        del self.player1
+        del self.player2
 
     def test_no_adjacent_settlements(self):
-        # settlements can not be placed next to adjacent settlements
-        pass
+        empty_settlement1 = self.board.settlements[3]
+        empty_settlement2 = self.board.settlements[4]
 
+        self.board.add_settlement(empty_settlement1, self.player1)
+        with self.assertRaises(Exception):
+            self.board.add_settlement(empty_settlement2, self.player2)
 
     def test_touching_roads(self):
-        # roads must be placed touching the players roads or settlements
-        pass
+        empty_settlement1 = self.board.settlements[3]
+        empty_settlement2 = self.board.settlements[8]
+        self.board.add_settlement(empty_settlement1, self.player1)
+        self.board.add_settlement(empty_settlement2, self.player1)
 
+        self.board.add_road(empty_settlement1, empty_settlement2, self.player1)
+        self.assertTrue(self.board.has_road(empty_settlement1, empty_settlement2))
 
     def test_touching_settlements(self):
-        # settlements must be placed touching the players roads,
-        # excluding the first two settlements placed
-        pass
+        empty_settlement1 = self.board.settlements[3]
+        empty_settlement2 = self.board.settlements[8]
+        empty_settlement3 = self.board.settlements[14]
+        self.board.add_settlement(empty_settlement1, self.player1)
+        self.board.add_settlement(empty_settlement2, self.player1)
+        self.board.add_road(empty_settlement1, empty_settlement2, self.player1)
 
+        with self.assertRaises(Exception) as context:
+             self.board.add_settlement(empty_settlement3, self.player1)
+
+             self.assertTrue('Settlements must be connected by roads' in str(context.exception))
 
     def test_non_touching_settlements(self):
-        # first two settlements can be placed free standing (not
-        # touching an existing road)
-        pass
+        empty_settlement1 = self.board.settlements[3]
+        empty_settlement2 = self.board.settlements[8]
 
+        self.board.add_settlement(empty_settlement1, self.player1)
+        self.board.add_settlement(empty_settlement2, self.player1)
+
+        self.assertIsInstance(self.board.settlements[3], Settlement)
+        self.assertIsInstance(self.board.settlements[8], Settlement)
 
 if __name__ == "__main__":
     unittest.main()
