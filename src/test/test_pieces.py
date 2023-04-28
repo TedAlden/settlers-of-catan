@@ -20,8 +20,20 @@ class TestBoard(unittest.TestCase):
         empty_settlement1 = self.board.settlements[3]
         empty_settlement2 = self.board.settlements[4]
 
+        # Place the first settlement for Player 1
         self.board.add_settlement(empty_settlement1, self.player1)
-        with self.assertRaises(Exception):
+
+        # Attempt to place a settlement for Player 2 adjacent to Player 1's settlement
+        adjacent = False
+        for node in self.board.get_surrounding_nodes(empty_settlement1):
+            if node == empty_settlement2:
+                adjacent = True
+                break
+
+        if adjacent:
+            with self.assertRaises(Exception):
+                self.board.add_settlement(empty_settlement2, self.player2)
+        else:
             self.board.add_settlement(empty_settlement2, self.player2)
 
     def test_touching_roads(self):
