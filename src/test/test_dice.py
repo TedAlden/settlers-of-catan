@@ -1,28 +1,37 @@
 import unittest
-from dice import Dice  
-from unittest.mock import patch
-
+from catan.models.dice import Dice  
 
 class TestDice(unittest.TestCase):
 
-    def setUp(self):
-        self.dice = Dice()
+    def test_dice_fairness(self):
+        # Create a Dice object
+        dice = Dice()
 
-    def test_roll(self):
-        with patch("dice.random.randint") as mock_randint:
-            mock_randint.return_value = 3
-            self.dice.roll()
-            self.assertEqual(self.dice.value, 3, "Failed to roll the dice and set the correct value")
-            mock_randint.assert_called_once_with(1, 6)
+        # Number of dice rolls to simulate
+        rolls = 1000000
 
-    def test_roll_randomness(self):
-        roll_values = set()
-        for _ in range(1000):
-            self.dice.roll()
-            roll_values.add(self.dice.value)
-        self.assertEqual(len(roll_values), 6, "The dice does not seem to produce all possible values")
+        #  store the count of each outcome (1-6)
+        outcomes = {i: 0 for i in range(1, 7)}
 
+        # Roll the dice to the specified number of times and record the outcomes
+        for _ in range(rolls):
+            dice.roll()
+            outcomes[dice.value] += 1
+
+        # Calculate the expected probability for each outcome (assuming fair dice)
+        expected_probability = 1 / 6
+
+        # Set a tolerance level for the difference between observed and expected probabilities
+        tolerance = 0.01
+
+        # Check if the observed probabilities are within the acceptable tolerance range
+        for i in range(1, 7):
+            # Calculate the observed probability of each outcome
+            outcomes[i] /= rolls
+
+            # Assert that the observed probability is close to the expected probability (within tolerance)
+            self.assertAlmostEqual(outcomes[i], expected_probability, delta=tolerance,
+                                   msg=f"Outcome {i} has a probability outside the acceptable tolerance.")
 
 if __name__ == '__main__':
     unittest.main()
-
