@@ -195,8 +195,11 @@ class GameController:
             settlement2:
                 The second of the two settlements to place the road in between.
         """
-        # TODO: check player can afford
-
+        afford = self.get_current_player().has_resources(brick=1,
+                                                         lumber=1)
+        
+        # two initial roads are free
+        placed_initial = self.get_current_player().count_roads() >= 2
 
         # check that both nodes are adjancent
         if settlement2 in self.model.board.get_surrounding_nodes(settlement1):
@@ -217,9 +220,14 @@ class GameController:
 
             # finally place road if all conditions are valid
             if (not road_occupied) and (touching_own_road or touching_own_settlement):
-                self.model.board.add_road(settlement1, settlement2, self.get_current_player())
-                self.get_current_player().roads += 1
-                print(f"Player '{self.get_current_player().name}' placed a road!")
+                if not placed_initial or (placed_initial and afford):
+                    self.model.board.add_road(settlement1, settlement2, self.get_current_player())
+                    self.get_current_player().roads += 1
+                    print(f"Player '{self.get_current_player().name}' placed a road!")
+
+                    if placed_initial:
+                        self.get_current_player().remove_resources(brick=1,
+                                                                   lumber=1)
 
 
     def place_settlement(
@@ -240,8 +248,11 @@ class GameController:
             settlement:
                 The settlement marker to place the settlement on.
         """
-        # TODO: check player can afford
 
+        afford = self.get_current_player().has_resources(brick=1,
+                                                         lumber=1,
+                                                         wool=1,
+                                                         grain=1)
 
         # check if settlement is already owned by any player
         already_owned = isinstance(settlement, (Settlement, City))
@@ -261,9 +272,16 @@ class GameController:
 
         # finally place settlement if all conditions are valid
         if not already_owned and space_around and (not placed_initial or touching_roads):
-            self.model.board.add_settlement(settlement, self.get_current_player())
-            self.get_current_player().settlements += 1
-            print(f"Player '{self.get_current_player().name}' placed a settlement!")
+            if not placed_initial or (placed_initial and afford):
+                self.model.board.add_settlement(settlement, self.get_current_player())
+                self.get_current_player().settlements += 1
+                print(f"Player '{self.get_current_player().name}' placed a settlement!")#
+
+                if placed_initial:
+                    self.get_current_player().remove_resources(brick=1,
+                                                               lumber=1,
+                                                               wool=1,
+                                                               grain=1)
 
 
     def place_city(
@@ -281,14 +299,16 @@ class GameController:
                 The settlement to upgrade to a city.
         """
 
-        # TODO: check player can afford
+        afford = self.get_current_player().has_resources(ore=3,
+                                                         grain=2)
 
         # check player is upgrading their own settlement to a city
-        if settlement.owner == self.get_current_player():
+        if settlement.owner == self.get_current_player() and afford:
             # perform upgrade
             self.model.board.add_city(settlement)
             self.get_current_player().cities += 1
             print(f"Player '{self.get_current_player().name}' upgraded to a city!")
+
 
 
     def place_robber(
