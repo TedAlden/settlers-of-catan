@@ -11,12 +11,12 @@ class TerrainType(Enum):
 
 
 class ResourceType(Enum):
-    LUMBER = 1
-    WOOL = 2
-    GRAIN = 4
-    BRICK = 8
-    ORE = 16
-    ANY = 32  # used for 3:1 harbours
+    LUMBER = "Lumber"
+    WOOL = "Wool"
+    GRAIN = "Grain"
+    BRICK = "Brick"
+    ORE = "Ore"
+    ANY = "Any"  # used for 3:1 harbours
 
 
 class ActionType(Enum):

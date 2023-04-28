@@ -46,12 +46,19 @@ class Board:
             index = self.settlements.index(empty_settlement)
             self.settlements[index] = settlement
 
-            # replace references to this settlement in any roads, to
-            # refer to the city instead
+            # replace references to this empty settlement in any roads,
+            # to refer to the settlement instead
             for road in self.roads:
                 if empty_settlement in road.settlements:
                     index = road.settlements.index(empty_settlement)
                     road.settlements[index] = settlement
+
+            # replace references to this empty settlement in any
+            # harbours, to refer to the settlement instead
+            for harbour in self.harbours.values():
+                if empty_settlement in harbour.settlements:
+                    index = harbour.settlements.index(empty_settlement)
+                    harbour.settlements[index] = settlement
 
     
     def remove_settlement(self, node):
@@ -85,6 +92,13 @@ class Board:
                 if settlement in road.settlements:
                     index = road.settlements.index(settlement)
                     road.settlements[index] = city
+
+            # replace references to this settlement in any harbours, to
+            # refer to the city instead
+            for harbour in self.harbours.values():
+                if settlement in harbour.settlements:
+                    index = harbour.settlements.index(settlement)
+                    harbour.settlements[index] = city
 
 
     def get_road_owner(self, node1, node2):
@@ -198,7 +212,7 @@ class Board:
                          ResourceType.ORE]
         
         shuffle(harbour_types)
-        
+
         b.harbours = {
             "0,-3": Harbour((0, -3), harbour_types[0], b.settlements[0], b.settlements[0]),
             "2,-3": Harbour((2, -3), harbour_types[1], b.settlements[5], b.settlements[10]),
