@@ -8,8 +8,7 @@ class Harbour:
     def __init__(self, axial_coord, resource_type, node1, node2):
         self.axial_coord = axial_coord
         self.resource_type = resource_type
-        self.node1 = node1
-        self.node2 = node2
+        self.settlements = [node1, node2]
         self.trade_ratio = 2  # 2:1
 
         self.image = pygame.Surface([20, 20])
@@ -27,8 +26,8 @@ class Harbour:
         return self.trade_ratio
     
 
-    def get_connections(self):
-        return (self.node1, self.node2)
+    def get_settlements(self):
+        return self.settlements
 
 
     def set_pos(self, center_x, center_y):
