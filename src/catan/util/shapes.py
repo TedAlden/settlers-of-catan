@@ -55,18 +55,12 @@ ROBBER_VERTICES = [
 ]
 
 
-def get_side_vertex_indices(n):
-    return [*zip(range(n), range(n)[1:]), (n-1, 0)]
-
-
 def draw_settlement(surface, colour, position):
     x, y = position
     vertices = [(_x + x, _y + y) for (_x, _y) in SETTLEMENT_VERTICES]
     # draw settlement shape
     pygame.draw.polygon(surface, colour, vertices, width=0)
-    # draw outline
-    for a, b in get_side_vertex_indices(len(vertices)):
-        pygame.draw.aaline(surface, "black", vertices[a], vertices[b])
+    pygame.draw.aalines(surface, "black", True, vertices)
 
 
 def draw_city(surface, colour, position):
@@ -74,9 +68,7 @@ def draw_city(surface, colour, position):
     vertices = [(_x + x, _y + y) for (_x, _y) in CITY_VERTICES]
     # draw city shape
     pygame.draw.polygon(surface, colour, vertices, width=0)
-    # draw outline
-    for a, b in get_side_vertex_indices(len(vertices)):
-        pygame.draw.aaline(surface, "black", vertices[a], vertices[b])
+    pygame.draw.aalines(surface, "black", True, vertices)
 
 
 def draw_hextile(surface, colour, radius, position, number):
@@ -84,9 +76,7 @@ def draw_hextile(surface, colour, radius, position, number):
     vertices = [(x + r*cos(pi*i/3), y + r*sin(pi*i/3)) for i in range(6)]
     # draw hexagon
     pygame.draw.polygon(surface, colour, vertices, width=0)
-    # draw outline
-    for a, b in get_side_vertex_indices(len(vertices)):
-        pygame.draw.aaline(surface, "black", vertices[a], vertices[b])
+    pygame.draw.aalines(surface, "black", True, vertices)
     # draw hextile dice number if valid
     if number > 0:
         img = TERRAIN_NUMBER_FONT.render(str(number), True, "white")
@@ -99,9 +89,7 @@ def draw_robber(surface, position, colour):
     vertices = [(_x + x, _y + y) for (_x, _y) in ROBBER_VERTICES]
     # draw robber shape
     pygame.draw.polygon(surface, colour, vertices, width=0)
-    # draw outline
-    for a, b in get_side_vertex_indices(len(vertices)):
-        pygame.draw.aaline(surface, "black", vertices[a], vertices[b])
+    pygame.draw.aalines(surface, "black", True, vertices)
 
 
 def draw_dice(surface, position, number):
@@ -109,9 +97,7 @@ def draw_dice(surface, position, number):
     vertices = [(_x + x, _y + y) for (_x, _y) in DICE_VERTICES]
     # draw square
     pygame.draw.polygon(surface, "white", vertices, width=0)
-    # draw outline
-    for a, b in get_side_vertex_indices(len(vertices)):
-        pygame.draw.aaline(surface, "black", vertices[a], vertices[b])
+    pygame.draw.aalines(surface, "black", True, vertices)
 
     # draw dice dots
     number = number if number in range(1, 7) else 6 # default
