@@ -2,7 +2,24 @@
 
 > A game inspired by Catan, written in Python using PyGame.
 
-![Game screenshot](screenshot.png)
+<table>
+<tr>
+<td>
+<img src="screenshot_1.png">
+</td>
+<td>
+<img src="screenshot_2.png">
+</td>
+</tr>
+<tr>
+<td>
+<img src="screenshot_3.png">
+</td>
+<td>
+<img src="screenshot.png">
+</td>
+</tr>
+</table>
 
 ## Introduction
 
